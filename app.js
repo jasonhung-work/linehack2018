@@ -5,7 +5,7 @@ app.get('/', function (req, res) {
   res.send('Hello World!');
 });
 
-app.get('/api', (request, response)=>{
+app.get('/api', function (request, response){
    response.send('api success'); 
 });
 
