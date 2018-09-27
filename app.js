@@ -10,11 +10,10 @@ log4js_extend(log4js, {
 log4js.configure(__dirname + '/log4js.json');
 var logger = log4js.getLogger('bot');
 var logger_line_message = log4js.getLogger('line_message');
-var logger_line_mongodb = log4js.getLogger('line_mongodb');
 
 // 連接 mongodb
 var linemongodb = require('./linemongodb');
-var linedb = new linemongodb.linemongodb(logger_line_mongodb);
+var linedb = new linemongodb.linemongodb();
 
 // line message api
 var linemessageapi = require('./linemessage');
