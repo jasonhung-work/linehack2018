@@ -22,7 +22,7 @@ var linemessage = new linemessageapi.linemessage(logger_line_message);
 
 // line LIFF API
 var lineliffapi = require('./lineliff');
-var lineliff = new lineliff.lineliff(logger_line_LIFF);
+var lineliff = new lineliffapi.lineliff(logger_line_LIFF);
 
 // 建立 express service
 var express = require('express');
