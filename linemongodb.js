@@ -4,7 +4,6 @@ var linemongodb = function () {
     this.ShuangJiou = require('./models/shuangjiou');
     this.Host = require('./models/host');
     this.User = require('./models/user');
-    this.Location = require('./models/location');
     this.dbConnectPath = 'mongodb+srv://tsti:70771557@cluster0-k85ga.gcp.mongodb.net/LINE?retryWrites=true';
     this.mongoose.connect(this.dbConnectPath, { useNewUrlParser: true });
 
@@ -31,7 +30,7 @@ var linemongodb = function () {
             }
             else {
                 console.log('ShuangJiou saved successfully');
-                callback(null);
+                callback();
             }
         });
     }
@@ -40,14 +39,9 @@ var linemongodb = function () {
         console.log('get_shuangjioubyname: name=' + name);
 
         this.ShuangJiou.find({ 'name': name }, function (err, shuangjious) {
-            if (err) {
-                callback(err);
-            }
-            else {
-                console.log('ShuangJiou get successfully');
-                if (shuangjious) {
-                    callback(null, shuangjious);
-                }
+            if (err) return callback(err, null);
+            if (shuangjious) {
+                callback(null, shuangjious);
             }
         });
     }
@@ -56,14 +50,9 @@ var linemongodb = function () {
         console.log('get_shuangjioubybeacon: location=' + location);
 
         this.ShuangJiou.find({ 'location': location }, function (err, shuangjious) {
-            if (err) {
-                callback(err);
-            }
-            else {
-                console.log('ShuangJiou get successfully');
-                if (shuangjious) {
-                    callback(null, shuangjious);
-                }
+            if (err) return callback(err, null);
+            if (shuangjious) {
+                callback(null, shuangjious);
             }
         });
     }
@@ -71,28 +60,9 @@ var linemongodb = function () {
     this.set_shuangjioubyname = function (name, shuangjiou, callback) {
         console.log('set_shuangjioubyname: name=' + name + ' shuangjiou=' + JSON.stringify(shuangjiou));
 
-        this.ShuangJiou.updateOne({ 'name': name }, shuangjiou, function (err) {
-            if (err) {
-                callback(err);
-            }
-            else {
-                console.log('ShuangJiou update successfully');
-                callback(null);
-            }
-        });
-    }
-
-    this.delete_shuangjioubyname = function (name, callback) {
-        console.log('delete_shuangjioubyname: name=' + name);
-
-        this.ShuangJiou.deleteOne({ 'name': name }, shuangjiou, function (err) {
-            if (err) {
-                callback(err);
-            }
-            else {
-                console.log('ShuangJiou delete successfully');
-                callback(null);
-            }
+        this.ShuangJiou.updateOne({ 'name': name }, shuangjiou, function (err, raw) {
+            if (err) return callback(err);
+            callback(null);
         });
     }
 
@@ -118,7 +88,7 @@ var linemongodb = function () {
             }
             else {
                 console.log('Host saved successfully');
-                callback(null);
+                callback();
             }
         });
     }
@@ -127,14 +97,9 @@ var linemongodb = function () {
         console.log('get_hostbyuserid: userid=' + userid);
 
         this.Host.find({ 'userid': userid }, function (err, hosts) {
-            if (err) {
-                callback(err);
-            }
-            else {
-                console.log('Host get successfully');
-                if (hosts) {
-                    callback(null, hosts);
-                }
+            if (err) return callback(err, null);
+            if (hosts) {
+                callback(null, hosts);
             }
         });
     }
@@ -143,14 +108,9 @@ var linemongodb = function () {
         console.log('get_hostbylocation: location=' + location);
 
         this.Host.find({ 'location': location }, function (err, hosts) {
-            if (err) {
-                callback(err);
-            }
-            else {
-                console.log('Host get successfully');
-                if (hosts) {
-                    callback(null, hosts);
-                }
+            if (err) return callback(err, null);
+            if (hosts) {
+                callback(null, hosts);
             }
         });
     }
@@ -158,59 +118,20 @@ var linemongodb = function () {
     this.set_hostbyname = function (name, host, callback) {
         console.log('set_hostbyname: name=' + name + ' host=' + JSON.stringify(host));
 
-        this.Host.updateOne({ 'name': name }, host, function (err) {
-            if (err) {
-                callback(err);
-            }
-            else {
-                console.log('Host update successfully');
-                callback(null);
-            }
+        this.Host.updateOne({ 'name': name }, host, function (err, raw) {
+            if (err) return callback(err);
+            callback(null);
         });
     }
 
     this.set_hostbyuserid = function (userid, host, callback) {
         console.log('set_hostbyuserid: userid=' + userid + ' host=' + JSON.stringify(host));
 
-        this.Host.updateOne({ 'userid': userid }, host, function (err) {
-            if (err) {
-                callback(err);
-            }
-            else {
-                console.log('Host update successfully');
-                callback(null);
-            }
+        this.Host.updateOne({ 'userid': userid }, host, function (err, raw) {
+            if (err) return callback(err);
+            callback(null);
         });
     }
-
-    this.delete_hostbyname = function (name, callback) {
-        console.log('delete_hostbyname: name=' + name);
-
-        this.Host.deleteOne({ 'name': name }, host, function (err) {
-            if (err) {
-                callback(err);
-            }
-            else {
-                console.log('Host delete successfully');
-                callback(null);
-            }
-        });
-    }
-
-    this.delete_hostbyuserid = function (userid, callback) {
-        console.log('delete_hostbyuserid: userid=' + userid);
-
-        this.Host.deleteOne({ 'userid': userid }, host, function (err) {
-            if (err) {
-                callback(err);
-            }
-            else {
-                console.log('Host delete successfully');
-                callback(null);
-            }
-        });
-    }
-
 
     //User
     this.create_user = function (user, callback) {
@@ -221,7 +142,7 @@ var linemongodb = function () {
         user.name = '加一';
         user.userid = 'Uxxxxxxxx2';
         user.image = 'http:xxxxx.xxx.xx';
-        user.location = '[Bxxxxxxxx1]';
+        user.location = 'Bxxxxxxxx1';
         */
 
         let addUser = new this.User(user);
@@ -231,7 +152,7 @@ var linemongodb = function () {
             }
             else {
                 console.log('User saved successfully');
-                callback(null);
+                callback();
             }
         });
     }
@@ -240,186 +161,39 @@ var linemongodb = function () {
         console.log('get_userbyuserid: userid=' + userid);
 
         this.User.find({ 'userid': userid }, function (err, users) {
-            if (err) {
-                callback(err);
-            }
-            else {
-                console.log('User get successfully');
-                if (users) {
-                    callback(null, users);
-                }
+            if (err) return callback(err, null);
+            if (users) {
+                callback(null, users);
             }
         });
     }
 
-    this.get_userbylocationid = function (locationid, callback) {
-        console.log('get_userbylocation: locationid=' + locationid);
+    this.get_userbylocation = function (location, callback) {
+        console.log('get_hostbylocation: location=' + location);
 
-        this.User.find({ 'location': { "$in": locationid } }, function (err, users) {
-            if (err) {
-                callback(err);
-            }
-            else {
-                console.log('User get successfully');
-                if (users) {
-                    callback(null, users);
-                }
+        this.User.find({ 'location': location }, function (err, users) {
+            if (err) return callback(err, null);
+            if (users) {
+                callback(null, users);
             }
         });
     }
-
-    /*
-    this.delete_userbyuserid = function (userid, callback) {
-        console.log('get_userbyuserid: userid=' + userid);
-
-        this.User.deleteOne({ 'userid': userid }, function (err) {
-            if (err) {
-                callback(err);
-            }
-            else {
-                console.log('User delete successfully');
-                callback(null);
-            }
-        });
-    }
-    */
-
-    this.add_watchlocationbyuserid = function (userid, locationid, callback) {
-        console.log('add_watchlocationbyuserid: userid=' + userid + ' locationid=' + locationid);
-
-        this.User.updateOne({ 'userid': userid }, { $push: { 'location': locationid } }, function (err) {
-            if (err) {
-                callback(err);
-            }
-            else {
-                console.log('User addwatchlocation successfully');
-                callback(null);
-            }
-        });
-    }
-
-    this.remove_watchlocationbyuserid = function (userid, locationid, callback) {
-        console.log('remove_watchlocationbyuserid: userid=' + userid + ' locationid=' + locationid);
-
-        this.User.updateOne({ 'userid': userid }, { $pull: { 'location': locationid } }, function (err) {
-            if (err) {
-                callback(err);
-            }
-            else {
-                console.log('User removewatchlocation successfully');
-                callback(null);
-            }
-        });
-    }
-
-    /*
-    this.delete_userbylocation = function (location, callback) {
-        console.log('delete_userbylocation: location=' + location);
-
-        this.User.deleteOne({ 'location': location }, function (err) {
-            if (err) {
-                callback(err);
-            }
-            else {
-                console.log('User delete successfully');
-                callback(null);
-            }
-        });
-    }
-    */
 
     this.set_userbyname = function (name, user, callback) {
         console.log('set_userbyname: name=' + name + ' user=' + JSON.stringify(user));
 
-        this.User.updateOne({ 'name': name }, user, function (err) {
-            if (err) {
-                callback(err);
-            }
-            else {
-                console.log('User update successfully');
-                callback(null);
-            }
+        this.User.updateOne({ 'name': name }, user, function (err, raw) {
+            if (err) return callback(err);
+            callback(null);
         });
     }
 
     this.set_userbyuserid = function (userid, user, callback) {
-        console.log('set_userbyuserid: userid=' + userid + ' user=' + JSON.stringify(user));
+        console.log('set_hostbyuserid: userid=' + userid + ' user=' + JSON.stringify(user));
 
-        this.User.updateOne({ 'userid': userid }, user, function (err) {
-            if (err) {
-                callback(err);
-            }
-            else {
-                console.log('User update successfully');
-                callback(null);
-            }
-        });
-    }
-
-
-    //Location
-    this.create_location = function (location, callback) {
-        console.log('create_location: user=' + JSON.stringify(location));
-
-        /*
-        let location = {};
-        location.name = '7-11';
-        location.locationid = 'Bxxxxxxxxx1';
-        location.user = [];
-        */
-
-        let addLocation = new this.Location(location);
-        addLocation.save(function (err) {
-            if (err) {
-                callback(err);
-            }
-            else {
-                console.log('Location saved successfully');
-                callback(null);
-            }
-        });
-    }
-
-    this.enter_usertolocation = function (userid, locationid, callback) {
-        console.log('enter_usertolocation: userid=' + userid + ' locationid=' + locationid);
-
-        this.Location.updateOne({ 'locationid': locationid }, { $push: { 'user': userid } }, function (err) {
-            if (err) {
-                callback(err);
-            }
-            else {
-                console.log('Location adduser successfully');
-                callback(null);
-            }
-        });
-    }
-
-    this.leave_userfromlocation = function (userid, locationid, callback) {
-        console.log('leave_userfromlocation: userid=' + userid + ' locationid=' + locationid);
-
-        this.Location.updateOne({ 'locationid': locationid }, { $pull: { 'user': userid } }, function (err) {
-            if (err) {
-                callback(err);
-            }
-            else {
-                console.log('Location removeuser successfully');
-                callback(null);
-            }
-        });
-    }
-
-    this.get_locationuser = function (locationid, callback) {
-        console.log('get_locationuser: locationid=' + locationid);
-
-        this.Location.findOne({ 'locationid': locationid }, function (err, location) {
-            if (err) {
-                callback(err);
-            }
-            else {
-                console.log('Location getuser successfully');
-                if (location)
-                    callback(null, location.user);
-            }
+        this.User.updateOne({ 'userid': userid }, user, function (err, raw) {
+            if (err) return callback(err);
+            callback(null);
         });
     }
 }

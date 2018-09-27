@@ -5,5 +5,5 @@ module.exports = mongoose.model('user', new Schema({
     userid: String,
     name: String,
     image: String,
-    location: [String]
+    location: String
 }), 'user');
