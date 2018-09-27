@@ -26,6 +26,9 @@ var app = express();
 var port = process.env.PORT || 443;
 var http = require('https');
 var server = http.Server(app).listen(port);
+var listener = server.listen(process.env.port || process.env.PORT || config.port, function () {
+  logger.info('Server listening to ' + listener.address().port);
+});
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({
     extended: true
