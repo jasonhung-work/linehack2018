@@ -1,6 +1,7 @@
 var linemongodb = require('./linemongodb');
-var linedb = new linemongodb.linemongodb();
-
+var logger_line_mongodb = log4js.getLogger('line_mongodb');
+var logger = log4js.getLogger('line');
+var linedb = new linemongodb.linemongodb(logger_line_mongodb);
 /*
 let user = {};
 user.name = '加一';
@@ -59,21 +60,21 @@ linedb.create_shuangjiou(shuangjiou, function (err) {
 
 linedb.get_shuangjioubylocation('Bxxxxxxxx1', function (err, shuangjious) {
     if (err) {
-        console.log(err); return;
+        logger.error(err); return;
     }
-    console.log('get_shuangjioubylocation = ' + shuangjious);
+    logger.info('get_shuangjioubylocation = ' + shuangjious);
 });
 
 linedb.get_userbylocation('Bxxxxxxxx1', function (err, users) {
     if (err) {
-        console.log(err); return;
+        logger.error(err); return;
     }
-    console.log('get_userbylocation = ' + users);
+    logger.info('get_userbylocation = ' + users);
 });
 
 linedb.get_hostbylocation('Bxxxxxxxx1', function (err, hosts) {
     if (err) {
-        console.log(err); return;
+        logger.error(err); return;
     }
-    console.log('get_hostbylocation = ' + hosts);
+    logger.info('get_hostbylocation = ' + hosts);
 });

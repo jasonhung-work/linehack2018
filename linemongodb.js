@@ -1,5 +1,5 @@
 
-var linemongodb = function () {
+var linemongodb = function (logger) {
     this.mongoose = require('mongoose');
     this.ShuangJiou = require('./models/shuangjiou');
     this.Host = require('./models/host');
@@ -9,7 +9,7 @@ var linemongodb = function () {
 
     //ShuangJiou
     this.create_shuangjiou = function (shuangjiou, callback) {
-        console.log('create_shuangjiou: shuangjiou=' + JSON.stringify(shuangjiou));
+        logger.info('create_shuangjiou: shuangjiou=' + JSON.stringify(shuangjiou));
 
         /*
         let shuangjiou = {};
@@ -29,14 +29,14 @@ var linemongodb = function () {
                 callback(err);
             }
             else {
-                console.log('ShuangJiou saved successfully');
+                logger.info('ShuangJiou saved successfully');
                 callback();
             }
         });
     }
 
     this.get_shuangjioubyname = function (name, callback) {
-        console.log('get_shuangjioubyname: name=' + name);
+        logger.info('get_shuangjioubyname: name=' + name);
 
         this.ShuangJiou.find({ 'name': name }, function (err, shuangjious) {
             if (err) return callback(err, null);
@@ -47,7 +47,7 @@ var linemongodb = function () {
     }
 
     this.get_shuangjioubylocation = function (location, callback) {
-        console.log('get_shuangjioubybeacon: location=' + location);
+        logger.info('get_shuangjioubybeacon: location=' + location);
 
         this.ShuangJiou.find({ 'location': location }, function (err, shuangjious) {
             if (err) return callback(err, null);
@@ -58,7 +58,7 @@ var linemongodb = function () {
     }
 
     this.set_shuangjioubyname = function (name, shuangjiou, callback) {
-        console.log('set_shuangjioubyname: name=' + name + ' shuangjiou=' + JSON.stringify(shuangjiou));
+        logger.info('set_shuangjioubyname: name=' + name + ' shuangjiou=' + JSON.stringify(shuangjiou));
 
         this.ShuangJiou.updateOne({ 'name': name }, shuangjiou, function (err, raw) {
             if (err) return callback(err);
@@ -69,7 +69,7 @@ var linemongodb = function () {
 
     //Host
     this.create_host = function (host, callback) {
-        console.log('create_host: host=' + JSON.stringify(host));
+        logger.info('create_host: host=' + JSON.stringify(host));
 
         /*
         let host = {};
@@ -94,7 +94,7 @@ var linemongodb = function () {
     }
 
     this.get_hostbyuserid = function (userid, callback) {
-        console.log('get_hostbyuserid: userid=' + userid);
+        logger.info('get_hostbyuserid: userid=' + userid);
 
         this.Host.find({ 'userid': userid }, function (err, hosts) {
             if (err) return callback(err, null);
@@ -105,7 +105,7 @@ var linemongodb = function () {
     }
 
     this.get_hostbylocation = function (location, callback) {
-        console.log('get_hostbylocation: location=' + location);
+        logger.info('get_hostbylocation: location=' + location);
 
         this.Host.find({ 'location': location }, function (err, hosts) {
             if (err) return callback(err, null);
@@ -116,7 +116,7 @@ var linemongodb = function () {
     }
 
     this.set_hostbyname = function (name, host, callback) {
-        console.log('set_hostbyname: name=' + name + ' host=' + JSON.stringify(host));
+        logger.info('set_hostbyname: name=' + name + ' host=' + JSON.stringify(host));
 
         this.Host.updateOne({ 'name': name }, host, function (err, raw) {
             if (err) return callback(err);
@@ -125,7 +125,7 @@ var linemongodb = function () {
     }
 
     this.set_hostbyuserid = function (userid, host, callback) {
-        console.log('set_hostbyuserid: userid=' + userid + ' host=' + JSON.stringify(host));
+        logger.info('set_hostbyuserid: userid=' + userid + ' host=' + JSON.stringify(host));
 
         this.Host.updateOne({ 'userid': userid }, host, function (err, raw) {
             if (err) return callback(err);
@@ -135,7 +135,7 @@ var linemongodb = function () {
 
     //User
     this.create_user = function (user, callback) {
-        console.log('create_user: user=' + JSON.stringify(user));
+        logger.info('create_user: user=' + JSON.stringify(user));
 
         /*
         let user = {};
@@ -158,7 +158,7 @@ var linemongodb = function () {
     }
 
     this.get_userbyuserid = function (userid, callback) {
-        console.log('get_userbyuserid: userid=' + userid);
+        logger.info('get_userbyuserid: userid=' + userid);
 
         this.User.find({ 'userid': userid }, function (err, users) {
             if (err) return callback(err, null);
@@ -169,7 +169,7 @@ var linemongodb = function () {
     }
 
     this.get_userbylocation = function (location, callback) {
-        console.log('get_hostbylocation: location=' + location);
+        logger.info('get_hostbylocation: location=' + location);
 
         this.User.find({ 'location': location }, function (err, users) {
             if (err) return callback(err, null);
@@ -180,7 +180,7 @@ var linemongodb = function () {
     }
 
     this.set_userbyname = function (name, user, callback) {
-        console.log('set_userbyname: name=' + name + ' user=' + JSON.stringify(user));
+        logger.info('set_userbyname: name=' + name + ' user=' + JSON.stringify(user));
 
         this.User.updateOne({ 'name': name }, user, function (err, raw) {
             if (err) return callback(err);
@@ -189,7 +189,7 @@ var linemongodb = function () {
     }
 
     this.set_userbyuserid = function (userid, user, callback) {
-        console.log('set_hostbyuserid: userid=' + userid + ' user=' + JSON.stringify(user));
+        logger.info('set_hostbyuserid: userid=' + userid + ' user=' + JSON.stringify(user));
 
         this.User.updateOne({ 'userid': userid }, user, function (err, raw) {
             if (err) return callback(err);
