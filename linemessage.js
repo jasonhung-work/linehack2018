@@ -1,3 +1,6 @@
+var fs = require('fs');
+var config = fs.readFileSync(__dirname + '/config.json', 'utf8');
+config = JSON.parse(config);
 var linemessage = function (logger) {
     // 傳送訊息給 LINE 使用者
     this.SendMessage = function (userId, message, password, reply_token, callback) {
