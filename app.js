@@ -52,6 +52,16 @@ app.get('/api', function (request, response) {
     response.send('API is running');
 });
 
+app.get('/index', function (request, response) {
+    request.header("Content-Type", 'text/html');
+    fs.readFile(__dirname + '/pages/index.html', 'utf8', function (err, data) {
+        if (err) {
+            res.send(err);
+        }
+        this.res.send(data);
+    }.bind({ req: request, res: response }));
+});
+
 app.get('/api/liff', function (request, response) {
     lineliff.GetAllLIFF(function (result) {
         if(result) response.send(result);
