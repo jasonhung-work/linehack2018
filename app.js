@@ -23,7 +23,7 @@ var linemessage = new linemessageapi.linemessage(logger_line_message);
 var express = require('express');
 var app = express();
 var port = process.env.PORT || 443;
-var http = require('https');
+var http = require('http');
 var server = http.Server(app).listen(port);
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({
