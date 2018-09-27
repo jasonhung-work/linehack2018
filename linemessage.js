@@ -298,4 +298,4 @@ var linemessage = function (logger) {
     }
 }
 
-exports.linemessage = linemessge;
+exports.linemessage = linemessage;
