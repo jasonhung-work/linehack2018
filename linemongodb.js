@@ -1,5 +1,4 @@
-
-var linemongodb = function (logger) {
+var linemongodb = function () {
     this.mongoose = require('mongoose');
     this.ShuangJiou = require('./models/shuangjiou');
     this.Host = require('./models/host');
@@ -10,7 +9,7 @@ var linemongodb = function (logger) {
 
     //ShuangJiou
     this.create_shuangjiou = function (shuangjiou, callback) {
-        logger.info('create_shuangjiou: shuangjiou=' + JSON.stringify(shuangjiou));
+        console.log('create_shuangjiou: shuangjiou=' + JSON.stringify(shuangjiou));
 
         /*
         let shuangjiou = {};
@@ -30,19 +29,14 @@ var linemongodb = function (logger) {
                 callback(err);
             }
             else {
-<<<<<<< HEAD
-                logger.info('ShuangJiou saved successfully');
-                callback();
-=======
                 console.log('ShuangJiou saved successfully');
                 callback(null);
->>>>>>> parent of 1bc25c1... Revert "add location table"
             }
         });
     }
 
     this.get_shuangjioubyname = function (name, callback) {
-        logger.info('get_shuangjioubyname: name=' + name);
+        console.log('get_shuangjioubyname: name=' + name);
 
         this.ShuangJiou.find({ 'name': name }, function (err, shuangjious) {
             if (err) {
@@ -58,7 +52,7 @@ var linemongodb = function (logger) {
     }
 
     this.get_shuangjioubylocation = function (location, callback) {
-        logger.info('get_shuangjioubybeacon: location=' + location);
+        console.log('get_shuangjioubybeacon: location=' + location);
 
         this.ShuangJiou.find({ 'location': location }, function (err, shuangjious) {
             if (err) {
@@ -74,7 +68,7 @@ var linemongodb = function (logger) {
     }
 
     this.set_shuangjioubyname = function (name, shuangjiou, callback) {
-        logger.info('set_shuangjioubyname: name=' + name + ' shuangjiou=' + JSON.stringify(shuangjiou));
+        console.log('set_shuangjioubyname: name=' + name + ' shuangjiou=' + JSON.stringify(shuangjiou));
 
         this.ShuangJiou.updateOne({ 'name': name }, shuangjiou, function (err) {
             if (err) {
@@ -104,7 +98,7 @@ var linemongodb = function (logger) {
 
     //Host
     this.create_host = function (host, callback) {
-        logger.info('create_host: host=' + JSON.stringify(host));
+        console.log('create_host: host=' + JSON.stringify(host));
 
         /*
         let host = {};
@@ -129,7 +123,7 @@ var linemongodb = function (logger) {
     }
 
     this.get_hostbyuserid = function (userid, callback) {
-        logger.info('get_hostbyuserid: userid=' + userid);
+        console.log('get_hostbyuserid: userid=' + userid);
 
         this.Host.find({ 'userid': userid }, function (err, hosts) {
             if (err) {
@@ -145,7 +139,7 @@ var linemongodb = function (logger) {
     }
 
     this.get_hostbylocation = function (location, callback) {
-        logger.info('get_hostbylocation: location=' + location);
+        console.log('get_hostbylocation: location=' + location);
 
         this.Host.find({ 'location': location }, function (err, hosts) {
             if (err) {
@@ -161,7 +155,7 @@ var linemongodb = function (logger) {
     }
 
     this.set_hostbyname = function (name, host, callback) {
-        logger.info('set_hostbyname: name=' + name + ' host=' + JSON.stringify(host));
+        console.log('set_hostbyname: name=' + name + ' host=' + JSON.stringify(host));
 
         this.Host.updateOne({ 'name': name }, host, function (err) {
             if (err) {
@@ -175,7 +169,7 @@ var linemongodb = function (logger) {
     }
 
     this.set_hostbyuserid = function (userid, host, callback) {
-        logger.info('set_hostbyuserid: userid=' + userid + ' host=' + JSON.stringify(host));
+        console.log('set_hostbyuserid: userid=' + userid + ' host=' + JSON.stringify(host));
 
         this.Host.updateOne({ 'userid': userid }, host, function (err) {
             if (err) {
@@ -219,7 +213,7 @@ var linemongodb = function (logger) {
 
     //User
     this.create_user = function (user, callback) {
-        logger.info('create_user: user=' + JSON.stringify(user));
+        console.log('create_user: user=' + JSON.stringify(user));
 
         /*
         let user = {};
@@ -242,7 +236,7 @@ var linemongodb = function (logger) {
     }
 
     this.get_userbyuserid = function (userid, callback) {
-        logger.info('get_userbyuserid: userid=' + userid);
+        console.log('get_userbyuserid: userid=' + userid);
 
         this.User.find({ 'userid': userid }, function (err, users) {
             if (err) {
@@ -257,13 +251,8 @@ var linemongodb = function (logger) {
         });
     }
 
-<<<<<<< HEAD
-    this.get_userbylocation = function (location, callback) {
-        logger.info('get_hostbylocation: location=' + location);
-=======
     this.get_userbylocationid = function (locationid, callback) {
         console.log('get_userbylocation: locationid=' + locationid);
->>>>>>> parent of 1bc25c1... Revert "add location table"
 
         this.User.find({ 'location': { "$in": locationid } }, function (err, users) {
             if (err) {
@@ -281,7 +270,6 @@ var linemongodb = function (logger) {
     /*
     this.delete_userbyuserid = function (userid, callback) {
         console.log('get_userbyuserid: userid=' + userid);
-
         this.User.deleteOne({ 'userid': userid }, function (err) {
             if (err) {
                 callback(err);
@@ -325,7 +313,6 @@ var linemongodb = function (logger) {
     /*
     this.delete_userbylocation = function (location, callback) {
         console.log('delete_userbylocation: location=' + location);
-
         this.User.deleteOne({ 'location': location }, function (err) {
             if (err) {
                 callback(err);
@@ -339,7 +326,7 @@ var linemongodb = function (logger) {
     */
 
     this.set_userbyname = function (name, user, callback) {
-        logger.info('set_userbyname: name=' + name + ' user=' + JSON.stringify(user));
+        console.log('set_userbyname: name=' + name + ' user=' + JSON.stringify(user));
 
         this.User.updateOne({ 'name': name }, user, function (err) {
             if (err) {
@@ -353,11 +340,7 @@ var linemongodb = function (logger) {
     }
 
     this.set_userbyuserid = function (userid, user, callback) {
-<<<<<<< HEAD
-        logger.info('set_hostbyuserid: userid=' + userid + ' user=' + JSON.stringify(user));
-=======
         console.log('set_userbyuserid: userid=' + userid + ' user=' + JSON.stringify(user));
->>>>>>> parent of 1bc25c1... Revert "add location table"
 
         this.User.updateOne({ 'userid': userid }, user, function (err) {
             if (err) {

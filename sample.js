@@ -1,7 +1,6 @@
 var linemongodb = require('./linemongodb');
-var logger_line_mongodb = log4js.getLogger('line_mongodb');
-var logger = log4js.getLogger('line');
-var linedb = new linemongodb.linemongodb(logger_line_mongodb);
+var linedb = new linemongodb.linemongodb();
+
 /*
 let user = {};
 user.name = '加一'; //使用者名稱
@@ -15,8 +14,6 @@ linedb.create_user(user, function (err) {
     else
         console.log('success');
 });
-
-
 let host = {};
 host.name = '加一'; //爽主姓名
 host.userid = 'Uxxxxxxxx1'; //爽主Id
@@ -31,7 +28,6 @@ linedb.create_host(host, function (err) {
     else
         console.log('success');
 });
-
 let shuangjiou = {};
 shuangjiou.name = '爽揪'; //揪團名稱
 shuangjiou.description = '爽揪'; //揪團描述
@@ -55,25 +51,16 @@ linedb.create_shuangjiou(shuangjiou, function (err) {
 //取得此BeaconId的揪團資訊
 linedb.get_shuangjioubylocation('Bxxxxxxxx1', function (err, shuangjious) {
     if (err) {
-        logger.error(err); return;
+        console.log(err); return;
     }
-    logger.info('get_shuangjioubylocation = ' + shuangjious);
+    console.log('get_shuangjioubylocation = ' + shuangjious);
 });
-
 //取得此Beacon發起的爽主資訊
 linedb.get_hostbylocation('Bxxxxxxxx1', function (err, hosts) {
     if (err) {
-        logger.error(err); return;
+        console.log(err); return;
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
-    logger.info('get_userbylocation = ' + users);
-=======
     console.log('get_hostbylocation = ' + hosts);
->>>>>>> parent of 1bc25c1... Revert "add location table"
-=======
-    console.log('get_hostbylocation = ' + hosts);
->>>>>>> parent of 1bc25c1... Revert "add location table"
 });
 */
 
@@ -84,57 +71,26 @@ location.locationid = 'Bxxxxxxxx1'; //BeaconId
 location.user = []; //進入Beacon附近的UserId
 //建立Beacon資訊
 linedb.create_location(location, function (err, hosts) {
-<<<<<<< HEAD
-    if (err) {
-        logger.error(err); return;
-    }
-<<<<<<< HEAD
-    logger.info('get_hostbylocation = ' + hosts);
-});
-=======
-    console.log('create_location = ' + hosts);
-});
-
-//進入Beacon附近將UserId加入
-linedb.enter_usertolocation('Uxxxxxxxx1', location.locationid,function(err){
-
-});
-linedb.enter_usertolocation('Uxxxxxxxx2', location.locationid,function(err){
-        
-});
-
-//取得Beacon附近的UserId
-linedb.get_locationuser('Bxxxxxxxx1', function(err, users){
-    if (err) {
-        console.log(err); return;
-    }
-=======
     if (err) {
         console.log(err); return;
     }
     console.log('create_location = ' + hosts);
 });
-
 //進入Beacon附近將UserId加入
 linedb.enter_usertolocation('Uxxxxxxxx1', location.locationid,function(err){
-
 });
 linedb.enter_usertolocation('Uxxxxxxxx2', location.locationid,function(err){
         
 });
-
 //取得Beacon附近的UserId
 linedb.get_locationuser('Bxxxxxxxx1', function(err, users){
     if (err) {
         console.log(err); return;
     }
->>>>>>> parent of 1bc25c1... Revert "add location table"
     console.log(JSON.stringify(users));
 })
-
 //離開Beacon附近將UserId移除
 linedb.leave_userfromlocation('Uxxxxxxxx2', 'Bxxxxxxxx1', function(err){
-
 })
 */
 
@@ -146,19 +102,10 @@ linedb.get_userbylocationid('Bxxxxxxxx1', function(err, users){
     }
     console.log(JSON.stringify(users));
 })
-
 //使用者加入關注地點的BeaconId
 linedb.add_watchlocationbyuserid('Uxxxxxxxx1', 'Bxxxxxxxx2', function(err){
-
 })
-
 //使用者移除關注地點的BeaconId
 linedb.remove_watchlocationbyuserid('Uxxxxxxxx2', 'Bxxxxxxxx3', function(err){
-
 })
-
 */
-<<<<<<< HEAD
->>>>>>> parent of 1bc25c1... Revert "add location table"
-=======
->>>>>>> parent of 1bc25c1... Revert "add location table"
