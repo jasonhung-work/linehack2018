@@ -66,7 +66,11 @@ linedb.get_hostbylocation('Bxxxxxxxx1', function (err, hosts) {
         logger.error(err); return;
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
     logger.info('get_userbylocation = ' + users);
+=======
+    console.log('get_hostbylocation = ' + hosts);
+>>>>>>> parent of 1bc25c1... Revert "add location table"
 =======
     console.log('get_hostbylocation = ' + hosts);
 >>>>>>> parent of 1bc25c1... Revert "add location table"
@@ -80,6 +84,7 @@ location.locationid = 'Bxxxxxxxx1'; //BeaconId
 location.user = []; //進入Beacon附近的UserId
 //建立Beacon資訊
 linedb.create_location(location, function (err, hosts) {
+<<<<<<< HEAD
     if (err) {
         logger.error(err); return;
     }
@@ -103,6 +108,27 @@ linedb.get_locationuser('Bxxxxxxxx1', function(err, users){
     if (err) {
         console.log(err); return;
     }
+=======
+    if (err) {
+        console.log(err); return;
+    }
+    console.log('create_location = ' + hosts);
+});
+
+//進入Beacon附近將UserId加入
+linedb.enter_usertolocation('Uxxxxxxxx1', location.locationid,function(err){
+
+});
+linedb.enter_usertolocation('Uxxxxxxxx2', location.locationid,function(err){
+        
+});
+
+//取得Beacon附近的UserId
+linedb.get_locationuser('Bxxxxxxxx1', function(err, users){
+    if (err) {
+        console.log(err); return;
+    }
+>>>>>>> parent of 1bc25c1... Revert "add location table"
     console.log(JSON.stringify(users));
 })
 
@@ -132,4 +158,7 @@ linedb.remove_watchlocationbyuserid('Uxxxxxxxx2', 'Bxxxxxxxx3', function(err){
 })
 
 */
+<<<<<<< HEAD
+>>>>>>> parent of 1bc25c1... Revert "add location table"
+=======
 >>>>>>> parent of 1bc25c1... Revert "add location table"
