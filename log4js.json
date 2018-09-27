@@ -1,0 +1,24 @@
+{
+	"appenders": [
+		{
+			"type": "console"
+		},
+		{
+			"type": "logLevelFilter",
+			"appender": {
+				"type": "file",
+				"filename": "logs/error.log"
+			},
+			"layout": {
+				"type": "basic"
+			},
+			"category": [
+				"bot",
+				"line_message",
+				"line_mongodb"
+			],
+			"level": "error"
+		}
+	],
+	"replaceConsole": true
+}
