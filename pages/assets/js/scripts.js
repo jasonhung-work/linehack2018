@@ -4,7 +4,8 @@ jQuery(document).ready(function() {
     /*
         Fullscreen background
     */    
-    $.backstretch("assets/img/backgrounds/1.jpg");
+    //$.backstretch("assets/img/backgrounds/1.jpg");
+    $.backstretch("https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Starsinthesky.jpg/1280px-Starsinthesky.jpg");
     
     $('#top-navbar-1').on('shown.bs.collapse', function(){
     	$.backstretch("resize");
