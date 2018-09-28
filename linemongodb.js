@@ -381,7 +381,7 @@ var linemongodb = function () {
     this.enter_usertolocation = function (userid, locationid, callback) {
         console.log('enter_usertolocation: userid=' + userid + ' locationid=' + locationid);
 
-        this.Location.updateOne({ 'locationid': locationid }, { $push: { 'user': userid } }, function (err) {
+        this.Location.updateOne({ 'locationid': locationid }, { $addToSet: { 'user': userid } }, function (err) {
             if (err) {
                 callback(err);
             }
