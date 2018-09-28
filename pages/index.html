@@ -41,7 +41,7 @@
 
     </head>
 
-    <body>
+    <body onload="fixw()">
 
 		<!-- Top menu -->
 		<nav class="navbar navbar-inverse navbar-no-bg" role="navigation">
@@ -183,7 +183,12 @@
             <script src="assets/js/placeholder.js"></script>
         <![endif]-->
 		<script>
-			alert(screen.width);
+			function fixw(){
+				var wid = screen.width;
+				if(wid>=760){
+					$('body').width(760);
+				}
+			};
 			function submitdata(){
 				liff.init(function () {
                 liff.getProfile().then(function (profile) {
