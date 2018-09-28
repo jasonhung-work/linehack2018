@@ -124,7 +124,9 @@ app.post('/api/beacon', function (request, response) {
 });
 
 app.post('/api/shungjiou', function (request, response) {
-
+    console.log('post /api/shungjiou');
+    console.log(JSON.stringify(request.body));
+    response.send('200');
 });
 
 app.use(express.static('pages'));
