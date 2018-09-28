@@ -147,13 +147,9 @@ app.post('/api/beacon', function (request, response) {
 app.post('/api/shungjiou', function (request, response) {
     console.log('post /api/shungjiou');
     console.log(JSON.stringify(request.body));
-    /*console.log(request.body.host.userId);
     var userId = request.body.host.userId;
-    console.log(userId);
     userId = userId.replace('\"','').replace('\"','');
-    console.log(userId);*/
-    request.body.host.userId.replace('\"','').replace('\"','');
-    console.log(JSON.stringify(request.body));
+    console.log(userId);
     response.send('200');
     /*var data = request.body;
     var activity = new shuangjiou();
