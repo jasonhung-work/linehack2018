@@ -77,8 +77,6 @@ app.get('/index', function (request, response) {
     }.bind({ req: request, res: response }));
 });
 
-app.use('/img',express.static(path.join(__dirname, 'public/pages')));
-
 app.get('/api/liff', function (request, response) {
     lineliff.GetAllLIFF(function (result) {
         if (result) response.send(result);
