@@ -210,9 +210,10 @@
 							"hat" : hat
 						}
                     }
+					alert('post');
                     $.post('/api/shungjiou', data, function () {
                         //liff.closeWindow();
-						alert('post')
+						alert('post');
                     });
                 }).catch(function (error) {
                     window.alert("Error getting profile: " + error);
