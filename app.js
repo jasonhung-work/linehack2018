@@ -77,15 +77,7 @@ app.get('/index', function (request, response) {
     }.bind({ req: request, res: response }));
 });
 
-app.get('/getbackgrounds', function (request, response) {
-    request.header("Content-Type", 'image/jpeg');
-    fs.readFile(__dirname + '/pages/assets/img/backgrounds/1.jpg', 'utf8', function (err, data) {
-        if (err) {
-            res.send(err);
-        }
-        this.res.send(data);
-    }.bind({ req: request, res: response }));
-});
+app.use('/img',express.static(path.join(__dirname, 'public/pages/assets/img/backgrounds')));
 
 app.get('/api/liff', function (request, response) {
     lineliff.GetAllLIFF(function (result) {
