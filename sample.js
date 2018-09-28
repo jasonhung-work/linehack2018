@@ -31,7 +31,8 @@ linedb.create_host(host, function (err) {
 let shuangjiou = {};
 shuangjiou.name = '爽揪'; //揪團名稱
 shuangjiou.description = '爽揪'; //揪團描述
-shuangjiou.time = Date.now(); //揪團時間
+shuangjiou.starttime = Date.now(); //揪團開始時間
+shuangjiou.endtime = Date.now(); //揪團結束時間
 shuangjiou.type = '吃'; //揪團類型
 shuangjiou.host = 'Uxxxxxxxx1'; //爽主Id
 shuangjiou.location = 'Bxxxxxxxx1'; //揪團BeaconId
