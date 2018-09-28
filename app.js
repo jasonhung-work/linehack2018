@@ -73,6 +73,7 @@ function shuangjiou() {
 }
 
 function host() {
+    this.shuangjiouname = '';
     this.name = '';
     this.userid = '';
     this.gender = '';
@@ -173,6 +174,7 @@ app.post('/api/shungjiou', function (request, response) {
             });
 
             var organiser = new host();
+            organiser.shuangjiouname = data.shuangjiou.name
             organiser.name = data.host.name;
             organiser.userid = data.host.userId;
             organiser.gender = data.host.gender;
@@ -186,7 +188,8 @@ app.post('/api/shungjiou', function (request, response) {
                     logger.info('success');
             });
 
-            var flex = lineflex;
+            var flex = lineflex.CreateActivityFlex(activity);
+            logger.info(flex);
             linedb.get_userbylocationid(locationid, function (err, users) {
                 if (err)
                     logger.error('fail: ' + err);
