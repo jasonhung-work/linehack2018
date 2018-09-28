@@ -69,12 +69,12 @@ function shuangjiou() {
 }
 
 function host() {
-    this.host.name = ''; 
-    this.host.userid = ''; 
-    this.host.gender = ''; 
-    this.host.clothes = ''; 
-    this.host.hat = ''; 
-    this.host.location = ''; 
+    this.host.name = '';
+    this.host.userid = '';
+    this.host.gender = '';
+    this.host.clothes = '';
+    this.host.hat = '';
+    this.host.location = '';
 }
 
 app.all('*', function (req, res, next) {
@@ -145,57 +145,63 @@ app.post('/api/beacon', function (request, response) {
 });
 
 app.post('/api/shungjiou', function (request, response) {
-    console.log('post /api/shungjiou');
-    console.log(JSON.stringify(request.body));
-    var userId = request.body.host.userId;
-    userId = userId.replace('\"','').replace('\"','');
-    console.log(userId);
-    response.send('200');
-    /*var data = request.body;
-    var activity = new shuangjiou();
-    activity.name = data.shuangjiou.name;
-    activity.description = data.shuangjiou.description;
-    activity.starttime = Date.now();
-    activity.endtime = data.shuangjiou.endtime;
-    activity.type = data.shuangjiou.type;
-    activity.host = data.host.userid;
-    activity.location = '0119f641d3';
-    activity.number = data.shuangjiou.number;
-    linedb.create_shuangjiou(activity, function (err) {
-        if (err) 
-            logger.error('fail: ' + err);
-        else 
-            logger.info('success');
-    });
-
-    var organiser = new host();
-    organiser.name = data.host.name;
-    organiser.userid = data.host.userid;
-    organiser.gender = data.host.gender;
-    organiser.clothes = data.host.clothes;
-    organiser.hat = data.host.hat;
-    organiser.location = '0119f641d3';
-    linedb.create_host(organiser, function (err) {
-        if (err)
-            logger.error('fail: ' + err);
-        else
-            logger.info('success');
-    });
-
-    linedb.get_userbylocationid('0119f641d3', function (err, users){
-        if(err)
-            logger.error('fail: ' + err);
+    logger.info('POST /api/shungjiou');
+    logger.info(JSON.stringify(request.body));
+    var data = request.body;
+    data.host.userId = data.host.userId.replace('\"','').replace('\"','');
+    linedb.get_locationidbyuser(data.host.userId, function (err, locationid) {
+        if (err) this.response.send(err);
         else {
-            for(var index = 0; index < users.length; index++){
-                linemessage.SendFlex(userid, flex, 'linehack2018', '', function(result){
-                    if(!result) 
-                        logger.error('fail: ' + result);
-                    else
-                        logger.info('success');
-                });
-            } 
+            var activity = new shuangjiou();
+            activity.name = data.shuangjiou.name;
+            activity.description = data.shuangjiou.description;
+            activity.starttime = Date.now();
+            activity.endtime = data.shuangjiou.endtime;
+            activity.type = data.shuangjiou.type;
+            activity.host = data.host.userId;
+            activity.location = locationid;
+            activity.number = data.shuangjiou.number;
+            linedb.create_shuangjiou(activity, function (err) {
+                if (err)
+                    logger.error('fail: ' + err);
+                else
+                    logger.info('success');
+            });
+
+            var organiser = new host();
+            organiser.name = data.host.name;
+            organiser.userid = data.host.userId;
+            organiser.gender = data.host.gender;
+            organiser.clothes = data.host.clothes;
+            organiser.hat = data.host.hat;
+            organiser.location = locationid;
+            linedb.create_host(organiser, function (err) {
+                if (err)
+                    logger.error('fail: ' + err);
+                else
+                    logger.info('success');
+            });
+
+            linedb.get_userbylocationid(locationid, function (err, users) {
+                if (err)
+                    logger.error('fail: ' + err);
+                else {
+                    for (var index = 0; index < users.length; index++) {
+                        linemessage.SendFlex(userid, flex, 'linehack2018', '', function (result) {
+                            if (!result) {
+                                logger.error('fail: ' + result);
+                                this.response.send(err);
+                            }
+                            else {
+                                logger.info('success');
+                                this.response.send('200');
+                            }
+                        }.bind({ response: this.response }));
+                    }
+                }
+            }.bind({ response: this.response }));
         }
-    });*/
+    }.bind({ response: response }));
 });
 
 app.use(express.static('pages'));
@@ -220,8 +226,8 @@ app.post('/', function (request, response) {
             else if (results[idx].type == 'beacon') {    // 接收到使用者的 Beacon 事件
                 BeanconEvent(results[idx]);
             } else if (results[idx].type == 'message') {
-                linemessage.SendMessage(results[idx].source.userId, 'test', 'linehack2018', results[idx].replyToken, function(result){
-                    if(!result) logger.error(result);
+                linemessage.SendMessage(results[idx].source.userId, 'test', 'linehack2018', results[idx].replyToken, function (result) {
+                    if (!result) logger.error(result);
                     else logger.info(result);
                 });
             }

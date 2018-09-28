@@ -6,7 +6,7 @@ var lineliff = function (logger) {
         var LIFF_ID = '';
         var data = {
             "view": {
-                "type": "full",
+                "type": "tall",
                 "url": url
             }
         }
@@ -46,7 +46,7 @@ var lineliff = function (logger) {
 
     this.UpdateLIFF = function (LIFF_ID, url, callback) {
         var data = {
-            "type": "full",
+            "type": "tall",
             "url": url
         }
         logger.info(JSON.stringify(data));
