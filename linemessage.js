@@ -147,14 +147,7 @@ var linemessage = function (logger) {
                 'messages': [{
                     'type': 'flex',
                     'altText': '請至行動裝置檢視訊息',
-                    'contents': {
-                        'type': 'bubble',
-                        'header': flex.header,
-                        'hero': flex.hero,
-                        'body': flex.body,
-                        'footer': flex.footer,
-                        'styles': flex.styles
-                    }
+                    'contents': flex
                 }]
             };
             logger.info('傳送訊息給 ' + userId);

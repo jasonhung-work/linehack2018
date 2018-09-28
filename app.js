@@ -24,6 +24,10 @@ var linemessage = new linemessageapi.linemessage(logger_line_message);
 var lineliffapi = require('./lineliff');
 var lineliff = new lineliffapi.lineliff(logger_line_LIFF);
 
+//line Flex API
+var lineflexapi = require('./lineflex');
+var lineflex = new lineflexapi.lineflex();
+
 // 建立 express service
 var express = require('express');
 var app = express();
@@ -57,24 +61,25 @@ function location() {
 }
 
 function shuangjiou() {
-    this.shuangjiou.name = "";
-    this.shuangjiou.description = "";
-    this.shuangjiou.starttime = "";
-    this.shuangjiou.endtime = "";
-    this.shuangjiou.type = "";
-    this.shuangjiou.host = "";
-    this.shuangjiou.location = "";
-    this.shuangjiou.number = "";
-    this.shuangjiou.participant = [];
+    this.name = '';
+    this.description = '';
+    this.starttime = '';
+    this.endtime = '';
+    this.type = '';
+    this.host = '';
+    this.location = '';
+    this.number = '';
+    this.participant = [];
 }
 
 function host() {
-    this.host.name = '';
-    this.host.userid = '';
-    this.host.gender = '';
-    this.host.clothes = '';
-    this.host.hat = '';
-    this.host.location = '';
+    this.shuangjiouname = '';
+    this.name = '';
+    this.userid = '';
+    this.gender = '';
+    this.clothes = '';
+    this.hat = '';
+    this.location = '';
 }
 
 app.all('*', function (req, res, next) {
@@ -169,6 +174,7 @@ app.post('/api/shungjiou', function (request, response) {
             });
 
             var organiser = new host();
+            organiser.shuangjiouname = data.shuangjiou.name
             organiser.name = data.host.name;
             organiser.userid = data.host.userId;
             organiser.gender = data.host.gender;
@@ -182,6 +188,8 @@ app.post('/api/shungjiou', function (request, response) {
                     logger.info('success');
             });
 
+            var flex = lineflex.CreateActivityFlex(activity);
+            logger.info(flex);
             linedb.get_userbylocationid(locationid, function (err, users) {
                 if (err)
                     logger.error('fail: ' + err);
