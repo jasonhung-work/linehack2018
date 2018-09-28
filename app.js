@@ -48,6 +48,12 @@ function user() {
     this.location = [];
 }
 
+function location() {
+    this.name = '';
+    this.locationid = '';
+    this.user = [];
+}
+
 app.all('*', function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
@@ -71,7 +77,7 @@ app.get('/index', function (request, response) {
 
 app.get('/api/liff', function (request, response) {
     lineliff.GetAllLIFF(function (result) {
-        if(result) response.send(result);
+        if (result) response.send(result);
         else response.send(false);
     });
 });
@@ -79,7 +85,7 @@ app.get('/api/liff', function (request, response) {
 app.post('/api/liff', function (request, response) {
     var url = request.body.url;
     lineliff.AddLIFF(url, function (result) {
-        if(result) response.send(result);
+        if (result) response.send(result);
         else response.send(false);
     });
 });
@@ -87,17 +93,31 @@ app.post('/api/liff', function (request, response) {
 app.put('/api/liff', function (request, response) {
     var LIFF_ID = request.body.liff;
     var url = request.body.url;
-    lineliff.UpdateLIFF(LIFF_ID, url, function (result){
-        if(result) response.send(true);
+    lineliff.UpdateLIFF(LIFF_ID, url, function (result) {
+        if (result) response.send(true);
         else response.send(false);
     });
 });
 
 app.delete('/api/liff/:liff', function (request, response) {
     var LIFF_ID = request.params.liff;
-    lineliff.DeleteLIFF(LIFF_ID, function (result){
-        if(result) response.send(true);
+    lineliff.DeleteLIFF(LIFF_ID, function (result) {
+        if (result) response.send(true);
         else response.send(false);
+    });
+});
+
+app.post('/api/beacon', function (request, response) {
+    var location = new location();
+    location.name = request.body.name;
+    location.locationid = request.body.beacon_id;
+    linedb.create_location(location, function (err, hosts) {
+        if (err) {
+            logger.info('create beacon fail: ' + err);
+            response.send('create beacon fail: ' + err);
+        }
+        logger.info('create beacon success');
+        response.send(hosts);
     });
 });
 
@@ -121,30 +141,7 @@ app.post('/', function (request, response) {
                 FollowEvent(acct);
             }
             else if (results[idx].type == 'beacon') {    // 接收到使用者的 Beacon 事件
-                logger.info('source: ' + JSON.stringify(results[idx].source));
-                logger.info('beacon: ' + JSON.stringify(results[idx].beacon));
-                logger.info('beacon type: ' + results[idx].beacon.type);
-                if (results[idx].beacon.type == 'enter') {  // 進入 Beacon 範圍
-                    if (results[idx].beacon.hwid == config.entry_beacon_hwid) { // 進入指定的 Beacon
-                        if (users.has(acct)) {
-                            var user = users.get(acct);
-                            user.id = results[idx].source.userId;
-                            user.enter_time = new Date();
-                            user.beacon_id = results[idx].beacon.hwid;
-                        } else {
-                            linemessage.GetProfile(acct, function (user) {
-                                user.id = user.userId;
-                                user.enter_time = new Date();
-                                user.beacon_id = this.beacon_id;
-                                users.set(user.userId, user);
-                            }.bind({ beacon_id: results[idx].beacon.hwid }));
-                        }
-                    } else if (results[idx].beacon.hwid == config.leave_beacon_hwid) { // 進入指定為離開的 Beacon
-                        if (users.has(acct)) {
-                            users.delete(acct);
-                        }
-                    }
-                }
+                BeanconEvent(results[idx]);
             } else if (results[idx].type == 'message') {
                 if (results[idx].message.type == 'text') {
                 }
@@ -155,7 +152,7 @@ app.post('/', function (request, response) {
     response.send('');
 });
 
-function FollowEvent (acct) {
+function FollowEvent(acct) {
     logger.info('----------[Follow]---------');
     var new_user = new user();
     linemessage.GetProfile(acct, function (user) {
@@ -163,8 +160,24 @@ function FollowEvent (acct) {
         this.new_user.userid = user.userId;
         this.new_user.image = user.pictureUrl;
         linedb.create_user(this.new_user, function (err) {
-            if(err)logger.error('fail' + err);
+            if (err) logger.error('fail' + err);
             else logger.info('success');
         });
     }.bind({ new_user: new_user }));
+}
+
+function BeanconEvent(event) {
+    logger.info('----------[Beacon]---------');
+    logger.info('source: ' + JSON.stringify(event.source));
+    logger.info('beacon: ' + JSON.stringify(event.beacon));
+    logger.info('beacon type: ' + event.beacon.type);
+    var location = new location();
+
+    switch (event.beacon.type) {
+        case "enter":
+            linedb.enter_usertolocation(event.source.userId, event.beacon.hwid, function (err) {
+                if (err) logger.error(err);
+            });
+            break;
+    }
 }
