@@ -170,8 +170,40 @@ var linemessage = function (logger) {
         }
     }
 
+    // 取得 LINE 使用者資訊
+    this.GetProfile = function (userId, callback) {
+        var https = require('https');
+        var options = {
+            host: 'api.line.me',
+            port: '443',
+            path: '/v2/bot/profile/' + userId,
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer <' + config.channel_access_token + '>'
+            }
+        };
+
+        var req = https.request(options, function (res) {
+            res.setEncoding('utf8');
+            res.on('data', function (chunk) {
+                logger.info('Response: ' + chunk);
+                if (res.statusCode == 200) {
+                    var result = JSON.parse(chunk);
+                    logger.info('displayName: ' + result.displayName);
+                    logger.info('userId: ' + result.userId);
+                    logger.info('pictureUrl: ' + result.pictureUrl);
+                    logger.info('statusMessage: ' + result.statusMessage);
+                    callback(result);
+                } if (res.statusCode == 401) {
+                    logger.info('IssueAccessToken');
+                    IssueAccessToken();
+                }
+            });
+        }).end();
+    }
+    
     // 直接回覆訊息給 LINE 使用者
-    this.ReplyMessage = function (data, channel_access_token, reply_token, callback) {
+    function ReplyMessage (data, channel_access_token, reply_token, callback) {
         data.replyToken = reply_token;
         logger.info(JSON.stringify(data));
         var options = {
@@ -205,40 +237,8 @@ var linemessage = function (logger) {
         req.write(JSON.stringify(data));
         req.end();
     }
-
-    // 取得 LINE 使用者資訊
-    this.GetProfile = function (userId, callback) {
-        var https = require('https');
-        var options = {
-            host: 'api.line.me',
-            port: '443',
-            path: '/v2/bot/profile/' + userId,
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer <' + config.channel_access_token + '>'
-            }
-        };
-
-        var req = https.request(options, function (res) {
-            res.setEncoding('utf8');
-            res.on('data', function (chunk) {
-                logger.info('Response: ' + chunk);
-                if (res.statusCode == 200) {
-                    var result = JSON.parse(chunk);
-                    logger.info('displayName: ' + result.displayName);
-                    logger.info('userId: ' + result.userId);
-                    logger.info('pictureUrl: ' + result.pictureUrl);
-                    logger.info('statusMessage: ' + result.statusMessage);
-                    callback(result);
-                } if (res.statusCode == 401) {
-                    logger.info('IssueAccessToken');
-                    IssueAccessToken();
-                }
-            });
-        }).end();
-    }
-
-    this.PostToLINE = function (data, channel_access_token, callback) {
+    
+    function PostToLINE (data, channel_access_token, callback) {
         logger.info(JSON.stringify(data));
         var options = {
             host: 'api.line.me',
@@ -265,7 +265,7 @@ var linemessage = function (logger) {
         } catch (e) { };
     }
 
-    this.IssueAccessToken = function () {
+    function IssueAccessToken () {
         var https = require('https');
         var options = {
             host: 'api.line.me',
