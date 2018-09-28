@@ -286,7 +286,7 @@ var linemongodb = function () {
     this.add_watchlocationbyuserid = function (userid, locationid, callback) {
         console.log('add_watchlocationbyuserid: userid=' + userid + ' locationid=' + locationid);
 
-        this.User.updateOne({ 'userid': userid }, { $push: { 'location': locationid } }, function (err) {
+        this.User.updateOne({ 'userid': userid }, { $addToSet: { 'location': locationid } }, function (err) {
             if (err) {
                 callback(err);
             }
@@ -381,7 +381,7 @@ var linemongodb = function () {
     this.enter_usertolocation = function (userid, locationid, callback) {
         console.log('enter_usertolocation: userid=' + userid + ' locationid=' + locationid);
 
-        this.Location.updateOne({ 'locationid': locationid }, { $push: { 'user': userid } }, function (err) {
+        this.Location.updateOne({ 'locationid': locationid }, { $addToSet: { 'user': userid } }, function (err) {
             if (err) {
                 callback(err);
             }
