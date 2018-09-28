@@ -47,7 +47,10 @@ var linemongodb = function () {
             }
             else {
                 console.log('ShuangJiou get successfully');
-                callback(null, shuangjious);
+                if (shuangjious)
+                    callback(null, shuangjious);
+                else
+                    callback(null, null);
             }
         });
     }
@@ -62,7 +65,10 @@ var linemongodb = function () {
             }
             else {
                 console.log('ShuangJiou get successfully');
-                callback(null, shuangjious);
+                if (shuangjious)
+                    callback(null, shuangjious);
+                else
+                    callback(null, null);
             }
         });
     }
@@ -135,7 +141,10 @@ var linemongodb = function () {
             }
             else {
                 console.log('Host get successfully');
-                callback(null, hosts);
+                if (hosts)
+                    callback(null, hosts);
+                else
+                    callback(null, null);
             }
         });
     }
@@ -150,7 +159,10 @@ var linemongodb = function () {
             }
             else {
                 console.log('Host get successfully');
-                callback(null, hosts);
+                if (hosts)
+                    callback(null, hosts);
+                else
+                    callback(null, null);
             }
         });
     }
@@ -251,7 +263,10 @@ var linemongodb = function () {
             }
             else {
                 console.log('User get successfully');
-                callback(null, users);
+                if (users)
+                    callback(null, users);
+                else
+                    callback(null, null);
             }
         });
     }
@@ -266,7 +281,10 @@ var linemongodb = function () {
             }
             else {
                 console.log('User get successfully');
-                callback(null, users);
+                if (users)
+                    callback(null, users);
+                else
+                    callback(null, null);
             }
         });
     }
@@ -428,7 +446,10 @@ var linemongodb = function () {
             }
             else {
                 console.log('Location getuser successfully');
-                callback(null, location.user);
+                if (location && location.user)
+                    callback(null, location.user);
+                else
+                    callback(null, null);
             }
         });
     }
@@ -442,7 +463,10 @@ var linemongodb = function () {
             }
             else {
                 console.log('Location getlocation successfully');
-                callback(null, location.locationid);
+                if (location && location.locationid)
+                    callback(null, location.locationid);
+                else
+                    callback(null, null);
             }
         });
     }

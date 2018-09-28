@@ -56,6 +56,27 @@ function location() {
     this.user = [];
 }
 
+function shuangjiou() {
+    this.shuangjiou.name = "";
+    this.shuangjiou.description = "";
+    this.shuangjiou.starttime = "";
+    this.shuangjiou.endtime = "";
+    this.shuangjiou.type = "";
+    this.shuangjiou.host = "";
+    this.shuangjiou.location = "";
+    this.shuangjiou.number = "";
+    this.shuangjiou.participant = [];
+}
+
+function host() {
+    this.host.name = ''; 
+    this.host.userid = ''; 
+    this.host.gender = ''; 
+    this.host.clothes = ''; 
+    this.host.hat = ''; 
+    this.host.location = ''; 
+}
+
 app.all('*', function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
@@ -124,9 +145,57 @@ app.post('/api/beacon', function (request, response) {
 });
 
 app.post('/api/shungjiou', function (request, response) {
+<<<<<<< HEAD
     console.log('post /api/shungjiou');
     console.log(JSON.stringify(request.body));
     response.send('200');
+=======
+    var data = request.body;
+    var activity = new shuangjiou();
+    activity.name = data.shuangjiou.name;
+    activity.description = data.shuangjiou.description;
+    activity.starttime = Date.now();
+    activity.endtime = data.shuangjiou.endtime;
+    activity.type = data.shuangjiou.type;
+    activity.host = data.host.userid;
+    activity.location = '0119f641d3';
+    activity.number = data.shuangjiou.number;
+    linedb.create_shuangjiou(activity, function (err) {
+        if (err) 
+            logger.error('fail: ' + err);
+        else 
+            logger.info('success');
+    });
+
+    var organiser = new host();
+    organiser.name = data.host.name;
+    organiser.userid = data.host.userid;
+    organiser.gender = data.host.gender;
+    organiser.clothes = data.host.clothes;
+    organiser.hat = data.host.hat;
+    organiser.location = '0119f641d3';
+    linedb.create_host(organiser, function (err) {
+        if (err)
+            logger.error('fail: ' + err);
+        else
+            logger.info('success');
+    });
+
+    linedb.get_userbylocationid('0119f641d3', function (err, users){
+        if(err)
+            logger.error('fail: ' + err);
+        else {
+            for(var index = 0; index < users.length; index++){
+                linemessage.SendFlex(userid, flex, 'linehack2018', '', function(result){
+                    if(!result) 
+                        logger.error('fail: ' + result);
+                    else
+                        logger.info('success');
+                });
+            } 
+        }
+    });
+>>>>>>> origin/master
 });
 
 app.use(express.static('pages'));
@@ -151,6 +220,10 @@ app.post('/', function (request, response) {
             else if (results[idx].type == 'beacon') {    // 接收到使用者的 Beacon 事件
                 BeanconEvent(results[idx]);
             } else if (results[idx].type == 'message') {
+                linemessage.SendMessage(results[idx].source.userId, 'test', 'linehack2018', results[idx].replyToken, function(result){
+                    if(!result) logger.error(result);
+                    else logger.info(result);
+                });
             }
         }
     } catch (e) {
@@ -185,7 +258,7 @@ function BeanconEvent(event) {
                 this.update_user.userid = user.userId;
                 this.update_user.image = user.pictureUrl;
                 this.update_user.location.push(event.beacon.hwid);
-                linedb.set_userbyuserid(this.update_user.userid,this.update_user, function (err) {
+                linedb.set_userbyuserid(this.update_user.userid, this.update_user, function (err) {
                     if (err) logger.error('fail' + err);
                     else logger.info('success');
                 });
