@@ -178,7 +178,7 @@ function BeanconEvent(event) {
     switch (event.beacon.type) {
         case "enter":
             var update_user = new user();
-            linemessage.GetProfile(acct, function (user) {
+            linemessage.GetProfile(event.source.userId, function (user) {
                 this.update_user.name = user.displayName;
                 this.update_user.userid = user.userId;
                 this.update_user.image = user.pictureUrl;
