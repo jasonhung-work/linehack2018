@@ -41,6 +41,13 @@ var fs = require('fs');
 var config = fs.readFileSync(__dirname + '/config.json', 'utf8');
 config = JSON.parse(config);
 
+function user() {
+    this.name = '';
+    this.userid = '';
+    this.image = '';
+    this.location = [];
+}
+
 app.all('*', function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
@@ -110,7 +117,10 @@ app.post('/', function (request, response) {
             logger.info('createdTime: ' + results[idx].timestamp);
             logger.info('from: ' + results[idx].source.userId);
             logger.info('type: ' + results[idx].type);
-            if (results[idx].type == 'beacon') {    // 接收到使用者的 Beacon 事件
+            if (results[idx].type == 'follow') {
+                FollowEvent(acct);
+            }
+            else if (results[idx].type == 'beacon') {    // 接收到使用者的 Beacon 事件
                 logger.info('source: ' + JSON.stringify(results[idx].source));
                 logger.info('beacon: ' + JSON.stringify(results[idx].beacon));
                 logger.info('beacon type: ' + results[idx].beacon.type);
@@ -144,3 +154,18 @@ app.post('/', function (request, response) {
     }
     response.send('');
 });
+
+function FollowEvent (acct) {
+    logger.info('----------[Follow]---------')
+    logger.info('source: ' + JSON.stringify(results[idx].source));
+    var new_user = new user();
+    linemessage.GetProfile(acct, function (user) {
+        this.new_user.name = user.displayName;
+        this.new_user.userid = user.userId;
+        this.new_user.image = user.pictureUrl;
+        linedb.create_user(this.new_user, function (err) {
+            if(err)logger.error('fail' + err);
+            else logger.info('success');
+        })
+    }.bind({ new_user: new_user }));
+}
