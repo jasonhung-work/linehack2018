@@ -284,7 +284,6 @@ var linemongodb = function () {
         user.location = '[Bxxxxxxxx1]';
         */
 
-        let addUser = new this.User(user);
         this.User.findOneAndUpdate({ 'userid': user.userid }, user, { upsert: true, new: true, setDefaultsOnInsert: true }, function (err) {
             if (err) {
                 callback(err);
