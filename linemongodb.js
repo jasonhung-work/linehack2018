@@ -286,7 +286,7 @@ var linemongodb = function () {
     this.add_watchlocationbyuserid = function (userid, locationid, callback) {
         console.log('add_watchlocationbyuserid: userid=' + userid + ' locationid=' + locationid);
 
-        this.User.updateOne({ 'userid': userid }, { $push: { 'location': locationid } }, function (err) {
+        this.User.updateOne({ 'userid': userid }, { $addToSet: { 'location': locationid } }, function (err) {
             if (err) {
                 callback(err);
             }
