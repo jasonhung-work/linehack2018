@@ -195,7 +195,7 @@ app.post('/api/shungjiou', function (request, response) {
                     logger.error('fail: ' + err);
                 else {
                     for (var index = 0; index < users.length; index++) {
-                        linemessage.SendFlex(userid, flex, 'linehack2018', '', function (result) {
+                        linemessage.SendFlex(users[index].userid, flex, 'linehack2018', '', function (result) {
                             if (!result) {
                                 logger.error('fail: ' + result);
                                 this.response.send(err);
