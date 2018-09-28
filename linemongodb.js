@@ -25,6 +25,17 @@ var linemongodb = function () {
         shuangjiou.member = '';
         */
 
+        this.ShuangJiou.findOneAndUpdate({ 'name': shuangjiou.name }, shuangjiou, { upsert: true, new: true, setDefaultsOnInsert: true }, function (err) {
+            if (err) {
+                callback(err);
+            }
+            else {
+                console.log('ShuangJiou saved successfully');
+                callback(null);
+            }
+        });
+
+        /*
         let addShuangJiou = new this.ShuangJiou(shuangjiou);
         addShuangJiou.save(function (err) {
             if (err) {
@@ -35,6 +46,7 @@ var linemongodb = function () {
                 callback(null);
             }
         });
+        */
     }
 
     //根據名稱取得爽揪資訊
@@ -117,8 +129,20 @@ var linemongodb = function () {
         host.clothes = '洋裝';
         host.hat = '草帽';
         host.location = 'Bxxxxxxxx1';
+        host.shuangjiouname = '爽揪';
         */
 
+        this.Host.findOneAndUpdate({ 'shuangjiouname': host.shuangjiouname }, host, { upsert: true, new: true, setDefaultsOnInsert: true }, function (err) {
+            if (err) {
+                callback(err);
+            }
+            else {
+                console.log('Host saved successfully');
+                callback(null);
+            }
+        });
+
+        /*
         let addHost = new this.Host(host);
         addHost.save(function (err) {
             if (err) {
@@ -129,6 +153,7 @@ var linemongodb = function () {
                 callback(null);
             }
         });
+        */
     }
 
     //根據UserId取得爽主資訊
@@ -136,6 +161,24 @@ var linemongodb = function () {
         console.log('get_hostbyuserid: userid=' + userid);
 
         this.Host.find({ 'userid': userid }, function (err, hosts) {
+            if (err) {
+                callback(err);
+            }
+            else {
+                console.log('Host get successfully');
+                if (hosts)
+                    callback(null, hosts);
+                else
+                    callback(null, null);
+            }
+        });
+    }
+
+    //根據揪團名稱取得爽主資訊
+    this.get_hostbyshuangjiouname = function (shuangjiouname, callback) {
+        console.log('get_hostbyshuangjiouname: shuangjiouname=' + shuangjiouname);
+
+        this.Host.findOne({ 'shuangjiouname': shuangjiouname }, function (err, hosts) {
             if (err) {
                 callback(err);
             }
@@ -242,7 +285,7 @@ var linemongodb = function () {
         */
 
         let addUser = new this.User(user);
-        addUser.save(function (err) {
+        this.User.findOneAndUpdate({ 'userid': user.userid }, user, { upsert: true, new: true, setDefaultsOnInsert: true }, function (err) {
             if (err) {
                 callback(err);
             }
@@ -251,20 +294,33 @@ var linemongodb = function () {
                 callback(null);
             }
         });
+
+        /*
+         let addUser = new this.User(user);
+         addUser.save(function (err) {
+             if (err) {
+                 callback(err);
+             }
+             else {
+                 console.log('User saved successfully');
+                 callback(null);
+             }
+         });
+         */
     }
 
     //根據UserId取得使用者資訊
     this.get_userbyuserid = function (userid, callback) {
         console.log('get_userbyuserid: userid=' + userid);
 
-        this.User.find({ 'userid': userid }, function (err, users) {
+        this.User.findOne({ 'userid': userid }, function (err, user) {
             if (err) {
                 callback(err);
             }
             else {
                 console.log('User get successfully');
-                if (users)
-                    callback(null, users);
+                if (user)
+                    callback(null, user);
                 else
                     callback(null, null);
             }
@@ -394,6 +450,18 @@ var linemongodb = function () {
         location.user = [];
         */
 
+
+        this.Location.findOneAndUpdate({ 'locationid': location.locationid }, location, { upsert: true, new: true, setDefaultsOnInsert: true }, function (err) {
+            if (err) {
+                callback(err);
+            }
+            else {
+                console.log('Location saved successfully');
+                callback(null);
+            }
+        });
+
+        /*
         let addLocation = new this.Location(location);
         addLocation.save(function (err) {
             if (err) {
@@ -404,6 +472,7 @@ var linemongodb = function () {
                 callback(null);
             }
         });
+        */
     }
 
     //加入進入Beacon的使用者UserId

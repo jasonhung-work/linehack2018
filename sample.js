@@ -14,12 +14,15 @@ linedb.create_user(user, function (err) {
     else
         console.log('success');
 });
+
+
 let host = {};
 host.name = '加一'; //爽主姓名
 host.userid = 'Uxxxxxxxx1'; //爽主Id
 host.gender = '男'; //爽主性別
 host.clothes = '無'; //爽主衣服
 host.hat = '無'; //爽主帽子
+host.shuangjiouname = '爽揪'; //揪團名稱
 host.location = 'Bxxxxxxxx1'; //爽主揪團位置的BeaconId
 //建立爽主資訊
 linedb.create_host(host, function (err) {
@@ -28,11 +31,11 @@ linedb.create_host(host, function (err) {
     else
         console.log('success');
 });
+
 let shuangjiou = {};
 shuangjiou.name = '爽揪'; //揪團名稱
 shuangjiou.description = '爽揪'; //揪團描述
-shuangjiou.starttime = Date.now(); //揪團開始時間
-shuangjiou.endtime = Date.now(); //揪團結束時間
+shuangjiou.time = Date.now(); //揪團時間
 shuangjiou.type = '吃'; //揪團類型
 shuangjiou.host = 'Uxxxxxxxx1'; //爽主Id
 shuangjiou.location = 'Bxxxxxxxx1'; //揪團BeaconId
@@ -56,6 +59,7 @@ linedb.get_shuangjioubylocation('Bxxxxxxxx1', function (err, shuangjious) {
     }
     console.log('get_shuangjioubylocation = ' + shuangjious);
 });
+
 //取得此Beacon發起的爽主資訊
 linedb.get_hostbylocation('Bxxxxxxxx1', function (err, hosts) {
     if (err) {
@@ -77,12 +81,15 @@ linedb.create_location(location, function (err, hosts) {
     }
     console.log('create_location = ' + hosts);
 });
+
 //進入Beacon附近將UserId加入
 linedb.enter_usertolocation('Uxxxxxxxx1', location.locationid,function(err){
+
 });
 linedb.enter_usertolocation('Uxxxxxxxx2', location.locationid,function(err){
         
 });
+
 //取得Beacon附近的UserId
 linedb.get_locationuser('Bxxxxxxxx1', function(err, users){
     if (err) {
@@ -90,8 +97,10 @@ linedb.get_locationuser('Bxxxxxxxx1', function(err, users){
     }
     console.log(JSON.stringify(users));
 })
+
 //離開Beacon附近將UserId移除
 linedb.leave_userfromlocation('Uxxxxxxxx2', 'Bxxxxxxxx1', function(err){
+
 })
 */
 
@@ -103,10 +112,19 @@ linedb.get_userbylocationid('Bxxxxxxxx1', function(err, users){
     }
     console.log(JSON.stringify(users));
 })
+
 //使用者加入關注地點的BeaconId
 linedb.add_watchlocationbyuserid('Uxxxxxxxx1', 'Bxxxxxxxx2', function(err){
+
 })
+
 //使用者移除關注地點的BeaconId
 linedb.remove_watchlocationbyuserid('Uxxxxxxxx2', 'Bxxxxxxxx3', function(err){
+
 })
+
 */
+
+linedb.get_hostbyshuangjiouname('爽揪', function (err, host) {
+    console.log(JSON.stringify(host));
+})
