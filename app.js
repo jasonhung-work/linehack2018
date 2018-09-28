@@ -145,6 +145,11 @@ app.post('/api/beacon', function (request, response) {
 });
 
 app.post('/api/shungjiou', function (request, response) {
+<<<<<<< HEAD
+    console.log('post /api/shungjiou');
+    console.log(JSON.stringify(request.body));
+    response.send('200');
+=======
     var data = request.body;
     var activity = new shuangjiou();
     activity.name = data.shuangjiou.name;
@@ -190,6 +195,7 @@ app.post('/api/shungjiou', function (request, response) {
             } 
         }
     });
+>>>>>>> origin/master
 });
 
 app.use(express.static('pages'));

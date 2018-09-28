@@ -39,7 +39,7 @@
 
     </head>
 
-    <body onload="getprofile()">
+    <body>
 
 		<!-- Top menu -->
 		<nav class="navbar navbar-inverse navbar-no-bg" role="navigation">
@@ -109,54 +109,54 @@
                             <div class="form-bottom">
 			                    <form role="form" action="" method="post" class="registration-form">
 			                    	<div class="form-group">
-			                    		<label class="sr-only-focusable" for="form-first-name" style="color:white">活動名稱</label>
-			                        	<input type="text" name="form-first-name" placeholder="活動名稱..." class="form-first-name form-control" id="form-first-name">
+			                    		<label class="sr-only-focusable" for="form-active-name" style="color:white">活動名稱</label>
+			                        	<input type="text" name="form-active-name" placeholder="活動名稱..." class="form-active-name form-control" id="form-active-name">
 			                        </div>
 			                        <div class="form-group">
 			                        	<!--<label class="sr-only" for="form-last-name">Last name</label>-->
-										<label class="sr-only-focusable" for="form-last-name" style="color:white">活動類型</label>
+										<label class="sr-only-focusable" for="form-active-type" style="color:white">活動類型</label>
 			                        	<!--<input type="text" name="form-last-name" placeholder="Last name..." class="form-last-name form-control" id="form-last-name">-->
-										<select  class="last-name-lg form-control" style="height: 50px">
+										<select  class="active-type-lg form-control" style="height: 50px" id="form-active-type">
 											<option value="eat">飲食</option>
 											<option value="sale">特賣</option>
 											<option value="sleep">住宿</option>
 										</select>
 			                        </div>
 									<div class="form-group">
-			                    		<label class="sr-only-focusable" for="form-first-name" style="color:white">活動人數</label>
-			                        	<input type="number" name="form-first-name" placeholder="活動人數..." class="form-active-numbers form-control" id="form-active-numbers">
+			                    		<label class="sr-only-focusable" for="form-active-numbers" style="color:white">活動人數</label>
+			                        	<input type="number" name="form-active-numbers" placeholder="活動人數..." class="form-active-numbers form-control" id="form-active-numbers">
 			                        </div>
 									<div class="form-group">
-			                    		<label class="sr-only-focusable" for="form-first-name" style="color:white">活動描述</label>
-			                        	<input type="text" name="form-first-name" placeholder="活動描述..." class="form-active-words form-control" id="form-active-words">
+			                    		<label class="sr-only-focusable" for="form-active-description" style="color:white">活動描述</label>
+			                        	<input type="text" name="form-active-description" placeholder="活動描述..." class="form-active-description form-control" id="form-active-description">
 			                        </div>
 									<div class="form-group">
-			                        	<label class="sr-only-focusable" for="form-email" style="color:white">活動結束時間</label>
-			                        	<input type="datetime-local" name="form-email" placeholder="Email..." class="form-email form-control" id="form-email" style="height: 50px">
+			                        	<label class="sr-only-focusable" for="form-datetime" style="color:white">活動結束時間</label>
+			                        	<input type="datetime-local" name="form-datetime" class="form-datetime form-control" id="form-datetime" style="height: 50px">
 			                        </div>
 									<div class="form-group">
-			                        	<label class="sr-only-focusable" for="form-email" style="color:white">主辦人姓名</label>
-			                        	<input type="text" name="form-email" placeholder="主辦人姓名..." class="form-email form-control" id="form-email" style="height: 50px">
+			                        	<label class="sr-only-focusable" for="form-guy-name" style="color:white">主辦人姓名</label>
+			                        	<input type="text" name="form-guy-name" placeholder="主辦人姓名..." class="form-guy-name form-control" id="form-guy-name" style="height: 50px">
 			                        </div>
 									<div class="form-group">
-										<label class="sr-only-focusable" for="form-last-name" style="color:white">主辦人性別</label>
-										<select  class="last-name-lg form-control" style="height: 50px">
+										<label class="sr-only-focusable" for="form-guy-sex" style="color:white">主辦人性別</label>
+										<select  class="guy-sex-lg form-control" style="height: 50px" id="form-guy-sex">
 											<option value="eat">男</option>
 											<option value="sale">女</option>
 										</select>
 			                        </div>
 									<div class="form-group">
-			                        	<label class="sr-only-focusable" for="form-email" style="color:white">主辦人衣服</label>
-			                        	<input type="text" name="form-email" placeholder="主辦人衣服..." class="form-email form-control" id="form-email" style="height: 50px">
+			                        	<label class="sr-only-focusable" for="form-guy-clothes" style="color:white">主辦人衣服</label>
+			                        	<input type="text" name="form-guy-clothes" placeholder="主辦人衣服..." class="form-guy-clothes form-control" id="form-guy-clothes" style="height: 50px">
 			                        </div>
 									<div class="form-group">
-										<label class="sr-only-focusable" for="form-last-name" style="color:white">主辦人性別</label>
-										<select  class="last-name-lg form-control" style="height: 50px">
+										<label class="sr-only-focusable" for="form-guy-hat" style="color:white">主辦人有無戴帽子</label>
+										<select  class="guy-hat-lg form-control" style="height: 50px" id="form-guy-hat">
 											<option value="eat">有</option>
 											<option value="sale">無</option>
 										</select>
 			                        </div>
-			                        <button type="submit" class="btn">下一步繼續</button>
+			                        <button type="submit" class="btn" onclick="submitdata()">確認送出開始揪團</button>
 			                    </form>
 		                    </div>
                         </div>
@@ -181,26 +181,43 @@
             <script src="assets/js/placeholder.js"></script>
         <![endif]-->
 		<script>
-			function getprofile(){
+			function submitdata(){
 				liff.init(function () {
                 liff.getProfile().then(function (profile) {
                     var userId = JSON.stringify(profile.userId);
-                    var displayName = JSON.stringify(profile.displayName);
-                    var pictureUrl = JSON.stringify(profile.pictureUrl);
+					var name = $('#form-active-name').val();
+					var type = $('#form-active-type').val();
+					var number = $('#form-active-numbers').val();
+					var description = $('#form-active-description').val();
+					var end_time = $('#form-datetime').val();
+					var hostname = $('#form-guy-name').val();
+					var gender = $('#form-guy-sex').val();
+					var clothes = $('#form-guy-clothes').val();
+					var hat = $('#form-guy-hat').val();
                     var data = {
-                        userId: userId,
-                        displayName: displayName,
-                        pictureUrl: pictureUrl
+						"shuangjiou":{
+							"name" : name,
+							"description" : description,
+							"end_time" : end_time,
+							"type" : type,
+							"number" : number
+						},
+						"host":{
+							"userId" : userId,
+                        	"name" : hostname,
+							"gender" : gender,
+							"clothes" : clothes,
+							"hat" : hat
+						}
                     }
-                    /*$.post('/getlineuserid', data, function () {
+                    $.post('/api/shungjiou', data, function () {
                         liff.closeWindow();
-                    });*/
+                    });
                 }).catch(function (error) {
                     window.alert("Error getting profile: " + error);
                 });
             }, function (err) { console.log("error: " + err); })
-
-			};
+		};
 		</script>
     </body>
 
