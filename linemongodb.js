@@ -1,3 +1,4 @@
+
 var linemongodb = function () {
     this.mongoose = require('mongoose');
     this.ShuangJiou = require('./models/shuangjiou');
@@ -8,6 +9,7 @@ var linemongodb = function () {
     this.mongoose.connect(this.dbConnectPath, { useNewUrlParser: true });
 
     //ShuangJiou
+    //建立爽揪資訊
     this.create_shuangjiou = function (shuangjiou, callback) {
         console.log('create_shuangjiou: shuangjiou=' + JSON.stringify(shuangjiou));
 
@@ -15,8 +17,7 @@ var linemongodb = function () {
         let shuangjiou = {};
         shuangjiou.name = '爽揪';
         shuangjiou.description = '爽揪';
-        shuangjiou.starttime = Date.now();
-        shuangjiou.endtime = Date.now();
+        shuangjiou.time = Date.now();
         shuangjiou.type = '吃';
         shuangjiou.location = 'Bxxxxxxxx1';
         shuangjiou.host = 'Uxxxxxxxx1';
@@ -36,6 +37,7 @@ var linemongodb = function () {
         });
     }
 
+    //根據名稱取得爽揪資訊
     this.get_shuangjioubyname = function (name, callback) {
         console.log('get_shuangjioubyname: name=' + name);
 
@@ -45,13 +47,12 @@ var linemongodb = function () {
             }
             else {
                 console.log('ShuangJiou get successfully');
-                if (shuangjious) {
-                    callback(null, shuangjious);
-                }
+                callback(null, shuangjious);
             }
         });
     }
 
+    //根據BeaconId取得爽揪資訊
     this.get_shuangjioubylocation = function (location, callback) {
         console.log('get_shuangjioubybeacon: location=' + location);
 
@@ -61,13 +62,12 @@ var linemongodb = function () {
             }
             else {
                 console.log('ShuangJiou get successfully');
-                if (shuangjious) {
-                    callback(null, shuangjious);
-                }
+                callback(null, shuangjious);
             }
         });
     }
 
+    //根據揪團名稱更新爽揪資訊
     this.set_shuangjioubyname = function (name, shuangjiou, callback) {
         console.log('set_shuangjioubyname: name=' + name + ' shuangjiou=' + JSON.stringify(shuangjiou));
 
@@ -82,6 +82,7 @@ var linemongodb = function () {
         });
     }
 
+    //根據揪團名稱刪除爽揪資訊
     this.delete_shuangjioubyname = function (name, callback) {
         console.log('delete_shuangjioubyname: name=' + name);
 
@@ -98,6 +99,7 @@ var linemongodb = function () {
 
 
     //Host
+    //建立爽主資訊
     this.create_host = function (host, callback) {
         console.log('create_host: host=' + JSON.stringify(host));
 
@@ -123,6 +125,7 @@ var linemongodb = function () {
         });
     }
 
+    //根據UserId取得爽主資訊
     this.get_hostbyuserid = function (userid, callback) {
         console.log('get_hostbyuserid: userid=' + userid);
 
@@ -132,13 +135,12 @@ var linemongodb = function () {
             }
             else {
                 console.log('Host get successfully');
-                if (hosts) {
-                    callback(null, hosts);
-                }
+                callback(null, hosts);
             }
         });
     }
 
+    //根據BeaconId取得爽主資訊
     this.get_hostbylocation = function (location, callback) {
         console.log('get_hostbylocation: location=' + location);
 
@@ -148,13 +150,12 @@ var linemongodb = function () {
             }
             else {
                 console.log('Host get successfully');
-                if (hosts) {
-                    callback(null, hosts);
-                }
+                callback(null, hosts);
             }
         });
     }
 
+    //根據爽主名稱更新爽主資訊
     this.set_hostbyname = function (name, host, callback) {
         console.log('set_hostbyname: name=' + name + ' host=' + JSON.stringify(host));
 
@@ -169,6 +170,7 @@ var linemongodb = function () {
         });
     }
 
+    //根據爽主UserId更新爽主資訊
     this.set_hostbyuserid = function (userid, host, callback) {
         console.log('set_hostbyuserid: userid=' + userid + ' host=' + JSON.stringify(host));
 
@@ -183,6 +185,7 @@ var linemongodb = function () {
         });
     }
 
+    //根據爽主名稱刪除爽主資訊
     this.delete_hostbyname = function (name, callback) {
         console.log('delete_hostbyname: name=' + name);
 
@@ -197,6 +200,7 @@ var linemongodb = function () {
         });
     }
 
+    //根據爽主UserId刪除爽主資訊
     this.delete_hostbyuserid = function (userid, callback) {
         console.log('delete_hostbyuserid: userid=' + userid);
 
@@ -213,6 +217,7 @@ var linemongodb = function () {
 
 
     //User
+    //建立使用者
     this.create_user = function (user, callback) {
         console.log('create_user: user=' + JSON.stringify(user));
 
@@ -236,6 +241,7 @@ var linemongodb = function () {
         });
     }
 
+    //根據UserId取得使用者資訊
     this.get_userbyuserid = function (userid, callback) {
         console.log('get_userbyuserid: userid=' + userid);
 
@@ -245,13 +251,12 @@ var linemongodb = function () {
             }
             else {
                 console.log('User get successfully');
-                if (users) {
-                    callback(null, users);
-                }
+                callback(null, users);
             }
         });
     }
 
+    //根據關注的BeaconId取得使用者資訊
     this.get_userbylocationid = function (locationid, callback) {
         console.log('get_userbylocation: locationid=' + locationid);
 
@@ -261,9 +266,7 @@ var linemongodb = function () {
             }
             else {
                 console.log('User get successfully');
-                if (users) {
-                    callback(null, users);
-                }
+                callback(null, users);
             }
         });
     }
@@ -271,6 +274,7 @@ var linemongodb = function () {
     /*
     this.delete_userbyuserid = function (userid, callback) {
         console.log('get_userbyuserid: userid=' + userid);
+
         this.User.deleteOne({ 'userid': userid }, function (err) {
             if (err) {
                 callback(err);
@@ -283,6 +287,7 @@ var linemongodb = function () {
     }
     */
 
+    //使用者加入關注的BeaconId
     this.add_watchlocationbyuserid = function (userid, locationid, callback) {
         console.log('add_watchlocationbyuserid: userid=' + userid + ' locationid=' + locationid);
 
@@ -297,6 +302,7 @@ var linemongodb = function () {
         });
     }
 
+    //使用者移除關注的BeaconId
     this.remove_watchlocationbyuserid = function (userid, locationid, callback) {
         console.log('remove_watchlocationbyuserid: userid=' + userid + ' locationid=' + locationid);
 
@@ -314,6 +320,7 @@ var linemongodb = function () {
     /*
     this.delete_userbylocation = function (location, callback) {
         console.log('delete_userbylocation: location=' + location);
+
         this.User.deleteOne({ 'location': location }, function (err) {
             if (err) {
                 callback(err);
@@ -326,6 +333,7 @@ var linemongodb = function () {
     }
     */
 
+    //根據名稱更新使用者資訊
     this.set_userbyname = function (name, user, callback) {
         console.log('set_userbyname: name=' + name + ' user=' + JSON.stringify(user));
 
@@ -340,6 +348,7 @@ var linemongodb = function () {
         });
     }
 
+    //根據UserId更新使用者資訊
     this.set_userbyuserid = function (userid, user, callback) {
         console.log('set_userbyuserid: userid=' + userid + ' user=' + JSON.stringify(user));
 
@@ -356,6 +365,7 @@ var linemongodb = function () {
 
 
     //Location
+    //建立Beacon資訊
     this.create_location = function (location, callback) {
         console.log('create_location: user=' + JSON.stringify(location));
 
@@ -378,6 +388,7 @@ var linemongodb = function () {
         });
     }
 
+    //加入進入Beacon的使用者UserId
     this.enter_usertolocation = function (userid, locationid, callback) {
         console.log('enter_usertolocation: userid=' + userid + ' locationid=' + locationid);
 
@@ -392,6 +403,7 @@ var linemongodb = function () {
         });
     }
 
+    //移除離開Beacon的使用者UserId
     this.leave_userfromlocation = function (userid, locationid, callback) {
         console.log('leave_userfromlocation: userid=' + userid + ' locationid=' + locationid);
 
@@ -406,6 +418,7 @@ var linemongodb = function () {
         });
     }
 
+    //取得進入此BeaconId的使用者UserId
     this.get_locationuser = function (locationid, callback) {
         console.log('get_locationuser: locationid=' + locationid);
 
@@ -415,8 +428,21 @@ var linemongodb = function () {
             }
             else {
                 console.log('Location getuser successfully');
-                if (location)
-                    callback(null, location.user);
+                callback(null, location.user);
+            }
+        });
+    }
+
+    this.get_locationidbyuser = function (userid, callback) {
+        console.log('get_locationidbyuser: userid=' + userid);
+
+        this.Location.findOne({ 'user': userid }, function (err, location) {
+            if (err) {
+                callback(err);
+            }
+            else {
+                console.log('Location getlocation successfully');
+                callback(null, location);
             }
         });
     }
