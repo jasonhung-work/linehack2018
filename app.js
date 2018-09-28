@@ -110,10 +110,10 @@ app.delete('/api/liff/:liff', function (request, response) {
 });
 
 app.post('/api/beacon', function (request, response) {
-    var location = new location();
-    location.name = request.body.name;
-    location.locationid = request.body.beacon_id;
-    linedb.create_location(location, function (err, hosts) {
+    var beacon = new location();
+    beacon.name = request.body.name;
+    beacon.locationid = request.body.beacon_id;
+    linedb.create_location(beacon, function (err, hosts) {
         if (err) {
             logger.info('create beacon fail: ' + err);
             response.send('create beacon fail: ' + err);
@@ -121,6 +121,10 @@ app.post('/api/beacon', function (request, response) {
         logger.info('create beacon success');
         response.send(hosts);
     });
+});
+
+app.post('/api/shungjiou', function (request, response) {
+
 });
 
 app.use(express.static('pages'));
@@ -145,8 +149,6 @@ app.post('/', function (request, response) {
             else if (results[idx].type == 'beacon') {    // 接收到使用者的 Beacon 事件
                 BeanconEvent(results[idx]);
             } else if (results[idx].type == 'message') {
-                if (results[idx].message.type == 'text') {
-                }
             }
         }
     } catch (e) {
@@ -173,8 +175,6 @@ function BeanconEvent(event) {
     logger.info('source: ' + JSON.stringify(event.source));
     logger.info('beacon: ' + JSON.stringify(event.beacon));
     logger.info('beacon type: ' + event.beacon.type);
-    var location = new location();
-
     switch (event.beacon.type) {
         case "enter":
             linedb.enter_usertolocation(event.source.userId, event.beacon.hwid, function (err) {
