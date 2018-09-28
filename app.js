@@ -36,6 +36,8 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
+app.use(express.static('public'));
+
 // 讀取組態表
 var fs = require('fs');
 var config = fs.readFileSync(__dirname + '/config.json', 'utf8');
