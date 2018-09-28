@@ -2,14 +2,53 @@
 <html lang="en">
 
     <head>
-
+		<!-- Javascript -->
+        <script src="/assets/js/jquery-1.11.1.min.js"></script>
+        <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src="/assets/js/jquery.backstretch.min.js"></script>
+        <script src="/assets/js/retina-1.1.0.min.js"></script>
+        <!--<script src="/assets/js/scripts.js"></script>-->
+		<script>
+  			/*
+        		Fullscreen background
+    		*/    
+    			$.backstretch("assets/img/backgrounds/1.jpg");
+    
+    			$('#top-navbar-1').on('shown.bs.collapse', function(){
+    				$.backstretch("resize");
+    			});
+    			$('#top-navbar-1').on('hidden.bs.collapse', function(){
+    				$.backstretch("resize");
+    			});
+    
+    			/*
+        			Form validation
+    			*/
+    			$('.registration-form input[type="text"], .registration-form textarea').on('focus', function() {
+    				$(this).removeClass('input-error');
+    			});
+    
+    			$('.registration-form').on('submit', function(e) {
+    	
+    			$(this).find('input[type="text"], textarea').each(function(){
+    				if( $(this).val() == "" ) {
+    					e.preventDefault();
+    					$(this).addClass('input-error');
+    				}
+    				else {
+    					$(this).removeClass('input-error');
+    				}
+    			});
+    	
+    		});
+		</script>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Bootstrap Flat Registration Form Template</title>
 
         <!-- CSS -->
-        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
         <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
         <link rel="stylesheet" href="/assets/font-awesome/css/font-awesome.min.css">
 		<link rel="stylesheet" href="/assets/css/form-elements.css">
@@ -133,12 +172,7 @@
         <!--</div>-->
 
 
-        <!-- Javascript -->
-        <script src="/assets/js/jquery-1.11.1.min.js"></script>
-        <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
-        <script src="/assets/js/jquery.backstretch.min.js"></script>
-        <script src="/assets/js/retina-1.1.0.min.js"></script>
-        <script src="/assets/js/scripts.js"></script>
+		
 
 		<script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
     	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
