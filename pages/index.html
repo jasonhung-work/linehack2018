@@ -211,7 +211,8 @@
 						}
                     }
                     $.post('/api/shungjiou', data, function () {
-                        liff.closeWindow();
+                        //liff.closeWindow();
+						alert('post')
                     });
                 }).catch(function (error) {
                     window.alert("Error getting profile: " + error);
