@@ -107,44 +107,13 @@
                         		</div>-->
                             </div>
                             <div class="form-bottom">
+								<table id="membersdata"></table>
 			                    <form role="form" action="" method="post" class="registration-form">
 			                    	<div class="form-group">
 			                    		<label class="sr-only-focusable" for="form-active-name" style="color:white">活動名稱</label>
 			                        	<input type="text" name="form-active-name" placeholder="活動名稱..." class="form-active-name form-control" id="form-active-name">
 			                        </div>
-			                        <div class="form-group">
-			                        	<!--<label class="sr-only" for="form-last-name">Last name</label>-->
-										<label class="sr-only-focusable" for="form-active-type" style="color:white">活動類型</label>
-			                        	<!--<input type="text" name="form-last-name" placeholder="Last name..." class="form-last-name form-control" id="form-last-name">-->
-										<select  class="active-type-lg form-control" style="height: 50px" id="form-active-type">
-											<option value="eat">飲食</option>
-											<option value="sale">特賣</option>
-											<option value="sleep">住宿</option>
-										</select>
-			                        </div>
-									<div class="form-group">
-			                    		<label class="sr-only-focusable" for="form-active-numbers" style="color:white">活動人數</label>
-			                        	<input type="number" name="form-active-numbers" placeholder="活動人數..." class="form-active-numbers form-control" id="form-active-numbers">
-			                        </div>
-									<div class="form-group">
-			                    		<label class="sr-only-focusable" for="form-active-description" style="color:white">活動描述</label>
-			                        	<input type="text" name="form-active-description" placeholder="活動描述..." class="form-active-description form-control" id="form-active-description">
-			                        </div>
-									<div class="form-group">
-			                        	<label class="sr-only-focusable" for="form-datetime" style="color:white">活動結束時間</label>
-			                        	<input type="datetime-local" name="form-datetime" class="form-datetime form-control" id="form-datetime" style="height: 50px">
-			                        </div>
-									<div class="form-group">
-			                        	<label class="sr-only-focusable" for="form-guy-name" style="color:white">主辦人姓名</label>
-			                        	<input type="text" name="form-guy-name" placeholder="主辦人姓名..." class="form-guy-name form-control" id="form-guy-name" style="height: 50px">
-			                        </div>
-									<div class="form-group">
-										<label class="sr-only-focusable" for="form-guy-sex" style="color:white">主辦人性別</label>
-										<select  class="guy-sex-lg form-control" style="height: 50px" id="form-guy-sex">
-											<option value="male">男</option>
-											<option value="female">女</option>
-										</select>
-			                        </div>
+			                        
 									<div class="form-group">
 			                        	<label class="sr-only-focusable" for="form-guy-clothes" style="color:white">主辦人衣服</label>
 			                        	<input type="text" name="form-guy-clothes" placeholder="主辦人衣服..." class="form-guy-clothes form-control" id="form-guy-clothes" style="height: 50px">
@@ -181,43 +150,9 @@
             <script src="assets/js/placeholder.js"></script>
         <![endif]-->
 		<script>
-			function submitdata(){
-				liff.init(function () {
-                liff.getProfile().then(function (profile) {
-                    var userId = JSON.stringify(profile.userId);
-					var name = $('#form-active-name').val();
-					var type = $('#form-active-type').val();
-					var number = $('#form-active-numbers').val();
-					var description = $('#form-active-description').val();
-					var end_time = $('#form-datetime').val();
-					var hostname = $('#form-guy-name').val();
-					var gender = $('#form-guy-sex').val();
-					var clothes = $('#form-guy-clothes').val();
-					var hat = $('#form-guy-hat').val();
-                    var data = {
-						"shuangjiou":{
-							"name" : name,
-							"description" : description,
-							"end_time" : end_time,
-							"type" : type,
-							"number" : number
-						},
-						"host":{
-							"userId" : userId,
-                        	"name" : hostname,
-							"gender" : gender,
-							"clothes" : clothes,
-							"hat" : hat
-						}
-                    }
-                    $.post('/api/shungjiou', data, function () {
-                        liff.closeWindow();
-                    });
-                }).catch(function (error) {
-                    window.alert("Error getting profile: " + error);
-                });
-            }, function (err) { console.log("error: " + err); })
-		};
+			$(document).ready(function(){
+
+			});
 		</script>
     </body>
 
