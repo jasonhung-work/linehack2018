@@ -177,6 +177,17 @@ function BeanconEvent(event) {
     logger.info('beacon type: ' + event.beacon.type);
     switch (event.beacon.type) {
         case "enter":
+            var update_user = new user();
+            linemessage.GetProfile(acct, function (user) {
+                this.update_user.name = user.displayName;
+                this.update_user.userid = user.userId;
+                this.update_user.image = user.pictureUrl;
+                this.update_user.location.push(event.beacon.hwid);
+                linedb.set_userbyuserid(this.update_user.userid,this.update_user, function (err) {
+                    if (err) logger.error('fail' + err);
+                    else logger.info('success');
+                });
+            }.bind({ update_user: update_user }));
             linedb.enter_usertolocation(event.source.userId, event.beacon.hwid, function (err) {
                 if (err) logger.error(err);
             });
