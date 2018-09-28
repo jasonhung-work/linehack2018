@@ -212,6 +212,10 @@ app.post('/api/shungjiou', function (request, response) {
     }.bind({ response: response }));
 });
 
+app.get('/api/guest/:userid',function(request, response) {
+response.send('200');
+});
+
 app.use(express.static('pages'));
 
 // 接收來自 LINE 傳送的訊息

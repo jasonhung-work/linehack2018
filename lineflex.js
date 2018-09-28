@@ -134,7 +134,7 @@ var lineflex = function (logger) {
                         "action": {
                             "type": "uri",
                             "label": "參加",
-                            "uri": "http://linehack2018.azurewebsites.net/api/" + activity.host
+                            "uri": "http://linehack2018.azurewebsites.net/api/guest/" + activity.host
                         }
                     },
                     {
