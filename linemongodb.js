@@ -442,7 +442,7 @@ var linemongodb = function () {
             }
             else {
                 console.log('Location getlocation successfully');
-                callback(null, location);
+                callback(null, location.locationid);
             }
         });
     }
