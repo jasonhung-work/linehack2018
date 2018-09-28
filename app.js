@@ -156,8 +156,7 @@ app.post('/', function (request, response) {
 });
 
 function FollowEvent (acct) {
-    logger.info('----------[Follow]---------')
-    logger.info('source: ' + JSON.stringify(results[idx].source));
+    logger.info('----------[Follow]---------');
     var new_user = new user();
     linemessage.GetProfile(acct, function (user) {
         this.new_user.name = user.displayName;
@@ -166,6 +165,6 @@ function FollowEvent (acct) {
         linedb.create_user(this.new_user, function (err) {
             if(err)logger.error('fail' + err);
             else logger.info('success');
-        })
+        });
     }.bind({ new_user: new_user }));
 }
