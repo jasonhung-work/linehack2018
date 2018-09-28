@@ -1,3 +1,4 @@
+//活動內容
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 

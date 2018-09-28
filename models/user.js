@@ -1,3 +1,4 @@
+//所有會員
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 

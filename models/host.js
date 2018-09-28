@@ -1,3 +1,4 @@
+//創建活動的人
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
