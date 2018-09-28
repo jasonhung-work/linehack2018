@@ -8,5 +8,6 @@ module.exports = mongoose.model('host', new Schema({
     gender: String,
     clothes: String,
     hat: String,
-    location: String
+    location: String,
+    shuangjiouname: String
 }), 'host');
