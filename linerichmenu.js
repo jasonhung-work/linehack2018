@@ -38,7 +38,7 @@ var linerichmenu = function (logger) {
                 logger.info('Add RichMenu status code: ' + res.statusCode);
                 if (res.statusCode == 200) {
                     logger.info('Add RichMenu success');
-                    this.callback(LIFF_ID);
+                    this.callback(RichMenuId);
                 } else {
                     logger.info('Add RichMenu failure');
                     this.callback(false);
