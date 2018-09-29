@@ -253,7 +253,10 @@ app.post('/', function (request, response) {
                     if (!result) logger.error(result);
                     else logger.info(result);
                 });
-            } else if(results[idx].type == 'postback') {
+            } else if(results[idx].type == 'location') {
+                logger.info('緯度: ' + results[idx].message.latitude);
+                logger.info('經度: ' + results[idx].message.longitude);
+                logger.info(JSON.stringify(results[idx].type));
                 if(results[idx].postback.data == ''){
 
                 }
