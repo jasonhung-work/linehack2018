@@ -34,7 +34,7 @@ var linemessage = function (logger) {
                     "baseUrl": baseUrl,
                     "altText": altText,
                     "baseSize": {
-                        "height": 693,
+                        "height": 1040,
                         "width": 1040
                     },
                     "actions": imagemap
