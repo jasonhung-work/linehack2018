@@ -11,6 +11,7 @@ log4js.configure(__dirname + '/log4js.json');
 var logger = log4js.getLogger('bot');
 var logger_line_message = log4js.getLogger('line_message');
 var logger_line_LIFF = log4js.getLogger('line_LIFF');
+var logger_line_RichMenu = log4js.getLogger('line_RichMenu');
 
 // 連接 mongodb
 var linemongodb = require('./linemongodb');
@@ -27,6 +28,9 @@ var lineliff = new lineliffapi.lineliff(logger_line_LIFF);
 //line Flex API
 var lineflexapi = require('./lineflex');
 var lineflex = new lineflexapi.lineflex();
+
+var linerichmenuapi = require('./linerichmenu');
+var linerichmenu = new linerichmenuapi.linerichmenu(logger_line_RichMenu);
 
 // 建立 express service
 var express = require('express');
@@ -304,6 +308,30 @@ app.post('/api/shungjiou', function (request, response) {
 app.get('/api/guest/:userid', function (request, response) {
     response.send('200');
 });
+
+app.use(express.static('pages'));
+app.get('/index', function (request, response) {
+    console.log('GET /mylifftest');
+    request.header("Content-Type", 'text/html');
+    fs.readFile(__dirname + '/pages/index.html', 'utf8', function (err, data) {
+        if (err) {
+            this.res.send(err);
+        }
+        this.res.send(data);
+    }.bind({ req: request, res: response }));
+});
+
+app.get('/member', function (request, response) {
+    console.log('GET /mylifftest');
+    request.header("Content-Type", 'text/html');
+    fs.readFile(__dirname + '/pages/member.html', 'utf8', function (err, data) {
+        if (err) {
+            this.res.send(err);
+        }
+        this.res.send(data);
+    }.bind({ req: request, res: response }));
+});
+
 app.use(express.static('resource'));
 
 app.get('/image/:picture', function (request, response) {

@@ -6,7 +6,8 @@
 			"category": [
 				"bot",
 				"line_message",
-				"line_LIFF"
+				"line_LIFF",
+				"line_RichMenu"
 			]
 		}
 	]
