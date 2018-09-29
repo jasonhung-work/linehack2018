@@ -364,11 +364,6 @@ app.post('/', function (request, response) {
                     BeanconEvent(results[idx]);
                 }
                 else if (results[idx].type == 'message') {
-                    linemessage.SendMessage(results[idx].source.userId, 'test', 'linehack2018', results[idx].replyToken, function (result) {
-                        if (!result) logger.error(result);
-                        else logger.info(result);
-                    });
-                    var message = results[idx].message;
                     logger.info("message: " + JSON.stringify(message));
                     switch (message.type) {
                         case "text":
@@ -384,6 +379,9 @@ app.post('/', function (request, response) {
                             //
                             break;
                         case "location":
+                            logger.info('緯度: ' + results[idx].message.latitude);
+                            logger.info('經度: ' + results[idx].message.longitude);
+                            logger.info(JSON.stringify(results[idx].type));
                             if (tentative_activity.has(results[idx].source.userId)) {
                                 var activity = tentative_activity.get(results[idx].source.userId);
                                 activity.latitude = results[idx].message.latitude;
@@ -393,22 +391,6 @@ app.post('/', function (request, response) {
                                     if (!result) logger.error(result);
                                     else logger.info(result);
                                 });
-                            }
-                            logger.info('緯度: ' + results[idx].message.latitude);
-                            logger.info('經度: ' + results[idx].message.longitude);
-                            logger.info(JSON.stringify(results[idx].type));
-                            if (send_location) {
-                                send_location = false;
-                                manual_seearch(results[idx].message.latitude, results[idx].message.longitude, function (reg) {
-                                    if (reg)
-                                        linemessage.SendMessage(results[idx].source.userId, "顯示FLEX", 'linehack2018', results[idx].replyToken, function (result) {
-                                            if (!result) logger.error(result);
-                                            else logger.info(result);
-                                        });
-                                });
-                            }
-                            if (results[idx].postback.data == '') {
-
                             }
                             break;
                     }
