@@ -153,7 +153,23 @@
         <![endif]-->
 		<script>
 			$(document).ready(function(){
-				//
+				$('#membersdata')
+					 .append(
+						 $('<tr>')
+						  .append(
+							  $('<td>').append(
+								  $('<img>').attr('src','')
+								  .dblclick(function () {
+									  $('<img>').attr('src','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHPPEcQg7pgHlUIvgp5EliVbwZsd3eFA5ru5t6gaCvrX06v0PPrg') //圖片變黑URL
+								  })
+							  )
+						  )
+						  .append(
+							  $('<td>').append(
+								  $('p').attr('text',''/*使用者name*/)
+							  )
+						  )
+					 )
 			});
 			function fixw(){
 				var wid = screen.width;
