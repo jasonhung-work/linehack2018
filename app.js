@@ -274,7 +274,7 @@ app.post('/api/shungjiou', function(request, response) {
 
 app.post('/api/guest', function(request, response) {
     var userId = request.body.userId;
-    linedb.get_shuangjioubyhost(userId, function(err, host) {
+    linedb.get_shuangjioubyhost('"' + userId + '"', function(err, host) {
         var data = [];
         if (err) {
             logger.info('fail: ' + err);
@@ -282,25 +282,28 @@ app.post('/api/guest', function(request, response) {
         }
         else {
             logger.info('success');
-            for (var index = 0; index < host.participant.length; index++) { //有問題
-                linedb.get_userbyuserid(host.participant[index], function(err, user) {
-                    if (err) {
-                        logger.info('fail: ' + err);
-                    }
-                    else {
-                        logger.info('success');
-                        this.data.push(user);
-                    }
-                }.bind({ data: data }));
+            if (host.participant) {
+                for (var index = 0; index < host.participant.length; index++) { //有問題
+                    linedb.get_userbyuserid(host.participant[index], function (err, user) {
+                        if (err) {
+                            logger.info('fail: ' + err);
+                        }
+                        else {
+                            logger.info('success');
+                            this.data.push(user);
+                        }
+                    }.bind({ data: data }));
+                }
+                this.res.send(data);
             }
-            this.res.send(data);
+            this.res.send('');
         }
     }.bind({ res: response }));
 });
 
 app.post('/api/finish', function(request, response) {
     var userId = request.body.userId;
-    linedb.delete_hostbyuserid(userId, function(err, host) {
+    linedb.delete_hostbyuserid('"' + userId + '"', function(err, host) {
         if (err) {
             logger.info('fail: ' + err);
         }
@@ -308,7 +311,7 @@ app.post('/api/finish', function(request, response) {
             logger.info('success');
         }
     });
-    linedb.delete_shuangjioubyhost(userId, function(err, shuangjiou) {
+    linedb.delete_shuangjioubyhost('"' + userId + '"', function(err, shuangjiou) {
         if (err) {
             logger.info('fail: ' + err);
         }
@@ -323,7 +326,6 @@ app.post('/api/finish', function(request, response) {
             this.response.send('200');
         }
     }.bind({ response: response }));
-
 });
 
 app.use(express.static('pages'));
@@ -458,7 +460,34 @@ app.post('/', function(request, response) {
                 } else if (action == 'searchactivity') {
 
                 } else if (action == 'isactiveactivity') {
-
+                    var buttons = [
+                        {
+                            "type": "postback",
+                            "label": "Yes",
+                            "data": "action=setbeaconon"
+                        },
+                        {
+                            "type": "postback",
+                            "label": "No",
+                            "data": "action=setbeaconoff"
+                        }
+                    ]
+                    linemessage.SendConfirm(results[idx].source.userId, '請問您想要在經過beacon時，收到活動資訊嗎?', buttons, 'this is a confirm', 'linehack2018', results[idx].replyToken, function(result) {
+                        if (!result) logger.error(result);
+                        else logger.info(result);
+                    });
+                } else if (action == 'setbeaconon') {
+                    
+                    linemessage.SendMessage(results[idx].source.userId, '您已將活動通知開啟', 'linehack2018', results[idx].replyToken, function(result) {
+                        if (!result) logger.error(result);
+                        else logger.info(result);
+                    });
+                } else if (action == 'setbeaconoff') {
+                    
+                    linemessage.SendMessage(results[idx].source.userId, '您已將活動通知關閉', 'linehack2018', results[idx].replyToken, function(result) {
+                        if (!result) logger.error(result);
+                        else logger.info(result);
+                    });
                 } else {
 
                 }
