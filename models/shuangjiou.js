@@ -10,6 +10,8 @@ module.exports = mongoose.model('shuangjiou', new Schema({
     endtime: Date,
     type: String,
     location: String,
+    latitude: String,
+    longitude: String,
     host: String,
     number: Number,
     participant: [String]

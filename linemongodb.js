@@ -21,6 +21,8 @@ var linemongodb = function () {
         shuangjiou.time = Date.now();
         shuangjiou.type = '吃';
         shuangjiou.location = 'Bxxxxxxxx1';
+        shuangjiou.latitude = '25.0805773';
+        shuangjiou.longitude = '121.565819';
         shuangjiou.host = 'Uxxxxxxxx1';
         shuangjiou.number = '999';
         shuangjiou.member = '';
@@ -319,6 +321,7 @@ var linemongodb = function () {
         user.userid = 'Uxxxxxxxx2';
         user.image = 'http:xxxxx.xxx.xx';
         user.location = '[Bxxxxxxxx1]';
+        user.pushenable = 'true';        
         */
 
         this.User.findOneAndUpdate({ 'userid': user.userid }, user, { upsert: true, new: true, setDefaultsOnInsert: true }, function (err) {
@@ -483,6 +486,8 @@ var linemongodb = function () {
         let location = {};
         location.name = '7-11';
         location.locationid = 'Bxxxxxxxxx1';
+        location.latitude = '25.0805773';
+        location.longitude = '121.565819';
         location.user = [];
         */
 
