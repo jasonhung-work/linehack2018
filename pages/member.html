@@ -111,10 +111,10 @@
                             </div>
                             <div class="form-bottom">
 								
-			                    <form role="form" action="" method="post" class="registration-form">
+			                    <!--<form role="form" action="" method="post" class="registration-form">-->
 									<table id="membersdata" border="2px" #ffffff solid;></table>
 			                        <button type="submit" class="btn" onclick="finishact()">結束</button>
-			                    </form>
+			                    <!--</form>-->
 		                    </div>
                         </div>
                     </div>
@@ -156,6 +156,7 @@
 				if(wid>=760){
 					$('#classbox').css('width', '750px');
 				}
+				getprofile();
 				$('#membersdata')
 					 .append(
 						 $('<tr>')
@@ -172,7 +173,7 @@
 					.append(
 						$('<tr>').append(
 							$('<td>').append(
-								$('<p style="font-size:27px; padding:auto">name</p>')
+								$('<p style="font-size:27px;">name</p>')
 							)
 						)
 					)
@@ -181,16 +182,31 @@
 				liff.init(function () {
                 	liff.getProfile().then(function (profile) {
                     	var userId = JSON.stringify(profile.userId);
-                    	/*$.post('/api/shungjiou', data, function () {
-                        	liff.closeWindow();
-                    	});*/
+						var data = {
+							"userId" : userId
+						}
+                    	$.post('/api/guest', data, function () {
+							//
+                    	});
                 	}).catch(function (error) {
                     	window.alert("Error getting profile: " + error);
                 	});
             	}, function (err) { console.log("error: " + err); })
 			};
 			function finishact(){
-				liff.closeWindow();
+				liff.init(function () {
+                	liff.getProfile().then(function (profile) {
+                    	var userId = JSON.stringify(profile.userId);
+						var data = {
+							"userId" : userId
+						}
+                    	$.post('/api/guest', data, function () {
+							liff.closeWindow();
+                    	});
+                	}).catch(function (error) {
+                    	window.alert("Error getting profile: " + error);
+                	});
+            	}, function (err) { console.log("error: " + err); })
 			};
 		</script>
     </body>
