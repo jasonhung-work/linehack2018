@@ -159,7 +159,7 @@
 											<option value="no">無</option>
 										</select>
 			                        </div>
-			                        <button type="button" class="btn" onclick="submitdata()">確認送出開始揪團</button>
+			                        <input type="button" class="btn" onclick="submitdata()">確認送出開始揪團</button>
 									<!--<input type="submit" class="btn" onclick="submitdata()">確認送出開始揪團</button>-->
 			                    <!--</form>-->
 		                    </div>
@@ -222,11 +222,11 @@
                     }
                     $.post('/api/shungjiou', data, function (response_data) {
 						//window.location = "http://linehack2018.azurewebsites.net/member";
-                        //liff.closeWindow();
-						liff.openWindow({
+                        liff.closeWindow();
+						/*liff.openWindow({
   							url:'http://linehack2018.azurewebsites.net/member',
   							external:false
-						});
+						});*/
                     });
                 }).catch(function (error) {
                     window.alert("Error getting profile: " + error);
