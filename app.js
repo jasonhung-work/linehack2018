@@ -290,12 +290,6 @@ app.get('/api/guest/:userid', function (request, response) {
     response.send('200');
 });
 
-
-
-app.post("/index",function (req,res,next) {
-    res.render("registOK");
-});
-
 app.use(express.static('resource'));
 
 app.get('/image/:picture', function (request, response) {
