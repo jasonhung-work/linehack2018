@@ -339,7 +339,7 @@ app.post('/', function (request, response) {
                                     else logger.info(result);
                                 });
                             }
-                            //
+                            
                             break;
                         case "location":
                             logger.info('緯度: ' + results[idx].message.latitude);
