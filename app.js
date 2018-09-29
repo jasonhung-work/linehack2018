@@ -328,8 +328,14 @@ app.post('/', function (request, response) {
                     var message = results[idx].type.message;
                     switch (message.type) {
                         case "text":
-                            if (message.text == "搜尋揪團")
+                            if (message.text == "搜尋揪團"){
                                 send_location = true;
+                                linemessage.SendMessage(results[idx].source.userId, "未輸入位置訊息，請重新操作一次", 'linehack2018', results[idx].replyToken, function (result) {
+                                    if (!result) logger.error(result);
+                                    else logger.info(result);
+                                });
+                            }
+                                
                             break;
                     }
                 } else if (results[idx].type == 'location') {
