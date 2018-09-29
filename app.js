@@ -364,35 +364,22 @@ app.post('/', function (request, response) {
                     BeanconEvent(results[idx]);
                 }
                 else if (results[idx].type == 'message') {
-                    logger.info("message: " + JSON.stringify(message));
-                    switch (message.type) {
-                        case "text":
-                            if (message.text == "搜尋揪團") {
-                                logger.info("搜尋揪團..............................");
-                                send_location = true;
-                                linemessage.SendButtons(results[idx].source.userId)
-                                linemessage.SendMessage(results[idx].source.userId, "請輸入位置資訊", 'linehack2018', results[idx].replyToken, function (result) {
-                                    if (!result) logger.error(result);
-                                    else logger.info(result);
-                                });
-                            }
-                            //
-                            break;
-                        case "location":
-                            logger.info('緯度: ' + results[idx].message.latitude);
-                            logger.info('經度: ' + results[idx].message.longitude);
-                            logger.info(JSON.stringify(results[idx].type));
-                            if (tentative_activity.has(results[idx].source.userId)) {
-                                var activity = tentative_activity.get(results[idx].source.userId);
-                                activity.latitude = results[idx].message.latitude;
-                                activity.longitude = results[idx].message.longitude;
-                                tentative_activity.set(results[idx].source.userId, activity);
-                                linemessage.SendMessage(results[idx].source.userId, "請點選以下按鈕，輸入活動細節", "This is a button", "linehack2018", results[idx].replyToken, function (result) {
-                                    if (!result) logger.error(result);
-                                    else logger.info(result);
-                                });
-                            }
-                            break;
+                    if (results[idx].message.type == 'location') {
+                        logger.info('緯度: ' + results[idx].message.latitude);
+                        logger.info('經度: ' + results[idx].message.longitude);
+                        logger.info(JSON.stringify(results[idx].type));
+                        logger.info(tentative_activity.has(results[idx].source.userId));
+                        if (tentative_activity.has(results[idx].source.userId)) {
+                            logger.info('activity: ' + results[idx].source.userId);
+                            var activity = tentative_activity.get(results[idx].source.userId);
+                            activity.latitude = results[idx].message.latitude;
+                            activity.longitude = results[idx].message.longitude;
+                            tentative_activity.set(results[idx].source.userId, activity);
+                            linemessage.SendButtons(results[idx].source.userId, "請點選以下按鈕，輸入活動細節", "This is a button", "linehack2018", results[idx].replyToken, function (result) {
+                                if (!result) logger.error(result);
+                                else logger.info(result);
+                            });
+                        }
                     }
                 } else if (results[idx].type == 'postback') {
                     var action = results[idx].postback.data.split('=')[1];
