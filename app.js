@@ -123,14 +123,14 @@ app.post('/api/richmenu', function (request, response) {
 app.put('/api/richmenuimage', function (request, response) {
     var richmenuId = request.body.richmenuid;
     var image = request.body.image;
-    fs.readFile(__dirname + '/resource/' + image, 'utf8', function (err, data) {
+    fs.readFile(__dirname + '/resource/' + image, function (err, data) {
         if (err) {
             this.res.send(err);
         }
         linerichmenu.UpdateRichMenuImage(richmenuId, data, function (result) {
             if (result) this.res.send(true);
             else this.res.send(false);
-        });
+        }.bind({ res: this.res }));
     }.bind({ req: request, res: response }));
 });
 
@@ -374,17 +374,17 @@ app.post('/', function (request, response) {
                 }
                 else if (results[idx].type == 'beacon') {    // 接收到使用者的 Beacon 事件
                     BeanconEvent(results[idx]);
-                } 
+                }
                 else if (results[idx].type == 'message') {
                     linemessage.SendMessage(results[idx].source.userId, 'test', 'linehack2018', results[idx].replyToken, function (result) {
                         if (!result) logger.error(result);
                         else logger.info(result);
                     });
                     var message = results[idx].message;
-                    logger.info("message: "+ message);
+                    logger.info("message: " + message);
                     switch (message.type) {
                         case "text":
-                            if (message.text == "搜尋揪團"){
+                            if (message.text == "搜尋揪團") {
                                 logger.info("搜尋揪團..............................");
                                 send_location = true;
                                 linemessage.SendMessage(results[idx].source.userId, "請輸入位置資訊", 'linehack2018', results[idx].replyToken, function (result) {
@@ -392,7 +392,7 @@ app.post('/', function (request, response) {
                                     else logger.info(result);
                                 });
                             }
-                                
+
                             break;
                     }
                 } else if (results[idx].type == 'location') {
@@ -464,9 +464,9 @@ function manual_seearch(lat, lng) {
     //this.get_shuangjious = function (callback) {
     var location_compare = [];
     linedb.get_shuangjious(function (shuangjious) {
-        logger.info("shuangjious: "+JSON.stringify(shuangjious, null, 2))
+        logger.info("shuangjious: " + JSON.stringify(shuangjious, null, 2))
         for (var idx = 0; idx < shuangjious.length; idx++) {
-            logger.info("idx距離: "+ linedb.getdistance(shuangjious[idx].latitude, shuangjious[idx].longitude, lat, lng))
+            logger.info("idx距離: " + linedb.getdistance(shuangjious[idx].latitude, shuangjious[idx].longitude, lat, lng))
             if (location_compare.length == 0) {
                 location_compare.push(shuangjious[idx])
             }
@@ -475,7 +475,7 @@ function manual_seearch(lat, lng) {
                     if (linedb.getdistance(shuangjious[idx].latitude, shuangjious[idx].longitude, lat, lng) <=
                         linedb.getdistance(location_compare[idy].latitude, location_compare[idy].longitude, lat, lng)) {
                         for (var idz = location_compare.length; idz > idy; idz--) {
-                            location_compare[idz] = location_compare[idz-1];
+                            location_compare[idz] = location_compare[idz - 1];
                         }
                         location_compare[idy] = location_compare[idx];
                     }
