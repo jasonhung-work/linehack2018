@@ -257,27 +257,7 @@ app.post('/api/shungjiou', function (request, response) {
             else
                 logger.info('success');
         });
-
-        var flex = lineflex.CreateActivityFlex(activity);
-        logger.info(flex);
-        linedb.get_userbylocationid(locationid, function (err, users) {
-            if (err)
-                logger.error('fail: ' + err);
-            else {
-                for (var index = 0; index < users.length; index++) {
-                    linemessage.SendFlex(users[index].userid, flex, 'linehack2018', '', function (result) {
-                        if (!result) {
-                            logger.error('fail: ' + result);
-                            this.response.send(err);
-                        }
-                        else {
-                            logger.info('success');
-                            this.response.send('200');
-                        }
-                    }.bind({ response: this.response }));
-                }
-            }
-        }.bind({ response: this.response }));
+        response.send('200');
     }
 });
 
