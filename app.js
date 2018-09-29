@@ -221,7 +221,7 @@ app.use(express.static('resource'));
 app.get('/image/:picture', function(request, response){
     var picture = request.params.picture;
     request.header("Content-Type", 'image/png');
-    fs.readFile(__dirname + '/pages/' + picture, 'utf8', function (err, data) {
+    fs.readFile(__dirname + '/resource/' + picture, function (err, data) {
         if (err) {
             this.res.send(err);
         }
