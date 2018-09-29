@@ -242,6 +242,10 @@ app.post('/', function (request, response) {
                     if (!result) logger.error(result);
                     else logger.info(result);
                 });
+            } else if(results[idx].type == 'postback') {
+                if(results[idx].postback.data == ''){
+
+                }
             }
         }
     } catch (e) {
@@ -286,4 +290,8 @@ function BeanconEvent(event) {
             });
             break;
     }
+}
+
+function CreateShuangjiou(user) {
+    
 }
