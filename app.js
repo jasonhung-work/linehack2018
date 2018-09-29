@@ -174,7 +174,7 @@ app.post('/api/shungjiou', function (request, response) {
             });
 
             var organiser = new host();
-            organiser.shuangjiouname = data.shuangjiou.name
+            
             organiser.name = data.host.name;
             organiser.userid = data.host.userId;
             organiser.gender = data.host.gender;
