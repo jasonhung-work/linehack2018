@@ -130,8 +130,6 @@ app.put('/api/richmenuimage', function (request, response) {
     }.bind({ req: request, res: response }));
 });
 
-<<<<<<< HEAD
-=======
 app.get('/api/richmenulist', function (request, response) {
     linerichmenu.GetAllRichMenu(function (result) {
         if (result) response.send(result);
@@ -169,7 +167,6 @@ app.put('/api/richmenuimage', function (request, response) {
     }.bind({ req: request, res: response }));
 });
 
->>>>>>> Yiwei
 app.delete('/api/richmenu/:richmenu', function (request, response) {
     var richmuneId = request.params.richmenuid;
     linerichmenu.DeleteRichMenu(richmuneId, function (result) {
@@ -307,30 +304,6 @@ app.post('/api/shungjiou', function (request, response) {
 app.get('/api/guest/:userid', function (request, response) {
     response.send('200');
 });
-<<<<<<< HEAD
-app.use(express.static('pages'));
-app.get('/index', function (request, response) {
-    request.header("Content-Type", 'text/html');
-    fs.readFile(__dirname + '/pages/index.html', 'utf8', function (err, data) {
-        if (err) {
-            this.res.send(err);
-        }
-        this.res.send(data);
-    }.bind({ req: request, res: response }));
-});
-
-app.get('/members', function (request, response) {
-    request.header("Content-Type", 'text/html');
-    fs.readFile(__dirname + '/pages/member.html', 'utf8', function (err, data) {
-        if (err) {
-            this.res.send(err);
-        }
-        this.res.send(data);
-    }.bind({ req: request, res: response }));
-});
-=======
-
->>>>>>> Yiwei
 app.use(express.static('resource'));
 
 app.get('/image/:picture', function (request, response) {
@@ -368,14 +341,6 @@ app.post('/', function (request, response) {
                     if (!result) logger.error(result);
                     else logger.info(result);
                 });
-<<<<<<< HEAD
-            } else if (results[idx].type == 'location') {
-                logger.info('緯度: ' + results[idx].message.latitude);
-                logger.info('經度: ' + results[idx].message.longitude);
-                logger.info(JSON.stringify(results[idx].type));
-                if (results[idx].postback.data == '') {
-
-=======
                 var message = results[idx].type.message;
                 switch (message.type) {
                     case "text":
@@ -383,7 +348,6 @@ app.post('/', function (request, response) {
                             manual_seearch();
                         }
                         break;
->>>>>>> Yiwei
                 }
             } else if (results[idx].type == 'location') {
                 logger.info('緯度: ' + results[idx].message.latitude);
@@ -399,8 +363,6 @@ app.post('/', function (request, response) {
     response.send('');
 });
 
-<<<<<<< HEAD
-=======
 /*
 [
     {
@@ -431,7 +393,6 @@ function manual_seearch() {
         
     })
 }
->>>>>>> Yiwei
 function FollowEvent(acct) {
     logger.info('----------[Follow]---------');
     var new_user = new user();
