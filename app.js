@@ -380,11 +380,13 @@ app.post('/', function (request, response) {
                         else logger.info(result);
                     });
                     var message = results[idx].type.message;
+                    logger.info("message: "+ message);
                     switch (message.type) {
                         case "text":
                             if (message.text == "搜尋揪團"){
+                                logger.info("搜尋揪團..............................");
                                 send_location = true;
-                                linemessage.SendMessage(results[idx].source.userId, "未輸入位置訊息，請重新操作一次", 'linehack2018', results[idx].replyToken, function (result) {
+                                linemessage.SendMessage(results[idx].source.userId, "請輸入位置資訊", 'linehack2018', results[idx].replyToken, function (result) {
                                     if (!result) logger.error(result);
                                     else logger.info(result);
                                 });
