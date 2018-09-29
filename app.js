@@ -428,8 +428,10 @@ app.post('/', function(request, response) {
                         });
                     }
                 } else if (action == 'searchactivity') {
-
+                    
                 } else if (action == 'isactiveactivity') {
+
+                } else {
 
                 }
             }
