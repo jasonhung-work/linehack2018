@@ -375,7 +375,14 @@ app.post('/', function (request, response) {
                             activity.latitude = results[idx].message.latitude;
                             activity.longitude = results[idx].message.longitude;
                             tentative_activity.set(results[idx].source.userId, activity);
-                            linemessage.SendButtons(results[idx].source.userId, "請點選以下按鈕，輸入活動細節", "This is a button", "linehack2018", results[idx].replyToken, function (result) {
+                            var buttons = [
+                                {
+                                    "type": "uri",
+                                    "label": "填寫活動詳細資訊",
+                                    "uri": "line://app/1610735667-PqWkJG9O"
+                                }
+                            ]
+                            linemessage.SendButtons(results[idx].source.userId, "請點選以下按鈕，輸入活動細節", buttons, "This is a button", "linehack2018", results[idx].replyToken, function (result) {
                                 if (!result) logger.error(result);
                                 else logger.info(result);
                             });
