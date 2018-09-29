@@ -216,7 +216,18 @@ app.get('/api/guest/:userid',function(request, response) {
 response.send('200');
 });
 
-app.use(express.static('pages'));
+app.use(express.static('resource'));
+
+app.get('/image/:picture', function(request, response){
+    var picture = request.params.picture;
+    request.header("Content-Type", 'image/png');
+    fs.readFile(__dirname + '/pages/' + picture, 'utf8', function (err, data) {
+        if (err) {
+            this.res.send(err);
+        }
+        this.res.send(data);
+    }.bind({ req: request, res: response }));
+});
 
 // 接收來自 LINE 傳送的訊息
 app.post('/', function (request, response) {
