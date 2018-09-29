@@ -315,18 +315,19 @@ app.post('/', function (request, response) {
             else if (results[idx].type == 'beacon') {    // 接收到使用者的 Beacon 事件
                 BeanconEvent(results[idx]);
             } else if (results[idx].type == 'message') {
+                if (results[idx].type == 'location') {
+                    logger.info('緯度: ' + results[idx].message.latitude);
+                    logger.info('經度: ' + results[idx].message.longitude);
+                    logger.info(JSON.stringify(results[idx].type));
+                    if (results[idx].postback.data == '') {
+    
+                    }
+                }
                 linemessage.SendMessage(results[idx].source.userId, 'test', 'linehack2018', results[idx].replyToken, function (result) {
                     if (!result) logger.error(result);
                     else logger.info(result);
                 });
-            } else if (results[idx].type == 'location') {
-                logger.info('緯度: ' + results[idx].message.latitude);
-                logger.info('經度: ' + results[idx].message.longitude);
-                logger.info(JSON.stringify(results[idx].type));
-                if (results[idx].postback.data == '') {
-
-                }
-            }
+            } 
         }
     } catch (e) {
     }
