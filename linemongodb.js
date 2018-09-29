@@ -70,6 +70,24 @@ var linemongodb = function () {
         });
     }
 
+    //根據主辦人取得爽揪資訊
+    this.get_shuangjioubyhost = function (host, callback) {
+        console.log('get_shuangjioubybeacon: location=' + location);
+
+        this.ShuangJiou.find({ 'host': host }, function (err, shuangjious) {
+            if (err) {
+                callback(err);
+            }
+            else {
+                console.log('ShuangJiou get successfully');
+                if (shuangjious)
+                    callback(null, shuangjious);
+                else
+                    callback(null, null);
+            }
+        });
+    }
+
     //根據Id取得爽揪資訊
     this.get_shuangjioubyshuangjiouid = function (shuangjiouid, callback) {
         console.log('get_shuangjioubyid: shuangjiouid=' + shuangjiouid);
