@@ -382,11 +382,7 @@ app.post('/', function (request, response) {
                         else logger.info(result);
                     });
                     var message = results[idx].message;
-<<<<<<< HEAD
-                    logger.info("message: " + message);
-=======
                     logger.info("message: "+ JSON.stringify(message));
->>>>>>> Yiwei
                     switch (message.type) {
                         case "text":
                             if (message.text == "搜尋揪團") {
