@@ -347,7 +347,13 @@ app.post('/', function (request, response) {
                             logger.info(JSON.stringify(results[idx].type));
                             if (send_location) {
                                 send_location = false;
-                                manual_seearch(results[idx].message.latitude, results[idx].message.longitude);
+                                manual_seearch(results[idx].message.latitude, results[idx].message.longitude,function(reg){
+                                    if(reg)
+                                        linemessage.SendMessage(results[idx].source.userId, "顯示FLEX", 'linehack2018', results[idx].replyToken, function (result) {
+                                            if (!result) logger.error(result);
+                                            else logger.info(result);
+                                        });
+                                });
                             }
                             if (results[idx].postback.data == '') {
         
@@ -406,9 +412,10 @@ var flex = lineflex.CreateActivityFlex(activity);
                 }
             }.bind({ response: this.response }));
 */
-function manual_seearch(lat, lng) {
+function manual_seearch(lat, lng, callback) {
     //this.getdistance = function (lat1, lng1, lat2, lng2)
     //this.get_shuangjious = function (callback) {
+        logger.info("manual_seearch: ......................................")
     var location_compare = [];
     linedb.get_shuangjious(function (shuangjious) {
         logger.info("shuangjious: "+JSON.stringify(shuangjious, null, 2))
@@ -430,6 +437,8 @@ function manual_seearch(lat, lng) {
                 }
             }
         }
+        logger.info("location_compare: "+JSON.stringify(location_compare,null,2))
+        callback(true)
     })
 
 }
