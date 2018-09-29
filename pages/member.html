@@ -138,7 +138,24 @@
             <script src="assets/js/placeholder.js"></script>
         <![endif]-->
 		<script>
+		$.ajax({
+                    url: '../../variables/' + FlowID,
+                    type: 'PUT',
+                    data: { variables: _Variables },
+                    success: function (ret) {
+                        Loaded();
+                        $('#VariableModal').modal('toggle');
+                        RefreshVariable();
+                    }
+                });
 			$(document).ready(function(){
+				
+			});
+			function fixw(){
+				var wid = screen.width;
+				if(wid>=760){
+					$('#classbox').css('width', '750px');
+				}
 				$('#membersdata')
 					 .append(
 						 $('<tr>')
@@ -150,21 +167,26 @@
 									  $('<img>').attr('src','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHPPEcQg7pgHlUIvgp5EliVbwZsd3eFA5ru5t6gaCvrX06v0PPrg') //圖片變黑URL
 								  })
 							  )
-						  )
-						  .append(
+						  ).append(
 							   $('<tr>').append(
 							  		$('<td>').append(
 								  		$('<p>name</p>')
 							  		)
 							   )
 						  )
-					 )
-			});
-			function fixw(){
-				var wid = screen.width;
-				if(wid>=760){
-					$('#classbox').css('width', '750px');
-				}
+					)
+			};
+			function getprofile(){
+				liff.init(function () {
+                	liff.getProfile().then(function (profile) {
+                    	var userId = JSON.stringify(profile.userId);
+                    	/*$.post('/api/shungjiou', data, function () {
+                        	liff.closeWindow();
+                    	});*/
+                	}).catch(function (error) {
+                    	window.alert("Error getting profile: " + error);
+                	});
+            	}, function (err) { console.log("error: " + err); })
 			};
 			function finishact(){
 				liff.closeWindow();
