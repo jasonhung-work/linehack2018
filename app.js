@@ -522,6 +522,43 @@ function BeanconEvent(event) {
             linedb.enter_usertolocation(event.source.userId, event.beacon.hwid, function (err) {
                 if (err) logger.error(err);
             });
+
+            //取得此user是否要推揪團訊息
+            linedb.get_userbyuserid(event.source.userId, function (err, user) {
+                if (err) logger.error('fail' + err);
+                else
+                    if (user.pushenable) {
+                        //取得此Beacon位置訊息
+                        linedb.get_locationbyid(this.hwid, function (err, location) {
+                            if (err) logger.error('fail' + err);
+                            else {
+                                let lat = location.latitude;
+                                let lon = location.longitude;
+                                //取得所有揪團資訊
+                                linedb.get_shuangjious(function (err, shuangjious) {
+                                    if (err) logger.error('fail' + err);
+                                    else {
+                                        for (let i; i < shuangjious.length; i++) {
+                                            //判斷揪團距離
+                                            if (linedb.getdistance(shuangjious[i].latitude, shuangjious[i].longitude, this.lat, this.lon) < 500) {
+                                                let flex = lineflex.CreateActivityFlex(shuangjious[i]);
+                                                //傳送揪團訊息
+                                                linemessage.SendFlex(this.userId, flex, 'linehack2018', '', function (result) {
+                                                    if (!result) {
+                                                        logger.error('fail: ' + result);
+                                                    }
+                                                    else {
+                                                        logger.info('success');
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    }
+                                }.bind({ lat: lat, lon: lon, userid: this.userId }));
+                            }
+                        }.bind({ userid: this.userId }));
+                    }
+            }.bind({ hwid: event.beacon.hwid, userid: event.source.userId }));
             break;
     }
 }
