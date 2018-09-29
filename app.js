@@ -298,6 +298,34 @@ app.post('/api/guest', function(request, response) {
     }.bind({ res: response }));
 });
 
+app.post('/api/finish', function(request, response) {
+    var userId = request.body.userId;
+    linedb.delete_hostbyuserid(userId, function(err, host) {
+        if (err) {
+            logger.info('fail: ' + err);
+        }
+        else {
+            logger.info('success');
+        }
+    });
+    linedb.delete_shuangjioubyhost(userId, function(err, shuangjiou) {
+        if (err) {
+            logger.info('fail: ' + err);
+        }
+        else {
+            logger.info('success');
+        }
+    });
+    linemessage.SendMessage(userId, "活動已完成，感謝您的使用!", "linehack2018", '', function(result) {
+        if (!result) logger.error(result);
+        else {
+            logger.info(result);
+            this.response.send('200');
+        }
+    }.bind({ response: response }));
+
+});
+
 app.use(express.static('pages'));
 app.get('/index', function(request, response) {
     console.log('GET /index');
@@ -428,7 +456,7 @@ app.post('/', function(request, response) {
                         });
                     }
                 } else if (action == 'searchactivity') {
-                    
+
                 } else if (action == 'isactiveactivity') {
 
                 } else {
