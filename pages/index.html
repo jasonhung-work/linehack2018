@@ -192,7 +192,8 @@
 				}
 			};
 			function submitdata(){
-				liff.init(function () {
+				alert('endtime');
+				/*liff.init(function () {
                 liff.getProfile().then(function (profile) {
                     var userId = JSON.stringify(profile.userId);
 					var name = $('#form-active-name').val();
@@ -221,14 +222,14 @@
 						}
                     }
 					alert('endtime');
-                    /*$.post('/api/shungjiou', data, function () {
+                    $.post('/api/shungjiou', data, function () {
 						window.location = "http://linehack2018.azurewebsites.net/member";
                         //liff.closeWindow();
-                    });*/
+                    });
                 }).catch(function (error) {
                     window.alert("Error getting profile: " + error);
                 });
-            }, function (err) { console.log("error: " + err); })
+            }, function (err) { console.log("error: " + err); })*/
 		};
 		</script>
     </body>
