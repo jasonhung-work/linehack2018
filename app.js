@@ -222,6 +222,7 @@ app.post('/api/beacon', function (request, response) {
 });
 
 app.post('/api/shungjiou', function (request, response) {
+    response.send('200');
     logger.info('POST /api/shungjiou');
     logger.info(JSON.stringify(request.body));
     var data = request.body;
@@ -257,7 +258,7 @@ app.post('/api/shungjiou', function (request, response) {
             else
                 logger.info('success');
         });
-        response.send('200');
+        //response.send('200');
     }
 });
 
