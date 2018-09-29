@@ -153,7 +153,7 @@ app.post('/api/shungjiou', function (request, response) {
     logger.info('POST /api/shungjiou');
     logger.info(JSON.stringify(request.body));
     var data = request.body;
-    data.host.userId = data.host.userId.replace('\"','').replace('\"','');
+    data.host.userId = data.host.userId.replace('\"', '').replace('\"', '');
     linedb.get_locationidbyuser(data.host.userId, function (err, locationid) {
         if (err) this.response.send(err);
         else {
@@ -212,8 +212,8 @@ app.post('/api/shungjiou', function (request, response) {
     }.bind({ response: response }));
 });
 
-app.get('/api/guest/:userid',function(request, response) {
-response.send('200');
+app.get('/api/guest/:userid', function (request, response) {
+    response.send('200');
 });
 
 app.use(express.static('pages'));
@@ -242,6 +242,14 @@ app.post('/', function (request, response) {
                     if (!result) logger.error(result);
                     else logger.info(result);
                 });
+                var message = results[idx].type.message;
+                switch(message.type){
+                    case "text":
+                        if(message.text == "搜尋揪團"){
+
+                        }
+                        break;
+                }
             }
         }
     } catch (e) {
@@ -249,6 +257,43 @@ app.post('/', function (request, response) {
     response.send('');
 });
 
+/*
+[
+    {
+        "type": "message",
+        "replyToken": "9f79aff27d9c420a92c5608084e98d44",
+        "source":
+        {
+            "userId": "U04bcc969c65df0e5bba8110c7ae4e3d1",
+            "type": "user"
+        },
+        "timestamp": 1538196800660,
+        "message":
+        {
+            "type": "sticker",
+            "id": "8642656052320",
+            "stickerId": "179",
+            "packageId": "2"
+        }
+    }
+]*/
+//this.SendCarousel = function (userId, columns, password, reply_token, callback) {
+
+function manual_seearch() {
+
+
+}
+function getdistance(lat1, lng1, lat2, lng2) {
+    var radLat1 = lat1 * Math.PI / 180.0;
+    var radLat2 = lat2 * Math.PI / 180.0;
+    var a = radLat1 - radLat2;
+    var b = lng1 * Math.PI / 180.0 - lng2 * Math.PI / 180.0;
+    var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) +
+        Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
+    s = s * 6378.137;// EARTH_RADIUS;
+    s = Math.round(s * 10000) / 10000;
+    return s * 1000;
+}
 function FollowEvent(acct) {
     logger.info('----------[Follow]---------');
     var new_user = new user();
