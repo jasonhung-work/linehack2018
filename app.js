@@ -332,7 +332,7 @@ app.post('/', function (request, response) {
                     linemessage.SendMessage(results[idx].source.userId, "未輸入位置訊息，請重新操作一次", 'linehack2018', results[idx].replyToken, function (result) {
                         if (!result) logger.error(result);
                         else logger.info(result);
-                        send_location = true;
+                        send_location = false;
                     });
             }
             else {
@@ -365,7 +365,7 @@ app.post('/', function (request, response) {
                                     else logger.info(result);
                                 });
                             }
-
+                            //
                             break;
                         case "location":
                             logger.info('緯度: ' + results[idx].message.latitude);
@@ -373,7 +373,13 @@ app.post('/', function (request, response) {
                             logger.info(JSON.stringify(results[idx].type));
                             if (send_location) {
                                 send_location = false;
-                                manual_seearch(results[idx].message.latitude, results[idx].message.longitude);
+                                manual_seearch(results[idx].message.latitude, results[idx].message.longitude,function(reg){
+                                    if(reg)
+                                        linemessage.SendMessage(results[idx].source.userId, "顯示FLEX", 'linehack2018', results[idx].replyToken, function (result) {
+                                            if (!result) logger.error(result);
+                                            else logger.info(result);
+                                        });
+                                });
                             }
                             if (results[idx].postback.data == '') {
         
@@ -432,9 +438,10 @@ var flex = lineflex.CreateActivityFlex(activity);
                 }
             }.bind({ response: this.response }));
 */
-function manual_seearch(lat, lng) {
+function manual_seearch(lat, lng, callback) {
     //this.getdistance = function (lat1, lng1, lat2, lng2)
     //this.get_shuangjious = function (callback) {
+        logger.info("manual_seearch: ......................................")
     var location_compare = [];
     linedb.get_shuangjious(function (shuangjious) {
         logger.info("shuangjious: " + JSON.stringify(shuangjious, null, 2))
@@ -456,6 +463,8 @@ function manual_seearch(lat, lng) {
                 }
             }
         }
+        logger.info("location_compare: "+JSON.stringify(location_compare,null,2))
+        callback(true)
     })
 
 }
@@ -494,6 +503,43 @@ function BeanconEvent(event) {
             linedb.enter_usertolocation(event.source.userId, event.beacon.hwid, function (err) {
                 if (err) logger.error(err);
             });
+
+            //取得此user是否要推揪團訊息
+            linedb.get_userbyuserid(event.source.userId, function (err, user) {
+                if (err) logger.error('fail' + err);
+                else
+                    if (user.pushenable) {
+                        //取得此Beacon位置訊息
+                        linedb.get_locationbyid(this.hwid, function (err, location) {
+                            if (err) logger.error('fail' + err);
+                            else {
+                                let lat = location.latitude;
+                                let lon = location.longitude;
+                                //取得所有揪團資訊
+                                linedb.get_shuangjious(function (err, shuangjious) {
+                                    if (err) logger.error('fail' + err);
+                                    else {
+                                        for (let i; i < shuangjious.length; i++) {
+                                            //判斷揪團距離
+                                            if (linedb.getdistance(shuangjious[i].latitude, shuangjious[i].longitude, this.lat, this.lon) < 500) {
+                                                let flex = lineflex.CreateActivityFlex(shuangjious[i]);
+                                                //傳送揪團訊息
+                                                linemessage.SendFlex(this.userId, flex, 'linehack2018', '', function (result) {
+                                                    if (!result) {
+                                                        logger.error('fail: ' + result);
+                                                    }
+                                                    else {
+                                                        logger.info('success');
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    }
+                                }.bind({ lat: lat, lon: lon, userid: this.userId }));
+                            }
+                        }.bind({ userid: this.userId }));
+                    }
+            }.bind({ hwid: event.beacon.hwid, userid: event.source.userId }));
             break;
     }
 }
