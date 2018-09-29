@@ -1,3 +1,4 @@
+
 var linemongodb = function () {
     this.mongoose = require('mongoose');
     this.ShuangJiou = require('./models/shuangjiou');
@@ -146,9 +147,9 @@ var linemongodb = function () {
             else {
                 console.log('ShuangJiou get successfully');
                 if (shuangjious)
-                    callback(shuangjious);
+                    callback(null, shuangjious);
                 else
-                    callback(null);
+                    callback(null, null);
             }
         });
     }
@@ -337,7 +338,7 @@ var linemongodb = function () {
         user.userid = 'Uxxxxxxxx2';
         user.image = 'http:xxxxx.xxx.xx';
         user.location = '[Bxxxxxxxx1]';
-        user.pushenable = 'true';        
+        user.pushenable = true;        
         */
 
         this.User.findOneAndUpdate({ 'userid': user.userid }, user, { upsert: true, new: true, setDefaultsOnInsert: true }, function (err) {
@@ -403,6 +404,7 @@ var linemongodb = function () {
     /*
     this.delete_userbyuserid = function (userid, callback) {
         console.log('get_userbyuserid: userid=' + userid);
+
         this.User.deleteOne({ 'userid': userid }, function (err) {
             if (err) {
                 callback(err);
@@ -448,6 +450,7 @@ var linemongodb = function () {
     /*
     this.delete_userbylocation = function (location, callback) {
         console.log('delete_userbylocation: location=' + location);
+
         this.User.deleteOne({ 'location': location }, function (err) {
             if (err) {
                 callback(err);
@@ -589,6 +592,24 @@ var linemongodb = function () {
                 console.log('Location getlocation successfully');
                 if (location && location.locationid)
                     callback(null, location.locationid);
+                else
+                    callback(null, null);
+            }
+        });
+    }
+
+    //根據BeaconId取得location訊息
+    this.get_locationbyid = function (locationid, callback) {
+        console.log('get_locationbyid: locationid=' + locationid);
+
+        this.Location.findOne({ 'locationid': locationid }, function (err, location) {
+            if (err) {
+                callback(err);
+            }
+            else {
+                console.log('Location getlocation successfully');
+                if (location)
+                    callback(null, location);
                 else
                     callback(null, null);
             }
