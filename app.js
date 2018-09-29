@@ -105,7 +105,7 @@ app.get('/index', function (request, response) {
 
 app.get('/members', function (request, response) {
     request.header("Content-Type", 'text/html');
-    fs.readFile(__dirname + '/pages/members.html', 'utf8', function (err, data) {
+    fs.readFile(__dirname + '/pages/member.html', 'utf8', function (err, data) {
         if (err) {
             this.res.send(err);
         }
