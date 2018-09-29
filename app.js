@@ -265,7 +265,8 @@ app.get('/api/guest/:userid', function (request, response) {
     response.send('200');
 });
 
-app.use(express.static('pages'));
+//app.use(express.static('pages'));
+app.use(express.static(__dirname + '/public'));
 app.get('/index', function (request, response) {
     console.log('GET /index');
     var fs = require('fs');
