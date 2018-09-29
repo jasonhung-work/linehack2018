@@ -561,12 +561,12 @@ function BeanconEvent(event) {
                                 linedb.get_shuangjious(function (err, shuangjious) {
                                     if (err) logger.error('fail' + err);
                                     else {
-                                        for (let i; i < shuangjious.length; i++) {
+                                        for (let i = 0; i < shuangjious.length; i++) {
                                             //判斷揪團距離
                                             if (linedb.getdistance(shuangjious[i].latitude, shuangjious[i].longitude, this.lat, this.lon) < 500) {
                                                 let flex = lineflex.CreateActivityFlex(shuangjious[i]);
                                                 //傳送揪團訊息
-                                                linemessage.SendFlex(this.userId, flex, 'linehack2018', '', function (result) {
+                                                linemessage.SendFlex(this.userid, flex, 'linehack2018', '', function (result) {
                                                     if (!result) {
                                                         logger.error('fail: ' + result);
                                                     }
@@ -577,9 +577,9 @@ function BeanconEvent(event) {
                                             }
                                         }
                                     }
-                                }.bind({ lat: lat, lon: lon, userid: this.userId }));
+                                }.bind({ lat: lat, lon: lon, userid: this.userid }));
                             }
-                        }.bind({ userid: this.userId }));
+                        }.bind({ userid: user.userid }));
                     }
             }.bind({ hwid: event.beacon.hwid, userid: event.source.userId }));
             break;
