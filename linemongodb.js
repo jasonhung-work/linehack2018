@@ -72,7 +72,7 @@ var linemongodb = function () {
 
     //根據主辦人取得爽揪資訊
     this.get_shuangjioubyhost = function (host, callback) {
-        console.log('get_shuangjioubybeacon: location=' + location);
+        console.log('get_shuangjioubybeacon: host=' + host);
 
         this.ShuangJiou.find({ 'host': host }, function (err, shuangjious) {
             if (err) {
@@ -144,6 +144,21 @@ var linemongodb = function () {
         console.log('delete_shuangjioubyname: name=' + name);
 
         this.ShuangJiou.deleteOne({ 'name': name }, shuangjiou, function (err) {
+            if (err) {
+                callback(err);
+            }
+            else {
+                console.log('ShuangJiou delete successfully');
+                callback(null);
+            }
+        });
+    }
+
+    //根據揪團團主刪除爽揪資訊
+    this.delete_shuangjioubyhost = function (host, callback) {
+        console.log('delete_shuangjioubyhost: host=' + host);
+
+        this.ShuangJiou.deleteOne({ 'host': host }, shuangjiou, function (err) {
             if (err) {
                 callback(err);
             }
@@ -330,6 +345,7 @@ var linemongodb = function () {
             }
         });
     }
+    
 
     //根據爽主UserId刪除爽主資訊
     this.delete_hostbyuserid = function (userid, callback) {
