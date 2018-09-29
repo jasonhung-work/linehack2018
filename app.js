@@ -291,6 +291,7 @@ app.get('/image/:picture', function (request, response) {
     }.bind({ req: request, res: response }));
 });
 
+var send_location = false;
 // 接收來自 LINE 傳送的訊息
 app.post('/', function (request, response) {
     logger.info("POST /");
@@ -299,37 +300,51 @@ app.post('/', function (request, response) {
         logger.info(JSON.stringify(results));
         logger.info('receive message count: ' + results.length);
         for (var idx = 0; idx < results.length; idx++) {
-            var acct = results[idx].source.userId;
-            var reply_token = results[idx].replyToken;
-            logger.info('reply token: ' + results[idx].replyToken);
-            logger.info('createdTime: ' + results[idx].timestamp);
-            logger.info('from: ' + results[idx].source.userId);
-            logger.info('type: ' + results[idx].type);
-            if (results[idx].type == 'follow') {
-                FollowEvent(acct);
-            }
-            else if (results[idx].type == 'beacon') {    // 接收到使用者的 Beacon 事件
-                BeanconEvent(results[idx]);
-            } else if (results[idx].type == 'message') {
-                linemessage.SendMessage(results[idx].source.userId, 'test', 'linehack2018', results[idx].replyToken, function (result) {
-                    if (!result) logger.error(result);
-                    else logger.info(result);
-                });
-                var message = results[idx].type.message;
-                switch (message.type) {
-                    case "text":
-                        if (message.text == "搜尋揪團") {
-                            manual_seearch();
-                        }
-                        break;
-                }
-            } else if (results[idx].type == 'location') {
-                logger.info('緯度: ' + results[idx].message.latitude);
-                logger.info('經度: ' + results[idx].message.longitude);
-                logger.info(JSON.stringify(results[idx].type));
-                if (results[idx].postback.data == '') {
 
+            if (send_location) {
+                if (results[idx].type != "location")
+                    linemessage.SendMessage(results[idx].source.userId, "未輸入位置訊息，請重新操作一次", 'linehack2018', results[idx].replyToken, function (result) {
+                        if (!result) logger.error(result);
+                        else logger.info(result);
+                    });
+            }
+            else {
+                var acct = results[idx].source.userId;
+                var reply_token = results[idx].replyToken;
+                logger.info('reply token: ' + results[idx].replyToken);
+                logger.info('createdTime: ' + results[idx].timestamp);
+                logger.info('from: ' + results[idx].source.userId);
+                logger.info('type: ' + results[idx].type);
+                if (results[idx].type == 'follow') {
+                    FollowEvent(acct);
                 }
+                else if (results[idx].type == 'beacon') {    // 接收到使用者的 Beacon 事件
+                    BeanconEvent(results[idx]);
+                } else if (results[idx].type == 'message') {
+                    linemessage.SendMessage(results[idx].source.userId, 'test', 'linehack2018', results[idx].replyToken, function (result) {
+                        if (!result) logger.error(result);
+                        else logger.info(result);
+                    });
+                    var message = results[idx].type.message;
+                    switch (message.type) {
+                        case "text":
+                            if (message.text == "搜尋揪團")
+                                send_location = true;
+                            break;
+                    }
+                } else if (results[idx].type == 'location') {
+                    logger.info('緯度: ' + results[idx].message.latitude);
+                    logger.info('經度: ' + results[idx].message.longitude);
+                    logger.info(JSON.stringify(results[idx].type));
+                    if (send_location) {
+                        send_location = false;
+                        manual_seearch(results[idx].message.latitude, results[idx].message.longitude);
+                    }
+                    if (results[idx].postback.data == '') {
+
+                    }
+                }
+
             }
         }
     } catch (e) {
@@ -358,14 +373,55 @@ app.post('/', function (request, response) {
     }
 ]*/
 //this.SendCarousel = function (userId, columns, password, reply_token, callback) {
+/*
 
-function manual_seearch() {
+var flex = lineflex.CreateActivityFlex(activity);
+            logger.info(flex);
+            linedb.get_userbylocationid(locationid, function (err, users) {
+                if (err)
+                    logger.error('fail: ' + err);
+                else {
+                    for (var index = 0; index < users.length; index++) {
+                        linemessage.SendFlex(users[index].userid, flex, 'linehack2018', '', function (result) {
+                            if (!result) {
+                                logger.error('fail: ' + result);
+                                this.response.send(err);
+                            }
+                            else {
+                                logger.info('success');
+                                this.response.send('200');
+                            }
+                        }.bind({ response: this.response }));
+                    }
+                }
+            }.bind({ response: this.response }));
+*/
+function manual_seearch(lat, lng) {
     //this.getdistance = function (lat1, lng1, lat2, lng2)
     //this.get_shuangjious = function (callback) {
+    var location_compare = [];
     linedb.get_shuangjious(function (shuangjious) {
-        console.log(JSON.stringify(shuangjious ,null,2))
-        
+        logger.info("shuangjious: "+JSON.stringify(shuangjious, null, 2))
+        for (var idx = 0; idx < shuangjious.length; idx++) {
+            logger.info("idx距離: "+ linedb.getdistance(shuangjious[idx].latitude, shuangjious[idx].longitude, lat, lng))
+            if (location_compare.length == 0) {
+                location_compare.push(shuangjious[idx])
+            }
+            else {
+                for (var idy = 0; idy < location_compare.length; idy++) {
+                    if (linedb.getdistance(shuangjious[idx].latitude, shuangjious[idx].longitude, lat, lng) <=
+                        linedb.getdistance(location_compare[idy].latitude, location_compare[idy].longitude, lat, lng)) {
+                        for (var idz = location_compare.length; idz > idy; idz--) {
+                            location_compare[idz] = location_compare[idz-1];
+                        }
+                        location_compare[idy] = location_compare[idx];
+                    }
+
+                }
+            }
+        }
     })
+
 }
 function FollowEvent(acct) {
     logger.info('----------[Follow]---------');
