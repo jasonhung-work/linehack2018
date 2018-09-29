@@ -56,12 +56,15 @@ function user() {
     this.userid = '';
     this.image = '';
     this.location = [];
+    this.pushenable = true;
 }
 
 function location() {
     this.name = '';
     this.locationid = '';
     this.user = [];
+    this.latitude = '';
+    this. longitude = '';
 }
 
 function shuangjiou() {
@@ -72,12 +75,14 @@ function shuangjiou() {
     this.type = '';
     this.host = '';
     this.location = '';
+    this.latitude = '';
+    this.longitude = '';
     this.number = '';
     this.participant = [];
 }
 
 function host() {
-    this.shuangjiouname = '';
+    this.shuangjiouid = '';
     this.name = '';
     this.userid = '';
     this.gender = '';

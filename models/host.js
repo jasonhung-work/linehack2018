@@ -9,5 +9,5 @@ module.exports = mongoose.model('host', new Schema({
     clothes: String,
     hat: String,
     location: String,
-    shuangjiouname: String
+    shuangjiouid: String
 }), 'host');
