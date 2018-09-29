@@ -13,5 +13,6 @@ module.exports = mongoose.model('shuangjiou', new Schema({
     longitude: String,
     host: String,
     number: Number,
+    shuangjiouid: String,
     participant: [String]
 }), 'shuangjiou');

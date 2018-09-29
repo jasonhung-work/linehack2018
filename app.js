@@ -79,6 +79,7 @@ function shuangjiou() {
     this.longitude = '';
     this.number = '';
     this.participant = [];
+    this.shuangjiouid = '';
 }
 
 function host() {
