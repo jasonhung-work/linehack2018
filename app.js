@@ -120,20 +120,6 @@ app.post('/api/richmenu', function (request, response) {
     });
 });
 
-app.put('/api/richmenuimage', function (request, response) {
-    var richmenuId = request.body.richmenuid;
-    var image = request.body.image;
-    fs.readFile(__dirname + '/resource/' + image, function (err, data) {
-        if (err) {
-            this.res.send(err);
-        }
-        linerichmenu.UpdateRichMenuImage(richmenuId, data, function (result) {
-            if (result) this.res.send(true);
-            else this.res.send(false);
-        }.bind({ res: this.res }));
-    }.bind({ req: request, res: response }));
-});
-
 app.get('/api/richmenulist', function (request, response) {
     linerichmenu.GetAllRichMenu(function (result) {
         if (result) response.send(result);
@@ -155,20 +141,6 @@ app.post('/api/richmenu', function (request, response) {
         if (result) response.send(result);
         else response.send(false);
     });
-});
-
-app.put('/api/richmenuimage', function (request, response) {
-    var richmenuId = request.body.richmenuid;
-    var image = request.body.image;
-    fs.readFile(__dirname + '/resource/' + image, 'utf8', function (err, data) {
-        if (err) {
-            this.res.send(err);
-        }
-        linerichmenu.UpdateRichMenuImage(richmenuId, data, function (result) {
-            if (result) this.res.send(true);
-            else this.res.send(false);
-        });
-    }.bind({ req: request, res: response }));
 });
 
 app.delete('/api/richmenu/:richmenu', function (request, response) {
