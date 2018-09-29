@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 module.exports = mongoose.model('shuangjiou', new Schema({
+    shuangjiouid: String,
     name: String,
     description: String,
     starttime: Date,
