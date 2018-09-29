@@ -22,7 +22,7 @@ host.userid = 'Uxxxxxxxx1'; //爽主Id
 host.gender = '男'; //爽主性別
 host.clothes = '無'; //爽主衣服
 host.hat = '無'; //爽主帽子
-host.shuangjiouid = 'Idxxxx1'; //揪團Id
+host.shuangjiouname = '爽揪'; //揪團名稱
 host.location = 'Bxxxxxxxx1'; //爽主揪團位置的BeaconId
 //建立爽主資訊
 linedb.create_host(host, function (err) {
@@ -33,7 +33,6 @@ linedb.create_host(host, function (err) {
 });
 
 let shuangjiou = {};
-shuangjiou.shuangjiouid = 'Idxxxx1'; //揪團Id
 shuangjiou.name = '爽揪'; //揪團名稱
 shuangjiou.description = '爽揪'; //揪團描述
 shuangjiou.time = Date.now(); //揪團時間
