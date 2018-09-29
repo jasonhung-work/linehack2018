@@ -130,6 +130,46 @@ app.put('/api/richmenuimage', function (request, response) {
     }.bind({ req: request, res: response }));
 });
 
+<<<<<<< HEAD
+=======
+app.get('/api/richmenulist', function (request, response) {
+    linerichmenu.GetAllRichMenu(function (result) {
+        if (result) response.send(result);
+        else response.send(false);
+    });
+});
+
+app.get('/api/richmenu/:richmenuid', function (request, response) {
+    var richmenuid = request.params.richmenuid;
+    linerichmenu.GetRichMenu(richmenuid, function (result) {
+        if (result) response.send(result);
+        else response.send(false);
+    });
+});
+
+app.post('/api/richmenu', function (request, response) {
+    var richmenu = request.body.richmenu;
+    linerichmenu.CreateRichMenu(richmenu, function (result) {
+        if (result) response.send(result);
+        else response.send(false);
+    });
+});
+
+app.put('/api/richmenuimage', function (request, response) {
+    var richmenuId = request.body.richmenuid;
+    var image = request.body.image;
+    fs.readFile(__dirname + '/resource/' + image, 'utf8', function (err, data) {
+        if (err) {
+            this.res.send(err);
+        }
+        linerichmenu.UpdateRichMenuImage(richmenuId, data, function (result) {
+            if (result) this.res.send(true);
+            else this.res.send(false);
+        });
+    }.bind({ req: request, res: response }));
+});
+
+>>>>>>> Yiwei
 app.delete('/api/richmenu/:richmenu', function (request, response) {
     var richmuneId = request.params.richmenuid;
     linerichmenu.DeleteRichMenu(richmuneId, function (result) {
@@ -267,6 +307,7 @@ app.post('/api/shungjiou', function (request, response) {
 app.get('/api/guest/:userid', function (request, response) {
     response.send('200');
 });
+<<<<<<< HEAD
 app.use(express.static('pages'));
 app.get('/index', function (request, response) {
     request.header("Content-Type", 'text/html');
@@ -287,6 +328,9 @@ app.get('/members', function (request, response) {
         this.res.send(data);
     }.bind({ req: request, res: response }));
 });
+=======
+
+>>>>>>> Yiwei
 app.use(express.static('resource'));
 
 app.get('/image/:picture', function (request, response) {
@@ -324,6 +368,23 @@ app.post('/', function (request, response) {
                     if (!result) logger.error(result);
                     else logger.info(result);
                 });
+<<<<<<< HEAD
+            } else if (results[idx].type == 'location') {
+                logger.info('緯度: ' + results[idx].message.latitude);
+                logger.info('經度: ' + results[idx].message.longitude);
+                logger.info(JSON.stringify(results[idx].type));
+                if (results[idx].postback.data == '') {
+
+=======
+                var message = results[idx].type.message;
+                switch (message.type) {
+                    case "text":
+                        if (message.text == "搜尋揪團") {
+                            manual_seearch();
+                        }
+                        break;
+>>>>>>> Yiwei
+                }
             } else if (results[idx].type == 'location') {
                 logger.info('緯度: ' + results[idx].message.latitude);
                 logger.info('經度: ' + results[idx].message.longitude);
@@ -338,6 +399,39 @@ app.post('/', function (request, response) {
     response.send('');
 });
 
+<<<<<<< HEAD
+=======
+/*
+[
+    {
+        "type": "message",
+        "replyToken": "9f79aff27d9c420a92c5608084e98d44",
+        "source":
+        {
+            "userId": "U04bcc969c65df0e5bba8110c7ae4e3d1",
+            "type": "user"
+        },
+        "timestamp": 1538196800660,
+        "message":
+        {
+            "type": "sticker",
+            "id": "8642656052320",
+            "stickerId": "179",
+            "packageId": "2"
+        }
+    }
+]*/
+//this.SendCarousel = function (userId, columns, password, reply_token, callback) {
+
+function manual_seearch() {
+    //this.getdistance = function (lat1, lng1, lat2, lng2)
+    //this.get_shuangjious = function (callback) {
+    linedb.get_shuangjious(function (shuangjious) {
+        console.log(JSON.stringify(shuangjious ,null,2))
+        
+    })
+}
+>>>>>>> Yiwei
 function FollowEvent(acct) {
     logger.info('----------[Follow]---------');
     var new_user = new user();
