@@ -274,7 +274,7 @@ app.post('/api/shungjiou', function(request, response) {
 
 app.post('/api/guest', function(request, response) {
     var userId = request.body.userId;
-    linedb.get_shuangjioubyhost('"' + userId + '"', function(err, host) {
+    linedb.get_shuangjioubyhost(userId, function(err, host) {
         var data = [];
         if (err) {
             logger.info('fail: ' + err);
@@ -303,7 +303,7 @@ app.post('/api/guest', function(request, response) {
 
 app.post('/api/finish', function(request, response) {
     var userId = request.body.userId;
-    linedb.delete_hostbyuserid('"' + userId + '"', function(err, host) {
+    linedb.delete_hostbyuserid(userId, function(err, host) {
         if (err) {
             logger.info('fail: ' + err);
         }
@@ -311,7 +311,7 @@ app.post('/api/finish', function(request, response) {
             logger.info('success');
         }
     });
-    linedb.delete_shuangjioubyhost('"' + userId + '"', function(err, shuangjiou) {
+    linedb.delete_shuangjioubyhost(userId, function(err, shuangjiou) {
         if (err) {
             logger.info('fail: ' + err);
         }
