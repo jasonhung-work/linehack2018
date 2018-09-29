@@ -1,4 +1,3 @@
-
 var linemongodb = function () {
     this.mongoose = require('mongoose');
     this.ShuangJiou = require('./models/shuangjiou');
@@ -15,11 +14,14 @@ var linemongodb = function () {
 
         /*
         let shuangjiou = {};
+        shuangjiou.shuangjiouid = 'Idxxxx1';
         shuangjiou.name = '爽揪';
         shuangjiou.description = '爽揪';
         shuangjiou.time = Date.now();
         shuangjiou.type = '吃';
         shuangjiou.location = 'Bxxxxxxxx1';
+        shuangjiou.latitude = '25.0805773';
+        shuangjiou.longitude = '121.565819';
         shuangjiou.host = 'Uxxxxxxxx1';
         shuangjiou.number = '999';
         shuangjiou.member = '';
@@ -54,6 +56,24 @@ var linemongodb = function () {
         console.log('get_shuangjioubyname: name=' + name);
 
         this.ShuangJiou.find({ 'name': name }, function (err, shuangjious) {
+            if (err) {
+                callback(err);
+            }
+            else {
+                console.log('ShuangJiou get successfully');
+                if (shuangjious)
+                    callback(null, shuangjious);
+                else
+                    callback(null, null);
+            }
+        });
+    }
+
+    //根據Id取得爽揪資訊
+    this.get_shuangjioubyshuangjiouid = function (shuangjiouid, callback) {
+        console.log('get_shuangjioubyid: shuangjiouid=' + shuangjiouid);
+
+        this.ShuangJiou.find({ 'shuangjiouid': shuangjiouid }, function (err, shuangjious) {
             if (err) {
                 callback(err);
             }
@@ -115,6 +135,23 @@ var linemongodb = function () {
         });
     }
 
+    //取得所有揪團資訊
+    this.get_shuangjious = function (callback) {
+        console.log('get_shuangjious');
+
+        this.ShuangJiou.find(function (err, shuangjious) {
+            if (err) {
+                callback(err);
+            }
+            else {
+                console.log('ShuangJiou get successfully');
+                if (shuangjious)
+                    callback(null, shuangjious);
+                else
+                    callback(null, null);
+            }
+        });
+    }
 
     //Host
     //建立爽主資訊
@@ -129,7 +166,7 @@ var linemongodb = function () {
         host.clothes = '洋裝';
         host.hat = '草帽';
         host.location = 'Bxxxxxxxx1';
-        host.shuangjiouname = '爽揪';
+        host.shuangjiouid = 'Idxxxx1';
         */
 
         this.Host.findOneAndUpdate({ 'shuangjiouname': host.shuangjiouname }, host, { upsert: true, new: true, setDefaultsOnInsert: true }, function (err) {
@@ -161,6 +198,24 @@ var linemongodb = function () {
         console.log('get_hostbyuserid: userid=' + userid);
 
         this.Host.find({ 'userid': userid }, function (err, hosts) {
+            if (err) {
+                callback(err);
+            }
+            else {
+                console.log('Host get successfully');
+                if (hosts)
+                    callback(null, hosts);
+                else
+                    callback(null, null);
+            }
+        });
+    }
+
+    //根據shuangjiouid取得爽主資訊
+    this.get_hostbyshuangjiouid = function (shuangjiouid, callback) {
+        console.log('get_hostbyshuangjiouid: shuangjiouid=' + shuangjiouid);
+
+        this.Host.find({ 'shuangjiouid': shuangjiouid }, function (err, hosts) {
             if (err) {
                 callback(err);
             }
@@ -282,6 +337,7 @@ var linemongodb = function () {
         user.userid = 'Uxxxxxxxx2';
         user.image = 'http:xxxxx.xxx.xx';
         user.location = '[Bxxxxxxxx1]';
+        user.pushenable = 'true';        
         */
 
         this.User.findOneAndUpdate({ 'userid': user.userid }, user, { upsert: true, new: true, setDefaultsOnInsert: true }, function (err) {
@@ -347,7 +403,6 @@ var linemongodb = function () {
     /*
     this.delete_userbyuserid = function (userid, callback) {
         console.log('get_userbyuserid: userid=' + userid);
-
         this.User.deleteOne({ 'userid': userid }, function (err) {
             if (err) {
                 callback(err);
@@ -393,7 +448,6 @@ var linemongodb = function () {
     /*
     this.delete_userbylocation = function (location, callback) {
         console.log('delete_userbylocation: location=' + location);
-
         this.User.deleteOne({ 'location': location }, function (err) {
             if (err) {
                 callback(err);
@@ -446,6 +500,8 @@ var linemongodb = function () {
         let location = {};
         location.name = '7-11';
         location.locationid = 'Bxxxxxxxxx1';
+        location.latitude = '25.0805773';
+        location.longitude = '121.565819';
         location.user = [];
         */
 
@@ -537,6 +593,19 @@ var linemongodb = function () {
                     callback(null, null);
             }
         });
+    }
+
+    //計算距離(公尺)
+    this.getdistance = function (lat1, lng1, lat2, lng2) {
+        var radLat1 = lat1 * Math.PI / 180.0;
+        var radLat2 = lat2 * Math.PI / 180.0;
+        var a = radLat1 - radLat2;
+        var b = lng1 * Math.PI / 180.0 - lng2 * Math.PI / 180.0;
+        var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) +
+            Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
+        s = s * 6378.137;// EARTH_RADIUS;
+        s = Math.round(s * 10000) / 10000;
+        return s * 1000;
     }
 }
 
