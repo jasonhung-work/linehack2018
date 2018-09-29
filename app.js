@@ -319,7 +319,7 @@ app.post('/', function (request, response) {
                 switch (message.type) {
                     case "text":
                         if (message.text == "搜尋揪團") {
-
+                            manual_seearch();
                         }
                         break;
                 }
