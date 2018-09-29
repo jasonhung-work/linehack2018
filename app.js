@@ -93,26 +93,6 @@ app.get('/api', function (request, response) {
     response.send('API is running');
 });
 
-app.get('/index', function (request, response) {
-    request.header("Content-Type", 'text/html');
-    fs.readFile(__dirname + '/pages/index.html', 'utf8', function (err, data) {
-        if (err) {
-            this.res.send(err);
-        }
-        this.res.send(data);
-    }.bind({ req: request, res: response }));
-});
-
-app.get('/members', function (request, response) {
-    request.header("Content-Type", 'text/html');
-    fs.readFile(__dirname + '/pages/member.html', 'utf8', function (err, data) {
-        if (err) {
-            this.res.send(err);
-        }
-        this.res.send(data);
-    }.bind({ req: request, res: response }));
-});
-
 app.get('/api/richmenulist', function (request, response) {
     linerichmenu.GetAllRichMenu(function (result) {
         if (result) response.send(result);
@@ -287,7 +267,26 @@ app.post('/api/shungjiou', function (request, response) {
 app.get('/api/guest/:userid', function (request, response) {
     response.send('200');
 });
+app.use(express.static('pages'));
+app.get('/index', function (request, response) {
+    request.header("Content-Type", 'text/html');
+    fs.readFile(__dirname + '/pages/index.html', 'utf8', function (err, data) {
+        if (err) {
+            this.res.send(err);
+        }
+        this.res.send(data);
+    }.bind({ req: request, res: response }));
+});
 
+app.get('/members', function (request, response) {
+    request.header("Content-Type", 'text/html');
+    fs.readFile(__dirname + '/pages/member.html', 'utf8', function (err, data) {
+        if (err) {
+            this.res.send(err);
+        }
+        this.res.send(data);
+    }.bind({ req: request, res: response }));
+});
 app.use(express.static('resource'));
 
 app.get('/image/:picture', function (request, response) {
