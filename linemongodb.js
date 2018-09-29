@@ -1194,5 +1194,4 @@ var linemongodb = function () {
     }
 }
 
->>>>>>> Yiwei
 exports.linemongodb = linemongodb;
