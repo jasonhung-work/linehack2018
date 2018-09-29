@@ -112,7 +112,7 @@
                             <div class="form-bottom">
 								
 			                    <form role="form" action="" method="post" class="registration-form">
-									<table id="membersdata"></table>
+									<table id="membersdata" border="2px" #ffffff solid;></table>
 			                        <button type="submit" class="btn" onclick="finishact()">結束</button>
 			                    </form>
 		                    </div>
@@ -152,9 +152,11 @@
 							  )
 						  )
 						  .append(
-							  $('<td>').append(
-								  $('<p>'+/*name*/'</p>')
-							  )
+							   $('<tr>').append(
+							  		$('<td>').append(
+								  		$('<p>name</p>')
+							  		)
+							   )
 						  )
 					 )
 			});
