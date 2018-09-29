@@ -11,6 +11,7 @@ log4js.configure(__dirname + '/log4js.json');
 var logger = log4js.getLogger('bot');
 var logger_line_message = log4js.getLogger('line_message');
 var logger_line_LIFF = log4js.getLogger('line_LIFF');
+var logger_line_RichMenu = log4js.getLogger('line_RichMenu');
 
 // 連接 mongodb
 var linemongodb = require('./linemongodb');
@@ -27,6 +28,9 @@ var lineliff = new lineliffapi.lineliff(logger_line_LIFF);
 //line Flex API
 var lineflexapi = require('./lineflex');
 var lineflex = new lineflexapi.lineflex();
+
+var linerichmenuapi = require('./linerichmenu');
+var linerichmenu = new linerichmenuapi.linerichmenu(logger_line_RichMenu);
 
 // 建立 express service
 var express = require('express');
@@ -101,6 +105,45 @@ app.get('/index', function (request, response) {
         }
         this.res.send(data);
     }.bind({ req: request, res: response }));
+});
+
+app.get('/api/richmenu', function (request, response) {
+    lineliff.GetAllLIFF(function (result) {
+        if (result) response.send(result);
+        else response.send(false);
+    });
+});
+
+app.get('/api/richmenu/:richmenu', function (request, response) {
+    lineliff.GetAllLIFF(function (result) {
+        if (result) response.send(result);
+        else response.send(false);
+    });
+});
+
+app.post('/api/richmenu', function (request, response) {
+    var url = request.body.url;
+    lineliff.AddLIFF(url, function (result) {
+        if (result) response.send(result);
+        else response.send(false);
+    });
+});
+
+app.put('/api/richmenu', function (request, response) {
+    var LIFF_ID = request.body.liff;
+    var url = request.body.url;
+    lineliff.UpdateLIFF(LIFF_ID, url, function (result) {
+        if (result) response.send(true);
+        else response.send(false);
+    });
+});
+
+app.delete('/api/richmenu/:richmenu', function (request, response) {
+    var LIFF_ID = request.params.liff;
+    lineliff.DeleteLIFF(LIFF_ID, function (result) {
+        if (result) response.send(true);
+        else response.send(false);
+    });
 });
 
 app.get('/api/liff', function (request, response) {
@@ -220,8 +263,8 @@ app.use(express.static('resource'));
 
 app.get('/image/:picture', function(request, response){
     var picture = request.params.picture;
-    request.header("Content-Type", 'image/png');
-    fs.readFile(__dirname + '/resource/' + picture, function (err, data) {
+    request.header("Content-Type", 'image/jpeg');
+    fs.readFile(__dirname + '/resource/' + picture, 'utf8' , function (err, data) {
         if (err) {
             this.res.send(err);
         }
