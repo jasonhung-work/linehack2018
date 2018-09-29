@@ -197,7 +197,7 @@
 					var type = $('#form-active-type').val();
 					var number = $('#form-active-numbers').val();
 					var description = $('#form-active-description').val();
-					var end_time = $('#form-datetime').val();
+					var endtime = $('#form-datetime').val();
 					var hostname = $('#form-guy-name').val();
 					var gender = $('#form-guy-sex').val();
 					var clothes = $('#form-guy-clothes').val();
@@ -206,7 +206,7 @@
 						"shuangjiou":{
 							"name" : name,
 							"description" : description,
-							"end_time" : end_time,
+							"endtime" : endtime,
 							"type" : type,
 							"number" : number
 						},
@@ -219,7 +219,7 @@
 						}
                     }
                     $.post('/api/shungjiou', data, function () {
-						window.location = "member";
+						window.location = "http://linehack2018.azurewebsites.net/member";
                         //liff.closeWindow();
                     });
                 }).catch(function (error) {
