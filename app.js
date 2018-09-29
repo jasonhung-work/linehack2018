@@ -64,7 +64,7 @@ function location() {
     this.locationid = '';
     this.user = [];
     this.latitude = '';
-    this. longitude = '';
+    this.longitude = '';
 }
 
 function shuangjiou() {
@@ -315,7 +315,18 @@ app.use(express.static('resource'));
 app.get('/image/:picture', function (request, response) {
     var picture = request.params.picture;
     request.header("Content-Type", 'image/jpeg');
-    fs.readFile(__dirname + '/resource/' + picture, 'utf8', function (err, data) {
+    fs.readFile(__dirname + '/resource/' + picture, function (err, data) {
+        if (err) {
+            this.res.send(err);
+        }
+        this.res.send(data);
+    }.bind({ req: request, res: response }));
+});
+
+app.get('/image/location.jpg/1040', function (request, response) {
+    var picture = request.params.picture;
+    request.header("Content-Type", 'image/jpeg');
+    fs.readFile(__dirname + '/resource/location.jpg', function (err, data) {
         if (err) {
             this.res.send(err);
         }
@@ -360,7 +371,7 @@ app.post('/', function (request, response) {
                         else logger.info(result);
                     });
                     var message = results[idx].message;
-                    logger.info("message: "+ JSON.stringify(message));
+                    logger.info("message: " + JSON.stringify(message));
                     switch (message.type) {
                         case "text":
                             if (message.text == "搜尋揪團") {
@@ -379,8 +390,8 @@ app.post('/', function (request, response) {
                             logger.info(JSON.stringify(results[idx].type));
                             if (send_location) {
                                 send_location = false;
-                                manual_seearch(results[idx].message.latitude, results[idx].message.longitude,function(reg){
-                                    if(reg)
+                                manual_seearch(results[idx].message.latitude, results[idx].message.longitude, function (reg) {
+                                    if (reg)
                                         linemessage.SendMessage(results[idx].source.userId, "顯示FLEX", 'linehack2018', results[idx].replyToken, function (result) {
                                             if (!result) logger.error(result);
                                             else logger.info(result);
@@ -388,9 +399,34 @@ app.post('/', function (request, response) {
                                 });
                             }
                             if (results[idx].postback.data == '') {
-        
+
                             }
-                        break;
+                            break;
+                    }
+                } else if (results[idx].type == 'postback') {
+                    var action = results[idx].postback.data.split('=')[1];
+                    logger.info('回傳使用者執行動作: ' + action);
+                    if (action == 'createactivity') {
+                        var imagemap = [
+                            {
+                                "type": "uri",
+                                "linkUri": "line://nv/location",
+                                "area": {
+                                    "x": 0,
+                                    "y": 0,
+                                    "width": 1040,
+                                    "height": 1040
+                                }
+                            }
+                        ]
+                        linemessage.SendImagemap(results[idx].source.userId, "https://linehack2018.azurewebsites.net/image/location.jpg", "This is an imagemap", imagemap, 'linehack2018', results[idx].replyToken, function (result) {
+                            if (!result) logger.error(result);
+                            else logger.info(result);
+                        });
+                    } else if (action == 'searchactivity') {
+
+                    } else if (action == 'isactiveactivity') {
+
                     }
                 }
             }
@@ -447,7 +483,7 @@ var flex = lineflex.CreateActivityFlex(activity);
 function manual_seearch(lat, lng, callback) {
     //this.getdistance = function (lat1, lng1, lat2, lng2)
     //this.get_shuangjious = function (callback) {
-        logger.info("manual_seearch: ......................................")
+    logger.info("manual_seearch: ......................................")
     var location_compare = [];
     linedb.get_shuangjious(function (shuangjious) {
         logger.info("shuangjious: " + JSON.stringify(shuangjious, null, 2))
@@ -469,7 +505,7 @@ function manual_seearch(lat, lng, callback) {
                 }
             }
         }
-        logger.info("location_compare: "+JSON.stringify(location_compare,null,2))
+        logger.info("location_compare: " + JSON.stringify(location_compare, null, 2))
         callback(true)
     })
 
