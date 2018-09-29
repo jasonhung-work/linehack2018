@@ -265,8 +265,7 @@ app.get('/api/guest/:userid', function (request, response) {
     response.send('200');
 });
 
-//app.use(express.static('pages'));
-app.use(express.static(__dirname + '/public'));
+app.use(express.static('pages'));
 app.get('/index', function (request, response) {
     console.log('GET /index');
     var fs = require('fs');
@@ -289,6 +288,10 @@ app.get('/member', function (request, response) {
         }
         this.res.send(data);
     }.bind({ req: request, res: response }));
+});
+
+app.post("/index",function (req,res,next) {
+    res.render("registOK");
 });
 
 app.use(express.static('resource'));
