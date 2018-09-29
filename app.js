@@ -11,6 +11,7 @@ log4js.configure(__dirname + '/log4js.json');
 var logger = log4js.getLogger('bot');
 var logger_line_message = log4js.getLogger('line_message');
 var logger_line_LIFF = log4js.getLogger('line_LIFF');
+var logger_line_RichMenu = log4js.getLogger('line_RichMenu');
 
 // 連接 mongodb
 var linemongodb = require('./linemongodb');
