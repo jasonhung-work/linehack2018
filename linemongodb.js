@@ -146,9 +146,9 @@ var linemongodb = function () {
             else {
                 console.log('ShuangJiou get successfully');
                 if (shuangjious)
-                    callback(null, shuangjious);
+                    callback(shuangjious);
                 else
-                    callback(null, null);
+                    callback(null);
             }
         });
     }

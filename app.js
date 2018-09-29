@@ -359,10 +359,14 @@ app.post('/', function (request, response) {
 ]*/
 //this.SendCarousel = function (userId, columns, password, reply_token, callback) {
 
-    function manual_seearch() {
-
-
-    }
+function manual_seearch() {
+    //this.getdistance = function (lat1, lng1, lat2, lng2)
+    //this.get_shuangjious = function (callback) {
+    linedb.get_shuangjious(function (shuangjious) {
+        console.log(JSON.stringify(shuangjious ,null,2))
+        
+    })
+}
 function FollowEvent(acct) {
     logger.info('----------[Follow]---------');
     var new_user = new user();
