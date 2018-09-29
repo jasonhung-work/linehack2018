@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 
 var linemongodb = function () {
     this.mongoose = require('mongoose');
@@ -583,7 +583,6 @@ var linemongodb = function () {
     }
 }
 
-=======
 var linemongodb = function () {
     this.mongoose = require('mongoose');
     this.ShuangJiou = require('./models/shuangjiou');
