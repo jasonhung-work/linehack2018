@@ -320,12 +320,13 @@ app.post('/', function (request, response) {
                 }
                 else if (results[idx].type == 'beacon') {    // 接收到使用者的 Beacon 事件
                     BeanconEvent(results[idx]);
-                } else if (results[idx].type == 'message') {
+                } 
+                else if (results[idx].type == 'message') {
                     linemessage.SendMessage(results[idx].source.userId, 'test', 'linehack2018', results[idx].replyToken, function (result) {
                         if (!result) logger.error(result);
                         else logger.info(result);
                     });
-                    var message = results[idx].type.message;
+                    var message = results[idx].message;
                     logger.info("message: "+ message);
                     switch (message.type) {
                         case "text":
