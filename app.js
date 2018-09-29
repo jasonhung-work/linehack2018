@@ -360,6 +360,7 @@ app.post('/', function (request, response) {
                     linemessage.SendMessage(results[idx].source.userId, "未輸入位置訊息，請重新操作一次", 'linehack2018', results[idx].replyToken, function (result) {
                         if (!result) logger.error(result);
                         else logger.info(result);
+                        send_location = true;
                     });
             }
             else {
@@ -381,7 +382,7 @@ app.post('/', function (request, response) {
                         else logger.info(result);
                     });
                     var message = results[idx].message;
-                    logger.info("message: " + message);
+                    logger.info("message: "+ JSON.stringify(message));
                     switch (message.type) {
                         case "text":
                             if (message.text == "搜尋揪團") {
@@ -394,20 +395,20 @@ app.post('/', function (request, response) {
                             }
 
                             break;
-                    }
-                } else if (results[idx].type == 'location') {
-                    logger.info('緯度: ' + results[idx].message.latitude);
-                    logger.info('經度: ' + results[idx].message.longitude);
-                    logger.info(JSON.stringify(results[idx].type));
-                    if (send_location) {
-                        send_location = false;
-                        manual_seearch(results[idx].message.latitude, results[idx].message.longitude);
-                    }
-                    if (results[idx].postback.data == '') {
-
+                        case "location":
+                            logger.info('緯度: ' + results[idx].message.latitude);
+                            logger.info('經度: ' + results[idx].message.longitude);
+                            logger.info(JSON.stringify(results[idx].type));
+                            if (send_location) {
+                                send_location = false;
+                                manual_seearch(results[idx].message.latitude, results[idx].message.longitude);
+                            }
+                            if (results[idx].postback.data == '') {
+        
+                            }
+                        break;
                     }
                 }
-
             }
         }
     } catch (e) {
