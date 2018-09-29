@@ -182,6 +182,9 @@
 				liff.init(function () {
                 	liff.getProfile().then(function (profile) {
                     	var userId = JSON.stringify(profile.userId);
+						var data = {
+							"userId" : userId
+						}
                     	$.post('/api/guest', data, function () {
 							//
                     	});
@@ -194,6 +197,9 @@
 				liff.init(function () {
                 	liff.getProfile().then(function (profile) {
                     	var userId = JSON.stringify(profile.userId);
+						var data = {
+							"userId" : userId
+						}
                     	$.post('/api/guest', data, function () {
 							liff.closeWindow();
                     	});
