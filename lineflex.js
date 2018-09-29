@@ -132,9 +132,9 @@ var lineflex = function (logger) {
                         "style": "link",
                         "height": "sm",
                         "action": {
-                            "type": "uri",
+                            "type":"postback",
                             "label": "參加",
-                            "uri": "http://linehack2018.azurewebsites.net/api/guest/" + activity.host
+                            "data":"action=" + activity.shuangjiouid
                         }
                     },
                     {
