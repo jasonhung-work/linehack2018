@@ -267,7 +267,8 @@ app.get('/api/guest/:userid', function (request, response) {
 
 app.use(express.static('pages'));
 app.get('/index', function (request, response) {
-    console.log('GET /mylifftest');
+    console.log('GET /index');
+    var fs = require('fs');
     request.header("Content-Type", 'text/html');
     fs.readFile(__dirname + '/pages/index.html', 'utf8', function (err, data) {
         if (err) {
@@ -278,7 +279,8 @@ app.get('/index', function (request, response) {
 });
 
 app.get('/member', function (request, response) {
-    console.log('GET /mylifftest');
+    console.log('GET /member');
+    var fs = require('fs');
     request.header("Content-Type", 'text/html');
     fs.readFile(__dirname + '/pages/member.html', 'utf8', function (err, data) {
         if (err) {
