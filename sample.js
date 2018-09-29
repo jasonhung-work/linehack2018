@@ -7,6 +7,7 @@ user.name = '加一'; //使用者名稱
 user.userid = 'Uxxxxxxxx1'; //使用者Id
 user.image = 'http:xxxxx.xxx.xx1'; //使用者頭像
 user.location = '[Bxxxxxxxx1]'; //關注的BeaconId
+user.pushenable = true;
 //建立使用者
 linedb.create_user(user, function (err) {
     if (err)
@@ -22,7 +23,7 @@ host.userid = 'Uxxxxxxxx1'; //爽主Id
 host.gender = '男'; //爽主性別
 host.clothes = '無'; //爽主衣服
 host.hat = '無'; //爽主帽子
-host.shuangjiouname = '爽揪'; //揪團名稱
+host.shuangjiouid = 'Idxxxx1'; //揪團Id
 host.location = 'Bxxxxxxxx1'; //爽主揪團位置的BeaconId
 //建立爽主資訊
 linedb.create_host(host, function (err) {
@@ -33,12 +34,15 @@ linedb.create_host(host, function (err) {
 });
 
 let shuangjiou = {};
+shuangjiou.shuangjiouid = 'Idxxxx1'; //揪團Id
 shuangjiou.name = '爽揪'; //揪團名稱
 shuangjiou.description = '爽揪'; //揪團描述
 shuangjiou.time = Date.now(); //揪團時間
 shuangjiou.type = '吃'; //揪團類型
 shuangjiou.host = 'Uxxxxxxxx1'; //爽主Id
 shuangjiou.location = 'Bxxxxxxxx1'; //揪團BeaconId
+shuangjiou.latitude = '25.0805773'; //揪團緯度
+shuangjiou.longitude = '121.565819'; //揪團經度
 shuangjiou.number = '99'; //所需人數
 shuangjiou.participant = []; //參加者的UserId
 //建立揪團資訊
@@ -73,6 +77,8 @@ linedb.get_hostbylocation('Bxxxxxxxx1', function (err, hosts) {
 let location = {};
 location.name = '7-11'; //Beacon名稱
 location.locationid = 'Bxxxxxxxx1'; //BeaconId
+location.latitude = '25.0805773'; //緯度
+location.longitude = '121.565819'; //經度
 location.user = []; //進入Beacon附近的UserId
 //建立Beacon資訊
 linedb.create_location(location, function (err, hosts) {

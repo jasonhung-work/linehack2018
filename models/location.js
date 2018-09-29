@@ -5,5 +5,7 @@ var Schema = mongoose.Schema;
 module.exports = mongoose.model('location', new Schema({
     name: String,
     locationid: String,
-    user: [String]
+    user: [String],
+    latitude: String,
+    longitude: String
 }), 'location');

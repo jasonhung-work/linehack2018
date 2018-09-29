@@ -15,11 +15,14 @@ var linemongodb = function () {
 
         /*
         let shuangjiou = {};
+        shuangjiou.shuangjiouid = 'Idxxxx1';
         shuangjiou.name = '爽揪';
         shuangjiou.description = '爽揪';
         shuangjiou.time = Date.now();
         shuangjiou.type = '吃';
         shuangjiou.location = 'Bxxxxxxxx1';
+        shuangjiou.latitude = '25.0805773';
+        shuangjiou.longitude = '121.565819';
         shuangjiou.host = 'Uxxxxxxxx1';
         shuangjiou.number = '999';
         shuangjiou.member = '';
@@ -54,6 +57,24 @@ var linemongodb = function () {
         console.log('get_shuangjioubyname: name=' + name);
 
         this.ShuangJiou.find({ 'name': name }, function (err, shuangjious) {
+            if (err) {
+                callback(err);
+            }
+            else {
+                console.log('ShuangJiou get successfully');
+                if (shuangjious)
+                    callback(null, shuangjious);
+                else
+                    callback(null, null);
+            }
+        });
+    }
+
+    //根據Id取得爽揪資訊
+    this.get_shuangjioubyshuangjiouid = function (shuangjiouid, callback) {
+        console.log('get_shuangjioubyid: shuangjiouid=' + shuangjiouid);
+
+        this.ShuangJiou.find({ 'shuangjiouid': shuangjiouid }, function (err, shuangjious) {
             if (err) {
                 callback(err);
             }
@@ -129,7 +150,7 @@ var linemongodb = function () {
         host.clothes = '洋裝';
         host.hat = '草帽';
         host.location = 'Bxxxxxxxx1';
-        host.shuangjiouname = '爽揪';
+        host.shuangjiouid = 'Idxxxx1';
         */
 
         this.Host.findOneAndUpdate({ 'shuangjiouname': host.shuangjiouname }, host, { upsert: true, new: true, setDefaultsOnInsert: true }, function (err) {
@@ -161,6 +182,24 @@ var linemongodb = function () {
         console.log('get_hostbyuserid: userid=' + userid);
 
         this.Host.find({ 'userid': userid }, function (err, hosts) {
+            if (err) {
+                callback(err);
+            }
+            else {
+                console.log('Host get successfully');
+                if (hosts)
+                    callback(null, hosts);
+                else
+                    callback(null, null);
+            }
+        });
+    }
+
+    //根據shuangjiouid取得爽主資訊
+    this.get_hostbyshuangjiouid = function (shuangjiouid, callback) {
+        console.log('get_hostbyshuangjiouid: shuangjiouid=' + shuangjiouid);
+
+        this.Host.find({ 'shuangjiouid': shuangjiouid }, function (err, hosts) {
             if (err) {
                 callback(err);
             }
@@ -282,6 +321,7 @@ var linemongodb = function () {
         user.userid = 'Uxxxxxxxx2';
         user.image = 'http:xxxxx.xxx.xx';
         user.location = '[Bxxxxxxxx1]';
+        user.pushenable = 'true';        
         */
 
         this.User.findOneAndUpdate({ 'userid': user.userid }, user, { upsert: true, new: true, setDefaultsOnInsert: true }, function (err) {
@@ -446,6 +486,8 @@ var linemongodb = function () {
         let location = {};
         location.name = '7-11';
         location.locationid = 'Bxxxxxxxxx1';
+        location.latitude = '25.0805773';
+        location.longitude = '121.565819';
         location.user = [];
         */
 
