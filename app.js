@@ -103,6 +103,68 @@ app.get('/index', function (request, response) {
     }.bind({ req: request, res: response }));
 });
 
+app.get('/api/richmenulist', function (request, response) {
+    linerichmenu.GetAllRichMenu(function (result) {
+        if (result) response.send(result);
+        else response.send(false);
+    });
+});
+
+app.get('/api/richmenu/:richmenuid', function (request, response) {
+    var richmenuid = request.params.richmenuid;
+    linerichmenu.GetRichMenu(richmenuid, function (result) {
+        if (result) response.send(result);
+        else response.send(false);
+    });
+});
+
+app.post('/api/richmenu', function (request, response) {
+    var richmenu = request.body.richmenu;
+    linerichmenu.CreateRichMenu(richmenu, function (result) {
+        if (result) response.send(result);
+        else response.send(false);
+    });
+});
+
+app.put('/api/richmenuimage', function (request, response) {
+    var richmenuId = request.body.richmenuid;
+    var image = request.body.image;
+    fs.readFile(__dirname + '/resource/' + image, 'utf8', function (err, data) {
+        if (err) {
+            this.res.send(err);
+        }
+        linerichmenu.UpdateRichMenuImage(richmenuId, data, function (result) {
+            if (result) this.res.send(true);
+            else this.res.send(false);
+        });
+    }.bind({ req: request, res: response }));
+});
+
+app.delete('/api/richmenu/:richmenu', function (request, response) {
+    var richmuneId = request.params.richmenuid;
+    linerichmenu.DeleteRichMenu(richmuneId, function (result) {
+        if (result) response.send(true);
+        else response.send(false);
+    });
+});
+
+app.put('/api/richmenu/defaultrichmenu', function (request, response) {
+    var richmenuId = request.body.richmenuid;
+    linerichmenu.SetDefaultRichMenu(richmenuId, function (result) {
+        if (result) response.send(true);
+        else response.send(false);
+    });
+});
+
+app.put('/api/richmenu/link', function (request, response) {
+    var userId = request.body.userid;
+    var richmenuId = request.body.richmenuid;
+    linerichmenu.LinkRichMenuToUser(userId, richmenuId, function (result) {
+        if (result) response.send(true);
+        else response.send(false);
+    });
+});
+
 app.get('/api/liff', function (request, response) {
     lineliff.GetAllLIFF(function (result) {
         if (result) response.send(result);
@@ -174,7 +236,7 @@ app.post('/api/shungjiou', function (request, response) {
             });
 
             var organiser = new host();
-            organiser.shuangjiouname = data.shuangjiou.name
+
             organiser.name = data.host.name;
             organiser.userid = data.host.userId;
             organiser.gender = data.host.gender;
@@ -216,7 +278,18 @@ app.get('/api/guest/:userid', function (request, response) {
     response.send('200');
 });
 
-app.use(express.static('pages'));
+app.use(express.static('resource'));
+
+app.get('/image/:picture', function (request, response) {
+    var picture = request.params.picture;
+    request.header("Content-Type", 'image/jpeg');
+    fs.readFile(__dirname + '/resource/' + picture, 'utf8', function (err, data) {
+        if (err) {
+            this.res.send(err);
+        }
+        this.res.send(data);
+    }.bind({ req: request, res: response }));
+});
 
 // 接收來自 LINE 傳送的訊息
 app.post('/', function (request, response) {
@@ -243,12 +316,19 @@ app.post('/', function (request, response) {
                     else logger.info(result);
                 });
                 var message = results[idx].type.message;
-                switch(message.type){
+                switch (message.type) {
                     case "text":
-                        if(message.text == "搜尋揪團"){
+                        if (message.text == "搜尋揪團") {
 
                         }
                         break;
+                }
+            } else if (results[idx].type == 'location') {
+                logger.info('緯度: ' + results[idx].message.latitude);
+                logger.info('經度: ' + results[idx].message.longitude);
+                logger.info(JSON.stringify(results[idx].type));
+                if (results[idx].postback.data == '') {
+
                 }
             }
         }
@@ -279,21 +359,10 @@ app.post('/', function (request, response) {
 ]*/
 //this.SendCarousel = function (userId, columns, password, reply_token, callback) {
 
-function manual_seearch() {
+    function manual_seearch() {
 
 
-}
-function getdistance(lat1, lng1, lat2, lng2) {
-    var radLat1 = lat1 * Math.PI / 180.0;
-    var radLat2 = lat2 * Math.PI / 180.0;
-    var a = radLat1 - radLat2;
-    var b = lng1 * Math.PI / 180.0 - lng2 * Math.PI / 180.0;
-    var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) +
-        Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
-    s = s * 6378.137;// EARTH_RADIUS;
-    s = Math.round(s * 10000) / 10000;
-    return s * 1000;
-}
+    }
 function FollowEvent(acct) {
     logger.info('----------[Follow]---------');
     var new_user = new user();
@@ -331,4 +400,8 @@ function BeanconEvent(event) {
             });
             break;
     }
+}
+
+function CreateShuangjiou(user) {
+
 }
