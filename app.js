@@ -28,6 +28,9 @@ var lineliff = new lineliffapi.lineliff(logger_line_LIFF);
 var lineflexapi = require('./lineflex');
 var lineflex = new lineflexapi.lineflex();
 
+var linerichmenuapi = require('./linerichmenu');
+var linerichmenu = new linerichmenuapi.linerichmenu(logger_line_RichMenu);
+
 // 建立 express service
 var express = require('express');
 var app = express();
