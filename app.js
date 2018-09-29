@@ -221,8 +221,32 @@ app.post('/api/beacon', function (request, response) {
     });
 });
 
+app.use(express.static('pages'));
+app.get('/index', function (request, response) {
+    console.log('GET /index');
+    var fs = require('fs');
+    request.header("Content-Type", 'text/html');
+    fs.readFile(__dirname + '/pages/index.html', 'utf8', function (err, data) {
+        if (err) {
+            this.res.send(err);
+        }
+        this.res.send(data);
+    }.bind({ req: request, res: response }));
+});
+
+app.get('/member', function (request, response) {
+    console.log('GET /member');
+    var fs = require('fs');
+    request.header("Content-Type", 'text/html');
+    fs.readFile(__dirname + '/pages/member.html', 'utf8', function (err, data) {
+        if (err) {
+            this.res.send(err);
+        }
+        this.res.send(data);
+    }.bind({ req: request, res: response }));
+});
+
 app.post('/api/shungjiou', function (request, response) {
-    response.send('200');
     logger.info('POST /api/shungjiou');
     logger.info(JSON.stringify(request.body));
     var data = request.body;
@@ -258,7 +282,7 @@ app.post('/api/shungjiou', function (request, response) {
             else
                 logger.info('success');
         });
-        //response.send('200');
+        response.send('200');
     }
 });
 
@@ -266,30 +290,7 @@ app.get('/api/guest/:userid', function (request, response) {
     response.send('200');
 });
 
-app.use(express.static('pages'));
-app.get('/index', function (request, response) {
-    console.log('GET /index');
-    var fs = require('fs');
-    request.header("Content-Type", 'text/html');
-    fs.readFile(__dirname + '/pages/index.html', 'utf8', function (err, data) {
-        if (err) {
-            this.res.send(err);
-        }
-        this.res.send(data);
-    }.bind({ req: request, res: response }));
-});
 
-app.get('/member', function (request, response) {
-    console.log('GET /member');
-    var fs = require('fs');
-    request.header("Content-Type", 'text/html');
-    fs.readFile(__dirname + '/pages/member.html', 'utf8', function (err, data) {
-        if (err) {
-            this.res.send(err);
-        }
-        this.res.send(data);
-    }.bind({ req: request, res: response }));
-});
 
 app.post("/index",function (req,res,next) {
     res.render("registOK");
