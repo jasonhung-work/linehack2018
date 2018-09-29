@@ -170,7 +170,7 @@ var linemongodb = function () {
         host.shuangjiouid = 'Idxxxx1';
         */
 
-        this.Host.findOneAndUpdate({ 'shuangjiouname': host.shuangjiouname }, host, { upsert: true, new: true, setDefaultsOnInsert: true }, function (err) {
+        this.Host.findOneAndUpdate({ 'shuangjiouid': host.shuangjiouid }, host, { upsert: true, new: true, setDefaultsOnInsert: true }, function (err) {
             if (err) {
                 callback(err);
             }
@@ -231,6 +231,7 @@ var linemongodb = function () {
     }
 
     //根據揪團名稱取得爽主資訊
+    /*
     this.get_hostbyshuangjiouname = function (shuangjiouname, callback) {
         console.log('get_hostbyshuangjiouname: shuangjiouname=' + shuangjiouname);
 
@@ -247,6 +248,7 @@ var linemongodb = function () {
             }
         });
     }
+    */
 
     //根據BeaconId取得爽主資訊
     this.get_hostbylocation = function (location, callback) {
