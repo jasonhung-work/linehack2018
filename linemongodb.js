@@ -136,23 +136,6 @@ var linemongodb = function () {
         });
     }
 
-    //取得所有揪團資訊
-    this.get_shuangjious = function (callback) {
-        console.log('get_shuangjious');
-
-        this.ShuangJiou.find(function (err, shuangjious) {
-            if (err) {
-                callback(err);
-            }
-            else {
-                console.log('ShuangJiou get successfully');
-                if (shuangjious)
-                    callback(null, shuangjious);
-                else
-                    callback(null, null);
-            }
-        });
-    }
 
     //Host
     //建立爽主資訊
