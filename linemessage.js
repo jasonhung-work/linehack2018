@@ -55,7 +55,7 @@ var linemessage = function (logger) {
     }
 
     // 傳送【選單】給 LINE 使用者
-    this.SendButtons = function (userId, image_url, title, text, buttons, alt_text, password, reply_token, callback) {
+    this.SendButtons = function (userId, text, buttons, alt_text, password, reply_token, callback) {
         if (password == 'linehack2018') {
             var data = {
                 'to': userId,
@@ -64,8 +64,6 @@ var linemessage = function (logger) {
                     'altText': alt_text,
                     'template': {
                         'type': 'buttons',
-                        'thumbnailImageUrl': image_url,
-                        'title': title,
                         'text': text,
                         'actions': buttons
                     }

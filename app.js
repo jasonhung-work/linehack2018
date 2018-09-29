@@ -1,4 +1,5 @@
 var users = new Map();  // 紀錄進入 Beacon 範圍的使用者
+var tentative_activity = new Map();
 
 // Application Log
 var log4js = require('log4js');
@@ -225,62 +226,59 @@ app.post('/api/shungjiou', function (request, response) {
     logger.info(JSON.stringify(request.body));
     var data = request.body;
     data.host.userId = data.host.userId.replace('\"', '').replace('\"', '');
-    linedb.get_locationidbyuser(data.host.userId, function (err, locationid) {
-        if (err) this.response.send(err);
-        else {
-            var activity = new shuangjiou();
-            activity.name = data.shuangjiou.name;
-            activity.description = data.shuangjiou.description;
-            activity.starttime = Date.now();
-            activity.endtime = data.shuangjiou.endtime;
-            activity.type = data.shuangjiou.type;
-            activity.host = data.host.userId;
-            activity.location = locationid;
-            activity.number = data.shuangjiou.number;
-            linedb.create_shuangjiou(activity, function (err) {
-                if (err)
-                    logger.error('fail: ' + err);
-                else
-                    logger.info('success');
-            });
+    if (tentative_activity.has(data.host.userId)) {
+        var activity = tentative_activity.get(data.host.userId);
+        activity.name = data.shuangjiou.name;
+        activity.description = data.shuangjiou.description;
+        activity.starttime = Date.now();
+        activity.endtime = new Date(data.shuangjiou.endtime);
+        activity.type = data.shuangjiou.type;
+        activity.host = data.host.userId;
+        activity.number = data.shuangjiou.number;
+        tentative_activity.delete(data.host.userId);
+        linedb.create_shuangjiou(activity, function (err) {
+            if (err)
+                logger.error('fail: ' + err);
+            else
+                logger.info('success');
+        });
 
-            var organiser = new host();
+        var organiser = new host();
 
-            organiser.name = data.host.name;
-            organiser.userid = data.host.userId;
-            organiser.gender = data.host.gender;
-            organiser.clothes = data.host.clothes;
-            organiser.hat = data.host.hat;
-            organiser.location = locationid;
-            linedb.create_host(organiser, function (err) {
-                if (err)
-                    logger.error('fail: ' + err);
-                else
-                    logger.info('success');
-            });
+        organiser.name = data.host.name;
+        organiser.userid = data.host.userId;
+        organiser.gender = data.host.gender;
+        organiser.clothes = data.host.clothes;
+        organiser.hat = data.host.hat;
+        organiser.shuangjiouid = activity.shuangjiouid;
+        linedb.create_host(organiser, function (err) {
+            if (err)
+                logger.error('fail: ' + err);
+            else
+                logger.info('success');
+        });
 
-            var flex = lineflex.CreateActivityFlex(activity);
-            logger.info(flex);
-            linedb.get_userbylocationid(locationid, function (err, users) {
-                if (err)
-                    logger.error('fail: ' + err);
-                else {
-                    for (var index = 0; index < users.length; index++) {
-                        linemessage.SendFlex(users[index].userid, flex, 'linehack2018', '', function (result) {
-                            if (!result) {
-                                logger.error('fail: ' + result);
-                                this.response.send(err);
-                            }
-                            else {
-                                logger.info('success');
-                                this.response.send('200');
-                            }
-                        }.bind({ response: this.response }));
-                    }
+        var flex = lineflex.CreateActivityFlex(activity);
+        logger.info(flex);
+        linedb.get_userbylocationid(locationid, function (err, users) {
+            if (err)
+                logger.error('fail: ' + err);
+            else {
+                for (var index = 0; index < users.length; index++) {
+                    linemessage.SendFlex(users[index].userid, flex, 'linehack2018', '', function (result) {
+                        if (!result) {
+                            logger.error('fail: ' + result);
+                            this.response.send(err);
+                        }
+                        else {
+                            logger.info('success');
+                            this.response.send('200');
+                        }
+                    }.bind({ response: this.response }));
                 }
-            }.bind({ response: this.response }));
-        }
-    }.bind({ response: response }));
+            }
+        }.bind({ response: this.response }));
+    }
 });
 
 app.get('/api/guest/:userid', function (request, response) {
@@ -377,6 +375,7 @@ app.post('/', function (request, response) {
                             if (message.text == "搜尋揪團") {
                                 logger.info("搜尋揪團..............................");
                                 send_location = true;
+                                linemessage.SendButtons(results[idx].source.userId)
                                 linemessage.SendMessage(results[idx].source.userId, "請輸入位置資訊", 'linehack2018', results[idx].replyToken, function (result) {
                                     if (!result) logger.error(result);
                                     else logger.info(result);
@@ -385,6 +384,16 @@ app.post('/', function (request, response) {
                             //
                             break;
                         case "location":
+                            if (tentative_activity.has(results[idx].source.userId)) {
+                                var activity = tentative_activity.get(results[idx].source.userId);
+                                activity.latitude = results[idx].message.latitude;
+                                activity.longitude = results[idx].message.longitude;
+                                tentative_activity.set(results[idx].source.userId, activity);
+                                linemessage.SendMessage(results[idx].source.userId, "請點選以下按鈕，輸入活動細節", "This is a button", "linehack2018", results[idx].replyToken, function (result) {
+                                    if (!result) logger.error(result);
+                                    else logger.info(result);
+                                });
+                            }
                             logger.info('緯度: ' + results[idx].message.latitude);
                             logger.info('經度: ' + results[idx].message.longitude);
                             logger.info(JSON.stringify(results[idx].type));
@@ -407,22 +416,32 @@ app.post('/', function (request, response) {
                     var action = results[idx].postback.data.split('=')[1];
                     logger.info('回傳使用者執行動作: ' + action);
                     if (action == 'createactivity') {
-                        var imagemap = [
-                            {
-                                "type": "uri",
-                                "linkUri": "line://nv/location",
-                                "area": {
-                                    "x": 0,
-                                    "y": 0,
-                                    "width": 1040,
-                                    "height": 1040
+                        var activity = new shuangjiou();
+                        if (tentative_activity.has(results[idx].source.userId)) {
+                            linemessage.SendMessage(results[idx].source.userId, "不好意思，您還有一個活動還未結束，請結束後在建立新的活動", "linehack2018", results[idx].replyToken, function (result) {
+                                if (!result) logger.error(result);
+                                else logger.info(result);
+                            });
+                        } else {
+                            activity.shuangjiouid = guid();
+                            tentative_activity.set(results[idx].source.userId, activity);
+                            var imagemap = [
+                                {
+                                    "type": "uri",
+                                    "linkUri": "line://nv/location",
+                                    "area": {
+                                        "x": 0,
+                                        "y": 0,
+                                        "width": 1040,
+                                        "height": 1040
+                                    }
                                 }
-                            }
-                        ]
-                        linemessage.SendImagemap(results[idx].source.userId, "https://linehack2018.azurewebsites.net/image/location.jpg", "This is an imagemap", imagemap, 'linehack2018', results[idx].replyToken, function (result) {
-                            if (!result) logger.error(result);
-                            else logger.info(result);
-                        });
+                            ]
+                            linemessage.SendImagemap(results[idx].source.userId, "https://linehack2018.azurewebsites.net/image/location.jpg", "This is an imagemap", imagemap, 'linehack2018', results[idx].replyToken, function (result) {
+                                if (!result) logger.error(result);
+                                else logger.info(result);
+                            });
+                        }
                     } else if (action == 'searchactivity') {
 
                     } else if (action == 'isactiveactivity') {
@@ -588,4 +607,11 @@ function BeanconEvent(event) {
 
 function CreateShuangjiou(user) {
 
+}
+
+function guid() {
+    function S4() {
+        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+    }
+    return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
 }
