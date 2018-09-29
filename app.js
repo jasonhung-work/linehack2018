@@ -261,7 +261,7 @@ app.post('/api/shungjiou', function(request, response) {
             {
                 "type": "uri",
                 "label": "查看成員",
-                "uri": "line://app/1610735667-PqWkJG9O"
+                "uri": "line://app/1610735667-3E0z5w6a"
             }
         ]
         linemessage.SendButtons(data.host.userId, "您的活動已建立，可以點選以下按鈕查看參加者", buttons, "This is a button", "linehack2018", "", function(result) {
