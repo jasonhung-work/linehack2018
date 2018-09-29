@@ -107,6 +107,16 @@ app.get('/index', function (request, response) {
     }.bind({ req: request, res: response }));
 });
 
+app.get('/members', function (request, response) {
+    request.header("Content-Type", 'text/html');
+    fs.readFile(__dirname + '/pages/members.html', 'utf8', function (err, data) {
+        if (err) {
+            this.res.send(err);
+        }
+        this.res.send(data);
+    }.bind({ req: request, res: response }));
+});
+
 app.get('/api/richmenu', function (request, response) {
     lineliff.GetAllLIFF(function (result) {
         if (result) response.send(result);

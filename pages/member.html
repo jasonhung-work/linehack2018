@@ -98,36 +98,21 @@
                     	<!--<div class="col-sm-6 book">
                     		<img src="assets/img/ebook.png" alt="">
                     	</div>-->
-                        <div class="col-sm-5 form-box">
+                        <div class="col-sm-5 form-box" id="classbox">
                         	<div class="form-top" style="margin-bottom: -25px">
                         		<div class="form-top-left">
-                        			<h3>建立新活動</h3>
-                            		<p>爽主你好，歡迎進入爽揪More，填寫以下資料可建立新活動:</p>
+                        			<h3>點名畫面</h3>
+                            		<p>點2下成員照片即可完成點名</p>
                         		</div>
                         		<!--<div class="form-top-right">
                         			<i class="fa fa-pencil"></i>
                         		</div>-->
                             </div>
                             <div class="form-bottom">
-								<table id="membersdata"></table>
+								
 			                    <form role="form" action="" method="post" class="registration-form">
-			                    	<div class="form-group">
-			                    		<label class="sr-only-focusable" for="form-active-name" style="color:white">活動名稱</label>
-			                        	<input type="text" name="form-active-name" placeholder="活動名稱..." class="form-active-name form-control" id="form-active-name">
-			                        </div>
-			                        
-									<div class="form-group">
-			                        	<label class="sr-only-focusable" for="form-guy-clothes" style="color:white">主辦人衣服</label>
-			                        	<input type="text" name="form-guy-clothes" placeholder="主辦人衣服..." class="form-guy-clothes form-control" id="form-guy-clothes" style="height: 50px">
-			                        </div>
-									<div class="form-group">
-										<label class="sr-only-focusable" for="form-guy-hat" style="color:white">主辦人有無戴帽子</label>
-										<select  class="guy-hat-lg form-control" style="height: 50px" id="form-guy-hat">
-											<option value="yes">有</option>
-											<option value="no">無</option>
-										</select>
-			                        </div>
-			                        <button type="submit" class="btn" onclick="submitdata()">確認送出開始揪團</button>
+									<table id="membersdata"></table>
+			                        <button type="submit" class="btn" onclick="finishact()">結束</button>
 			                    </form>
 		                    </div>
                         </div>
@@ -158,8 +143,9 @@
 						 $('<tr>')
 						  .append(
 							  $('<td>').append(
-								  $('<img>').attr('src','')
+								  $('<img>').attr('src','https://lh5.ggpht.com/0VYAvZLR9YhosF-thqm8xl8EWsCfrEY_uk2og2f59K8IOx5TfPsXjFVwxaHVnUbuEjc=w170')
 								  .dblclick(function () {
+									  alert('已完成點名');
 									  $('<img>').attr('src','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHPPEcQg7pgHlUIvgp5EliVbwZsd3eFA5ru5t6gaCvrX06v0PPrg') //圖片變黑URL
 								  })
 							  )
@@ -174,8 +160,11 @@
 			function fixw(){
 				var wid = screen.width;
 				if(wid>=760){
-					//
+					$('#classbox').css('width', '750px');
 				}
+			};
+			function finishact(){
+				liff.closeWindow();
 			};
 		</script>
     </body>
