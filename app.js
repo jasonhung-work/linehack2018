@@ -454,7 +454,14 @@ app.post('/', function (request, response) {
                         }
                         logger.info(this.tentative_activity.has(this.results.source.userId));
                         if (this.tentative_activity.has(this.results.source.userId)) {
-                            linemessage.SendMessage(this.results.source.userId, "不好意思，您還有一個活動還未結束，請結束後在建立新的活動", "linehack2018", this.results.replyToken, function (result) {
+                            var buttons = [
+                                {
+                                    "type": "uri",
+                                    "label": "查看成員",
+                                    "uri": "line://app/1610735667-3E0z5w6a"
+                                }
+                            ]
+                            linemessage.SendButtons(this.results.source.userId, "不好意思，您還有一個活動還未結束，請結束後在建立新的活動", buttons, "This is a button", "linehack2018", this.results.replyToken, function (result) {
                                 if (!result) logger.error(result);
                                 else logger.info(result);
                             });
