@@ -150,7 +150,12 @@ var lineflex = function (logger) {
 
     this.CreateActivityFlexCarousel = function (activitys) {
         var flexs = [];
-        for (var index = 0; index < activitys.length; index++) {
+        var length;
+        if (activitys.length > 5)
+            length = 5;
+        else
+            length = activitys.length;
+        for (var index = 0; index < length; index++) {
             var activity = activitys[index];
             var url = '';
             if (activity.type == 'eat')
@@ -160,6 +165,7 @@ var lineflex = function (logger) {
             else if (activity.type == 'sleep')
                 url = config.image.activity_flex.stay;
             var activity_flex = {
+                "type": "bubble",
                 "hero": {
                     "type": "image",
                     "url": url,
@@ -298,7 +304,7 @@ var lineflex = function (logger) {
 
         var more_activity_flex = {
             "type": "carousel",
-            "contents" : flexs
+            "contents": flexs
         }
         return more_activity_flex;
     }

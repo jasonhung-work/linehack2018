@@ -1,4 +1,3 @@
-
 var linemongodb = function () {
     this.mongoose = require('mongoose');
     this.ShuangJiou = require('./models/shuangjiou');
@@ -27,7 +26,6 @@ var linemongodb = function () {
         shuangjiou.number = '999';
         shuangjiou.member = '';
         */
-
         this.ShuangJiou.findOneAndUpdate({ 'shuangjiouid': shuangjiou.shuangjiouid }, shuangjiou, { upsert: true, new: true, setDefaultsOnInsert: true }, function (err) {
             if (err) {
                 callback(err);
@@ -57,24 +55,6 @@ var linemongodb = function () {
         console.log('get_shuangjioubyname: name=' + name);
 
         this.ShuangJiou.find({ 'name': name }, function (err, shuangjious) {
-            if (err) {
-                callback(err);
-            }
-            else {
-                console.log('ShuangJiou get successfully');
-                if (shuangjious)
-                    callback(null, shuangjious);
-                else
-                    callback(null, null);
-            }
-        });
-    }
-
-    //根據主辦人取得爽揪資訊
-    this.get_shuangjioubyhost = function (host, callback) {
-        console.log('get_shuangjioubybeacon: host=' + host);
-
-        this.ShuangJiou.find({ 'host': host }, function (err, shuangjious) {
             if (err) {
                 callback(err);
             }
@@ -154,21 +134,6 @@ var linemongodb = function () {
         });
     }
 
-    //根據揪團團主刪除爽揪資訊
-    this.delete_shuangjioubyhost = function (host, callback) {
-        console.log('delete_shuangjioubyhost: host=' + host);
-
-        this.ShuangJiou.deleteOne({ 'host': host }, shuangjiou, function (err) {
-            if (err) {
-                callback(err);
-            }
-            else {
-                console.log('ShuangJiou delete successfully');
-                callback(null);
-            }
-        });
-    }
-
     //取得所有揪團資訊
     this.get_shuangjious = function (callback) {
         console.log('get_shuangjious');
@@ -180,9 +145,9 @@ var linemongodb = function () {
             else {
                 console.log('ShuangJiou get successfully');
                 if (shuangjious)
-                    callback(null, shuangjious);
+                    callback(shuangjious);
                 else
-                    callback(null, null);
+                    callback(null);
             }
         });
     }
@@ -203,7 +168,7 @@ var linemongodb = function () {
         host.shuangjiouid = 'Idxxxx1';
         */
 
-        this.Host.findOneAndUpdate({ 'shuangjiouid': host.shuangjiouid }, host, { upsert: true, new: true, setDefaultsOnInsert: true }, function (err) {
+        this.Host.findOneAndUpdate({ 'shuangjiouname': host.shuangjiouname }, host, { upsert: true, new: true, setDefaultsOnInsert: true }, function (err) {
             if (err) {
                 callback(err);
             }
@@ -264,7 +229,6 @@ var linemongodb = function () {
     }
 
     //根據揪團名稱取得爽主資訊
-    /*
     this.get_hostbyshuangjiouname = function (shuangjiouname, callback) {
         console.log('get_hostbyshuangjiouname: shuangjiouname=' + shuangjiouname);
 
@@ -281,7 +245,6 @@ var linemongodb = function () {
             }
         });
     }
-    */
 
     //根據BeaconId取得爽主資訊
     this.get_hostbylocation = function (location, callback) {
@@ -345,7 +308,6 @@ var linemongodb = function () {
             }
         });
     }
-    
 
     //根據爽主UserId刪除爽主資訊
     this.delete_hostbyuserid = function (userid, callback) {
@@ -374,7 +336,7 @@ var linemongodb = function () {
         user.userid = 'Uxxxxxxxx2';
         user.image = 'http:xxxxx.xxx.xx';
         user.location = '[Bxxxxxxxx1]';
-        user.pushenable = true;        
+        user.pushenable = 'true';        
         */
 
         this.User.findOneAndUpdate({ 'userid': user.userid }, user, { upsert: true, new: true, setDefaultsOnInsert: true }, function (err) {
@@ -440,7 +402,6 @@ var linemongodb = function () {
     /*
     this.delete_userbyuserid = function (userid, callback) {
         console.log('get_userbyuserid: userid=' + userid);
-
         this.User.deleteOne({ 'userid': userid }, function (err) {
             if (err) {
                 callback(err);
@@ -486,7 +447,6 @@ var linemongodb = function () {
     /*
     this.delete_userbylocation = function (location, callback) {
         console.log('delete_userbylocation: location=' + location);
-
         this.User.deleteOne({ 'location': location }, function (err) {
             if (err) {
                 callback(err);
@@ -628,24 +588,6 @@ var linemongodb = function () {
                 console.log('Location getlocation successfully');
                 if (location && location.locationid)
                     callback(null, location.locationid);
-                else
-                    callback(null, null);
-            }
-        });
-    }
-
-    //根據BeaconId取得location訊息
-    this.get_locationbyid = function (locationid, callback) {
-        console.log('get_locationbyid: locationid=' + locationid);
-
-        this.Location.findOne({ 'locationid': locationid }, function (err, location) {
-            if (err) {
-                callback(err);
-            }
-            else {
-                console.log('Location getlocation successfully');
-                if (location)
-                    callback(null, location);
                 else
                     callback(null, null);
             }
