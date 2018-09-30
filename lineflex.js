@@ -274,13 +274,10 @@ var lineflex = function (logger) {
                                 },
                                 {
                                     "type": "box",
-                                    "layout": "baseline",
-                                    "spacing": "sm",
+                                    "layout": "horizontal",
                                     "contents": [
                                         {
                                             "type": "button",
-                                            "style": "link",
-                                            "height": "sm",
                                             "action": {
                                                 "type": "uri",
                                                 "label": "活動地點",
