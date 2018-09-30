@@ -274,6 +274,7 @@ app.post('/api/shungjiou', function (request, response) {
 
 app.post('/api/guest', function (request, response) {
     var userId = request.body.userId;
+    logger.info(userId);
     linedb.get_shuangjioubyhost(userId, function (err, host) {
         var data = [];
         if (err) {
@@ -296,8 +297,9 @@ app.post('/api/guest', function (request, response) {
                     }.bind({ data: data }));
                 }
                 this.res.send(data);
-            }
-            this.res.send('');
+            } else {
+                this.res.send('');
+            } 
         }
     }.bind({ res: response }));
 });
@@ -436,6 +438,7 @@ app.post('/', function (request, response) {
                 if (action == 'createactivity') {
                     var activity = new shuangjiou();
                     linedb.get_shuangjioubyhost(results[idx].source.userId, function (err, step_activity) {
+                        logger.info(step_activity);
                         if (step_activity) {
                             activity.shuangjiouid = step_activity.shuangjiouid;
                             activity.name = step_activity.name;
@@ -443,22 +446,22 @@ app.post('/', function (request, response) {
                             activity.starttime = step_activity.starttime;
                             activity.endtime = step_activity.endtime;
                             activity.type = step_activity.type;
-                            activity.host = step_activity.userId;
+                            activity.host = step_activity.host;
                             activity.number = step_activity.number;
                             activity.fare = step_activity.fare;
                             activity.latitude = step_activity.latitude;
                             activity.longitude = step_activity.longitude;
-                            tentative_activity.set(activity.host, activity);
+                            this.tentative_activity.set(this.results.source.userId, activity);
                         }
-
-                        if (tentative_activity.has(this.results.source.userId)) {
+                        logger.info(this.tentative_activity.has(this.results.source.userId));
+                        if (this.tentative_activity.has(this.results.source.userId)) {
                             linemessage.SendMessage(this.results.source.userId, "不好意思，您還有一個活動還未結束，請結束後在建立新的活動", "linehack2018", this.results.replyToken, function (result) {
                                 if (!result) logger.error(result);
                                 else logger.info(result);
                             });
                         } else {
                             activity.shuangjiouid = guid();
-                            tentative_activity.set(this.results.source.userId, activity);
+                            this.tentative_activity.set(this.results.source.userId, activity);
                             var imagemap = [
                                 {
                                     "type": "uri",
@@ -476,7 +479,7 @@ app.post('/', function (request, response) {
                                 else logger.info(result);
                             });
                         }
-                    }.bind({ results: results[idx] }));
+                    }.bind({ results: results[idx] , tentative_activity: tentative_activity}));
                 } else if (action == 'searchactivity') {
 
                 } else if (action == 'isactiveactivity') {
