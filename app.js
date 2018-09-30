@@ -357,6 +357,23 @@ app.get('/member', function (request, response) {
     }.bind({ req: request, res: response }));
 });
 
+app.get('/map/:location', function (request, response) {
+    var loction = request.params.loction;
+    var lat = loction.splice(',')[0];
+    var lng = loction.splice(',')[1];
+    console.log('GET /member');
+    var fs = require('fs');
+    request.header("Content-Type", 'text/html');
+    fs.readFile(__dirname + '/pages/map.html', 'utf8', function (err, data) {
+        if (err) {
+            this.res.send(err);
+        }
+        data = data +
+            '<script type="text/javascript"> var lat = "' + lat+ '"; </script>'
+            + '<script type="text/javascript"> var lng = '+lng + ';</script>'
+        this.res.send(data);
+    }.bind({ req: request, res: response }));
+});
 app.post("/index", function (req, res, next) {
     res.render("registOK");
 });
@@ -513,7 +530,7 @@ app.post('/', function (request, response) {
                             });
                         }
                     }
-                    
+
                 } else if (results[idx].type == 'postback') {
                     var action = results[idx].postback.data.split('=')[1];
                     logger.info('回傳使用者執行動作: ' + action);
@@ -647,16 +664,16 @@ app.post('/', function (request, response) {
                             if (!result) logger.error(result);
                             else logger.info(result);
                         });
-                    } 
+                    }
                     else if (action == 'leaveActivity') {
-                        linedb.get_shuangjious(function (err,shuangjious) {
+                        linedb.get_shuangjious(function (err, shuangjious) {
                             for (var i in shuangjious) {
                                 for (var j in shuangjious[i].participant) {
                                     if (shuangjious[i].participant[j] == this.user_id) {
                                         shuangjious[i].participant.splice(j, 1)
                                     }
                                 }
-                                linedb.set_participanttbyhuangjiouid(this.user_id, shuangjious[i].shuangjiouid, shuangjious[i].participant,function(){
+                                linedb.set_participanttbyhuangjiouid(this.user_id, shuangjious[i].shuangjiouid, shuangjious[i].participant, function () {
 
                                 })
                             }
@@ -686,11 +703,11 @@ app.post('/', function (request, response) {
                                         }
                                     ]
                                 }
-                                linemessage.SendMessageAndQuickReply(user_id, "加入活動成功", "linehack2018", this.replyToken,quickreply, function (result) {
+                                linemessage.SendMessageAndQuickReply(user_id, "加入活動成功，爽主資料: " + description, "linehack2018", this.replyToken, quickreply, function (result) {
                                     if (!result) logger.error(result);
                                     else logger.info(result);
                                 });
-                            }.bind({ replyToken: this.replyToken }))
+                            }.bind({ replyToken: this.replyToken, description: shuangjious[0].description }))
                         }.bind({ user_id: results[idx].source.userId, replyToken: results[idx].replyToken, action: action }))
                         //
                     }
@@ -701,31 +718,92 @@ app.post('/', function (request, response) {
     }
     response.send('');
 });
-function manual_seearch(lat, lng, callback) {
+function manual_seearch(activity_type, lat, lng, user_id, replyToken, callback) {
+    //this.getdistance = function (lat1, lng1, lat2, lng2)
+    //this.get_shuangjious = function (callback) {
     logger.info("manual_seearch: ......................................")
     var location_compare = [];
-    linedb.get_shuangjious(function (err,shuangjious) {
+    linedb.get_shuangjious(function (shuangjious) {
         logger.info("shuangjious: " + JSON.stringify(shuangjious, null, 2))
         for (var idx = 0; idx < shuangjious.length; idx++) {
-            logger.info("idx距離: " + linedb.getdistance(shuangjious[idx].latitude, shuangjious[idx].longitude, lat, lng))
-            if (location_compare.length == 0) {
-                location_compare.push(shuangjious[idx])
-            }
-            else {
-                for (var idy = 0; idy < location_compare.length; idy++) {
-                    if (linedb.getdistance(shuangjious[idx].latitude, shuangjious[idx].longitude, lat, lng) <=
-                        linedb.getdistance(location_compare[idy].latitude, location_compare[idy].longitude, lat, lng)) {
-                        for (var idz = location_compare.length; idz > idy; idz--) {
-                            location_compare[idz] = location_compare[idz - 1];
+            logger.info(idx + " :距離: " + linedb.getdistance(Number(shuangjious[idx].latitude), Number(shuangjious[idx].longitude), Number(lat), Number(lng)))
+            if (shuangjious[idx].latitude != null && shuangjious[idx].longitude != null) {
+                /*
+                if (activity_type != "不設限") {
+                    if (linedb.getdistance(Number(shuangjious[idx].latitude), Number(shuangjious[idx].longitude), Number(lat), Number(lng)) < 12000)
+                        location_compare.push(shuangjious[idx])
+                }
+                else {
+                    if (shuangjious[idx].type == activity_type)
+                        if (linedb.getdistance(Number(shuangjious[idx].latitude), Number(shuangjious[idx].longitude), Number(lat), Number(lng)) < 12000)
+                            location_compare.push(shuangjious[idx])
+                }*/
+                if (linedb.getdistance(Number(shuangjious[idx].latitude), Number(shuangjious[idx].longitude), Number(lat), Number(lng)) < 1000) {
+                    if (activity_type == "不設限") {
+                        logger.info("activity_type : " + activity_type)
+                        if (location_compare.length == 0) {
+                            location_compare.push(shuangjious[idx])
                         }
-                        location_compare[idy] = location_compare[idx];
-                    }
+                        else {
+                            for (var idy = 0; idy < location_compare.length; idy++) {
+                                logger.info(idy + " : " + JSON.stringify(location_compare, null, 2))
 
+                                if (linedb.getdistance(Number(shuangjious[idx].latitude), Number(shuangjious[idx].longitude), Number(lat), Number(lng)) <=
+                                    linedb.getdistance(Number(location_compare[idy].latitude), Number(location_compare[idy].longitude), Number(lat), Number(lng))) {
+                                    logger.info("爽揪<location_compare")
+                                    for (var idz = location_compare.length; idz > idy; idz--) {
+                                        location_compare[idz] = location_compare[idz - 1];
+                                    }
+                                    location_compare[idy] = shuangjious[idx];
+                                    logger.info("新增在location_compare: 位置" + idy + ".....................")
+                                    logger.info(idy + " : " + JSON.stringify(location_compare, null, 2))
+                                    break;
+                                }
+                                logger.info("新增在location_compare最後面.....................")
+                                if (idy == location_compare.length - 1) {
+                                    location_compare.push(shuangjious[idx])
+                                    break;
+                                }
+
+                            }
+                        }
+                    }
+                    else {
+                        logger.info("activity_type : " + activity_type)
+                        if (shuangjious[idx].type == activity_type) {
+                            if (location_compare.length == 0) {
+                                location_compare.push(shuangjious[idx])
+                            }
+                            else {
+                                for (var idy = 0; idy < location_compare.length; idy++) {
+                                    logger.info(idy + " : " + JSON.stringify(location_compare, null, 2))
+                                    if (linedb.getdistance(Number(shuangjious[idx].latitude), Number(shuangjious[idx].longitude), Number(lat), Number(lng)) <=
+                                        linedb.getdistance(Number(location_compare[idy].latitude), Number(location_compare[idy].longitude), Number(lat), Number(lng))) {
+                                        logger.info("爽揪<location_compare")
+                                        for (var idz = location_compare.length; idz > idy; idz--) {
+                                            location_compare[idz] = location_compare[idz - 1];
+                                        }
+                                        location_compare[idy] = shuangjious[idx];
+                                        logger.info("新增在location_compare: 位置" + idy + ".....................")
+                                        logger.info(idy + " : " + JSON.stringify(location_compare, null, 2))
+                                        break;
+                                    }
+                                    if (idy == location_compare.length - 1) {
+                                        logger.info("新增在location_compare最後面.....................")
+                                        location_compare.push(shuangjious[idx])
+                                        break;
+                                    }
+                                }
+                            }
+
+                        }
+
+                    }
                 }
             }
         }
-        logger.info("location_compare: " + JSON.stringify(location_compare, null, 2))
-        callback(true)
+        logger.info("location_compare結果: " + JSON.stringify(location_compare, null, 2))
+        callback(user_id, replyToken, location_compare, true)
     })
 
 }

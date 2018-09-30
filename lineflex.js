@@ -271,6 +271,23 @@ var lineflex = function (logger) {
                                             "flex": 4
                                         }
                                     ]
+                                },
+                                {
+                                    "type": "box",
+                                    "layout": "baseline",
+                                    "spacing": "sm",
+                                    "contents": [
+                                        {
+                                            "type": "button",
+                                            "style": "link",
+                                            "height": "sm",
+                                            "action": {
+                                                "type": "uri",
+                                                "label": "活動地點",
+                                                "uri": "https://linehack2018.azurewebsites.net/map/" + activity.latitude + ',' + activity.longitude
+                                            }
+                                        }
+                                    ]
                                 }
                             ]
                         }
