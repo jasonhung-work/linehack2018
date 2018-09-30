@@ -188,7 +188,7 @@ var linemongodb = function () {
     this.delete_shuangjioubyhost = function (host, callback) {
         console.log('delete_shuangjioubyhost: host=' + host);
 
-        this.ShuangJiou.deleteOne({ 'host': host }, shuangjiou, function (err) {
+        this.ShuangJiou.deleteOne({ 'host': host }, function (err) {
             if (err) {
                 callback(err);
             }
