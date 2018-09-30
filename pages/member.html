@@ -157,7 +157,8 @@
 					$('#classbox').css('width', '750px');
 				}
 				getprofile();
-				$('#membersdata')
+				for(var idx =0; idx<2; idx++){
+					$('#membersdata')
 					 .append(
 						 $('<tr>')
 						  .append(
@@ -165,7 +166,7 @@
 								  $('<img>').attr('src','https://lh5.ggpht.com/0VYAvZLR9YhosF-thqm8xl8EWsCfrEY_uk2og2f59K8IOx5TfPsXjFVwxaHVnUbuEjc=w170')
 								  .dblclick(function () {
 									  alert('已完成點名');
-									  this.attr('src','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHPPEcQg7pgHlUIvgp5EliVbwZsd3eFA5ru5t6gaCvrX06v0PPrg') //圖片變黑URL
+									  $(this).attr('src','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHPPEcQg7pgHlUIvgp5EliVbwZsd3eFA5ru5t6gaCvrX06v0PPrg') //圖片變黑URL
 								  })
 							  )
 						  )
@@ -177,6 +178,7 @@
 							)
 						)
 					)
+				}
 			};
 			function getprofile(){
 				liff.init(function () {
