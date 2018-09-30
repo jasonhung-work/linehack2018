@@ -435,44 +435,47 @@ app.post('/', function (request, response) {
                 if (action == 'createactivity') {
                     var activity = new shuangjiou();
                     linedb.get_shuangjioubyhost(results[idx].source.userId, function (err, step_activity) {
-                        activity.shuangjiouid = step_activity.shuangjiouid;
-                        activity.name = step_activity.name;
-                        activity.description = step_activityu.description;
-                        activity.starttime = step_activity.starttime;
-                        activity.endtime = step_activity.endtime;
-                        activity.type = step_activity.type;
-                        activity.host = step_activity.userId;
-                        activity.number = step_activity.number;
-                        activity.fare = step_activity.fare;
-                        activity.latitude = step_activity.latitude;
-                        activity.longitude = step_activity.longitude;
-                        
-                    });
-                    if (tentative_activity.has(results[idx].source.userId)) {
-                        linemessage.SendMessage(results[idx].source.userId, "不好意思，您還有一個活動還未結束，請結束後在建立新的活動", "linehack2018", results[idx].replyToken, function (result) {
-                            if (!result) logger.error(result);
-                            else logger.info(result);
-                        });
-                    } else {
-                        activity.shuangjiouid = guid();
-                        tentative_activity.set(results[idx].source.userId, activity);
-                        var imagemap = [
-                            {
-                                "type": "uri",
-                                "linkUri": "line://nv/location",
-                                "area": {
-                                    "x": 0,
-                                    "y": 0,
-                                    "width": 1040,
-                                    "height": 1040
+                        if (step_activity) {
+                            activity.shuangjiouid = step_activity.shuangjiouid;
+                            activity.name = step_activity.name;
+                            activity.description = step_activityu.description;
+                            activity.starttime = step_activity.starttime;
+                            activity.endtime = step_activity.endtime;
+                            activity.type = step_activity.type;
+                            activity.host = step_activity.userId;
+                            activity.number = step_activity.number;
+                            activity.fare = step_activity.fare;
+                            activity.latitude = step_activity.latitude;
+                            activity.longitude = step_activity.longitude;
+                            tentative_activity.set(activity.host, activity);
+                        }
+
+                        if (tentative_activity.has(results[idx].source.userId)) {
+                            linemessage.SendMessage(results[idx].source.userId, "不好意思，您還有一個活動還未結束，請結束後在建立新的活動", "linehack2018", results[idx].replyToken, function (result) {
+                                if (!result) logger.error(result);
+                                else logger.info(result);
+                            });
+                        } else {
+                            activity.shuangjiouid = guid();
+                            tentative_activity.set(results[idx].source.userId, activity);
+                            var imagemap = [
+                                {
+                                    "type": "uri",
+                                    "linkUri": "line://nv/location",
+                                    "area": {
+                                        "x": 0,
+                                        "y": 0,
+                                        "width": 1040,
+                                        "height": 1040
+                                    }
                                 }
-                            }
-                        ]
-                        linemessage.SendImagemap(results[idx].source.userId, "https://linehack2018.azurewebsites.net/image/location.jpg", "This is an imagemap", imagemap, 'linehack2018', results[idx].replyToken, function (result) {
-                            if (!result) logger.error(result);
-                            else logger.info(result);
-                        });
-                    }
+                            ]
+                            linemessage.SendImagemap(results[idx].source.userId, "https://linehack2018.azurewebsites.net/image/location.jpg", "This is an imagemap", imagemap, 'linehack2018', results[idx].replyToken, function (result) {
+                                if (!result) logger.error(result);
+                                else logger.info(result);
+                            });
+                        }
+                    });
                 } else if (action == 'searchactivity') {
 
                 } else if (action == 'isactiveactivity') {
