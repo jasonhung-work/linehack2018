@@ -117,6 +117,50 @@ var lineflex = function (logger) {
                                         "flex": 4
                                     }
                                 ]
+                            },
+                            {
+                                "type": "box",
+                                "layout": "baseline",
+                                "spacing": "sm",
+                                "contents": [
+                                    {
+                                        "type": "text",
+                                        "text": "活動費用:",
+                                        "color": "#aaaaaa",
+                                        "size": "sm",
+                                        "flex": 2
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": activity.fare,
+                                        "wrap": true,
+                                        "color": "#666666",
+                                        "size": "sm",
+                                        "flex": 4
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "box",
+                                "layout": "baseline",
+                                "spacing": "sm",
+                                "contents": [
+                                    {
+                                        "type": "text",
+                                        "text": "活動地點:",
+                                        "color": "#aaaaaa",
+                                        "size": "sm",
+                                        "flex": 2
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": activity.latitude + ',' + activity.longitude,
+                                        "wrap": true,
+                                        "color": "#666666",
+                                        "size": "sm",
+                                        "flex": 4
+                                    }
+                                ]
                             }
                         ]
                     }
@@ -150,12 +194,7 @@ var lineflex = function (logger) {
 
     this.CreateActivityFlexCarousel = function (activitys) {
         var flexs = [];
-        var length;
-        if (activitys.length > 5)
-            length = 5;
-        else
-            length = activitys.length;
-        for (var index = 0; index < length; index++) {
+        for (var index = 0; index < activitys.length; index++) {
             var activity = activitys[index];
             var url = '';
             if (activity.type == 'eat')
@@ -165,7 +204,6 @@ var lineflex = function (logger) {
             else if (activity.type == 'sleep')
                 url = config.image.activity_flex.stay;
             var activity_flex = {
-                "type": "bubble",
                 "hero": {
                     "type": "image",
                     "url": url,
@@ -271,6 +309,50 @@ var lineflex = function (logger) {
                                             "flex": 4
                                         }
                                     ]
+                                },
+                                {
+                                    "type": "box",
+                                    "layout": "baseline",
+                                    "spacing": "sm",
+                                    "contents": [
+                                        {
+                                            "type": "text",
+                                            "text": "活動費用:",
+                                            "color": "#aaaaaa",
+                                            "size": "sm",
+                                            "flex": 2
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": activity.fare,
+                                            "wrap": true,
+                                            "color": "#666666",
+                                            "size": "sm",
+                                            "flex": 4
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "box",
+                                    "layout": "baseline",
+                                    "spacing": "sm",
+                                    "contents": [
+                                        {
+                                            "type": "text",
+                                            "text": "活動地點:",
+                                            "color": "#aaaaaa",
+                                            "size": "sm",
+                                            "flex": 2
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": activity.latitude + ',' + activity.longitude,
+                                            "wrap": true,
+                                            "color": "#666666",
+                                            "size": "sm",
+                                            "flex": 4
+                                        }
+                                    ]
                                 }
                             ]
                         }
@@ -304,7 +386,7 @@ var lineflex = function (logger) {
 
         var more_activity_flex = {
             "type": "carousel",
-            "contents": flexs
+            "contents" : flexs
         }
         return more_activity_flex;
     }

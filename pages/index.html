@@ -109,7 +109,7 @@
                         		</div>-->
                             </div>
                             <div class="form-bottom">
-			                    <form role="form" action="" method="post" class="registration-form">
+			                    <!--<form role="form" action="" method="post" class="registration-form">-->
 			                    	<div class="form-group">
 			                    		<label class="sr-only-focusable" for="form-active-name" style="color:white">活動名稱</label>
 			                        	<input type="text" name="form-active-name" placeholder="活動名稱..." class="form-active-name form-control" id="form-active-name">
@@ -120,8 +120,8 @@
 			                        	<!--<input type="text" name="form-last-name" placeholder="Last name..." class="form-last-name form-control" id="form-last-name">-->
 										<select  class="active-type-lg form-control" style="height: 50px" id="form-active-type">
 											<option value="eat">飲食</option>
-											<option value="sale">特賣</option>
-											<option value="sleep">住宿</option>
+											<option value="sale">購物</option>
+											<option value="sleep">旅行</option>
 										</select>
 			                        </div>
 									<div class="form-group">
@@ -133,12 +133,17 @@
 			                        	<input type="text" name="form-active-description" placeholder="活動描述..." class="form-active-description form-control" id="form-active-description">
 			                        </div>
 									<div class="form-group">
+			                    		<label class="sr-only-focusable" for="form-active-cash" style="color:white">活動費用</label>
+			                        	<input type="number" name="form-active-cash" placeholder="活動費用..." class="form-active-cash form-control" id="form-active-cash">
+			                        </div>
+									<div class="form-group">
 			                        	<label class="sr-only-focusable" for="form-datetime" style="color:white">活動結束時間</label>
-			                        	<input type="datetime-local" name="form-datetime" class="form-datetime form-control" id="form-datetime" style="height: 50px">
+			                        	<input type="datetime-local" name="form-datetime" class="form-datetime form-control" id="form-datetime"  style="height: 50px" value="2018-09-30T12:00">
+										<!--<input type="text" name="form-datetime" class="simple_date form-control" id="form-datetime" style="height: 50px" value="2018-09-29T12:00">-->
 			                        </div>
 									<div class="form-group">
 			                        	<label class="sr-only-focusable" for="form-guy-name" style="color:white">主辦人姓名</label>
-			                        	<input type="text" name="form-guy-name" placeholder="主辦人姓名..." class="form-guy-name form-control" id="form-guy-name" style="height: 50px">
+			                        	<input type="text" name="form-guy-name" placeholder="主辦人姓名..." class="form-guy-name form-control" id="form-guy-name">
 			                        </div>
 									<div class="form-group">
 										<label class="sr-only-focusable" for="form-guy-sex" style="color:white">主辦人性別</label>
@@ -159,7 +164,8 @@
 										</select>
 			                        </div>
 			                        <button type="submit" class="btn" onclick="submitdata()">確認送出開始揪團</button>
-			                    </form>
+									<!--<input type="submit" class="btn" onclick="submitdata()">確認送出開始揪團</button>-->
+			                    <!--</form>-->
 		                    </div>
                         </div>
                     </div>
@@ -188,43 +194,59 @@
 				if(wid>=760){
 					$('#classbox').css('width', '750px');
 				}
-			};
+			}
 			function submitdata(){
-				liff.init(function () {
-                liff.getProfile().then(function (profile) {
-                    var userId = JSON.stringify(profile.userId);
-					var name = $('#form-active-name').val();
-					var type = $('#form-active-type').val();
-					var number = $('#form-active-numbers').val();
-					var description = $('#form-active-description').val();
-					var end_time = $('#form-datetime').val();
-					var hostname = $('#form-guy-name').val();
-					var gender = $('#form-guy-sex').val();
-					var clothes = $('#form-guy-clothes').val();
-					var hat = $('#form-guy-hat').val();
-                    var data = {
-						"shuangjiou":{
-							"name" : name,
-							"description" : description,
-							"end_time" : end_time,
-							"type" : type,
-							"number" : number
-						},
-						"host":{
-							"userId" : userId,
-                        	"name" : hostname,
-							"gender" : gender,
-							"clothes" : clothes,
-							"hat" : hat
-						}
-                    }
-                    $.post('/api/shungjiou', data, function () {
-                        liff.closeWindow();
-                    });
-                }).catch(function (error) {
-                    window.alert("Error getting profile: " + error);
-                });
-            }, function (err) { console.log("error: " + err); })
+				var fare = $('#form-active-cash').val();
+				var endtime = $('#form-datetime').val();
+				if(fare=='' || fare==' '){
+					alert('Oops!您忘了輸入活動費用~再試一次~');
+				}else if(endtime=='' || endtime==' '){
+					alert('Oops!您忘了輸入活動結束時間~再試一次~');
+				}else{
+					liff.init(function () {
+                	liff.getProfile().then(function (profile) {
+                    	var userId = JSON.stringify(profile.userId);
+						var name = $('#form-active-name').val();
+						var type = $('#form-active-type').val();
+						var number = $('#form-active-numbers').val();
+						var description = $('#form-active-description').val();
+						var fare = $('#form-active-cash').val();
+						var endtime = $('#form-datetime').val();
+						var hostname = $('#form-guy-name').val();
+						var gender = $('#form-guy-sex').val();
+						var clothes = $('#form-guy-clothes').val();
+						var hat = $('#form-guy-hat').val();
+                    	var data = {
+							"shuangjiou":{
+								"name" : name,
+								"description" : description,
+								"endtime" : endtime,
+								"type" : type,
+								"number" : number,
+								"fare" : fare
+							},
+								"host":{
+									"userId" : userId,
+                        			"name" : hostname,
+									"gender" : gender,
+									"clothes" : clothes,
+									"hat" : hat
+							}
+                    	}
+                    	$.post('/api/shungjiou', data, function () {
+                        	liff.closeWindow();
+						/*liff.openWindow({
+  							url:'http://linehack2018.azurewebsites.net/member',
+  							external:false
+						});*/
+                    	});
+                	}).catch(function (error) {
+                    	window.alert("Error getting profile: " + error);
+                	});
+            		}, function (err) { console.log("error: " + err); })
+				
+			}//end else
+				
 		};
 		</script>
     </body>
