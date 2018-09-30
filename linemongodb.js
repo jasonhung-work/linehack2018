@@ -105,7 +105,20 @@ var linemongodb = function () {
             }
         });
     }
+    //根據Id更新參加人物資訊
+    this.set_participanttbyhuangjiouid = function (userid, shuangjiouid, participant, callback) {
+        console.log('set_participanttbyhuangjiouid' + shuangjiouid + ' participant=' + JSON.stringify(participant));
 
+        this.ShuangJiou.updateOne({ 'shuangjiouid': shuangjiouid }, { $set: { "participant": participant } }, function (err) {
+            if (err) {
+                callback(err);
+            }
+            else {
+                console.log('participant update successfully');
+                callback(userid);
+            }
+        });
+    }
     //根據BeaconId取得爽揪資訊
     this.get_shuangjioubylocation = function (location, callback) {
         console.log('get_shuangjioubybeacon: location=' + location);
