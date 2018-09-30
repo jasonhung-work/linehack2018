@@ -73,6 +73,7 @@ var linemongodb = function () {
     //根據主辦人取得爽揪資訊
     this.get_shuangjioubyhost = function (host, callback) {
         console.log('get_shuangjioubybeacon: host=' + host);
+<<<<<<< HEAD
         
         this.ShuangJiou.findOne({ 'host': host }, function (err, shuangjiou) {
             if (err) {
@@ -93,6 +94,35 @@ var linemongodb = function () {
         console.log('get_shuangjioubyid: shuangjiouid=' + shuangjiouid);
 
         this.ShuangJiou.find({ 'shuangjiouid': shuangjiouid }, function (err, shuangjious) {
+=======
+
+        this.ShuangJiou.findOne({ 'host': host }, function (err, shuangjiou) {
+>>>>>>> parent of 4663ac7... hi
+            if (err) {
+                callback(err);
+            }
+            else {
+                console.log('ShuangJiou get successfully');
+<<<<<<< HEAD
+                if (shuangjious)
+                    callback(null, shuangjious);
+=======
+                if (shuangjiou)
+                    callback(null, shuangjiou);
+>>>>>>> parent of 4663ac7... hi
+                else
+                    callback(null, null);
+            }
+        });
+    }
+
+<<<<<<< HEAD
+=======
+    //根據Id取得爽揪資訊
+    this.get_shuangjioubyshuangjiouid = function (shuangjiouid, callback) {
+        console.log('get_shuangjioubyid: shuangjiouid=' + shuangjiouid);
+
+        this.ShuangJiou.find({ 'shuangjiouid': shuangjiouid }, function (err, shuangjious) {
             if (err) {
                 callback(err);
             }
@@ -106,6 +136,7 @@ var linemongodb = function () {
         });
     }
 
+>>>>>>> parent of 4663ac7... hi
     //根據BeaconId取得爽揪資訊
     this.get_shuangjioubylocation = function (location, callback) {
         console.log('get_shuangjioubybeacon: location=' + location);
