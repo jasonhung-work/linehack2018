@@ -274,6 +274,7 @@ app.post('/api/shungjiou', function (request, response) {
 
 app.post('/api/guest', function (request, response) {
     var userId = request.body.userId;
+    userId. userid.split('"')[1];
     logger.info(userId);
     linedb.get_shuangjioubyhost(userId, function (err, host) {
         var data = [];
@@ -306,6 +307,7 @@ app.post('/api/guest', function (request, response) {
 
 app.post('/api/finish', function (request, response) {
     var userId = request.body.userId;
+    userId. userid.split('"')[1];
     if (tentative_activity.has(userId));
     tentative_activity.delete(data.host.userId);
     linedb.delete_hostbyuserid(userId, function (err, host) {
