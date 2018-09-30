@@ -719,25 +719,14 @@ app.post('/', function (request, response) {
     response.send('');
 });
 function manual_seearch(activity_type, lat, lng, user_id, replyToken, callback) {
-    //this.getdistance = function (lat1, lng1, lat2, lng2)
-    //this.get_shuangjious = function (callback) {
+
     logger.info("manual_seearch: ......................................")
     var location_compare = [];
-    linedb.get_shuangjious(function (shuangjious) {
+    linedb.get_shuangjious(function (err,shuangjious) {
         logger.info("shuangjious: " + JSON.stringify(shuangjious, null, 2))
         for (var idx = 0; idx < shuangjious.length; idx++) {
             logger.info(idx + " :距離: " + linedb.getdistance(Number(shuangjious[idx].latitude), Number(shuangjious[idx].longitude), Number(lat), Number(lng)))
             if (shuangjious[idx].latitude != null && shuangjious[idx].longitude != null) {
-                /*
-                if (activity_type != "不設限") {
-                    if (linedb.getdistance(Number(shuangjious[idx].latitude), Number(shuangjious[idx].longitude), Number(lat), Number(lng)) < 12000)
-                        location_compare.push(shuangjious[idx])
-                }
-                else {
-                    if (shuangjious[idx].type == activity_type)
-                        if (linedb.getdistance(Number(shuangjious[idx].latitude), Number(shuangjious[idx].longitude), Number(lat), Number(lng)) < 12000)
-                            location_compare.push(shuangjious[idx])
-                }*/
                 if (linedb.getdistance(Number(shuangjious[idx].latitude), Number(shuangjious[idx].longitude), Number(lat), Number(lng)) < 1000) {
                     if (activity_type == "不設限") {
                         logger.info("activity_type : " + activity_type)
