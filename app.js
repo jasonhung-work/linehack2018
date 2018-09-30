@@ -287,13 +287,18 @@ app.post('/api/shungjiou', function (request, response) {
 
 app.post('/api/guest', function(request, response) {
     var userId = request.body.userId;
+<<<<<<< HEAD
     linedb.get_shuangjioubyhost('"' + userId + '"', function(err, host) {
+=======
+    linedb.get_shuangjioubyhost(userId, function (err, host) {
+>>>>>>> parent of 676c3f3... fix
         var data = [];
         if (err) {
             logger.info('fail: ' + err);
             this.res.send(err);
         }
         else {
+<<<<<<< HEAD
             var activity = new shuangjiou();
             activity.name = data.shuangjiou.name;
             activity.description = data.shuangjiou.description;
@@ -309,6 +314,28 @@ app.post('/api/guest', function(request, response) {
                 else
                     logger.info('success');
             });
+=======
+            logger.info('success');
+            logger.info(host);
+            if (host != null && host.participant) {
+                for (var index = 0; index < host.participant.length; index++) { //有問題
+                    linedb.get_userbyuserid(host.participant[index], function (err, user) {
+                        if (err) {
+                            logger.info('fail: ' + err);
+                        }
+                        else {
+                            logger.info('success');
+                            this.data.push(user);
+                        }
+                    }.bind({ data: data }));
+                }
+                this.res.send(data);
+            }
+            this.res.send('');
+        }
+    }.bind({ res: response }));
+});
+>>>>>>> parent of 676c3f3... fix
 
 app.post('/api/finish', function(request, response) {
     var userId = request.body.userId;
@@ -481,6 +508,7 @@ app.post('/', function (request, response) {
                     user_flag.set(results[idx].source.userId, "location")
                     userActivityType.set(results[idx].source.userId, results[idx].message.text)
                 }
+<<<<<<< HEAD
             }
             else {
                 var acct = results[idx].source.userId;
@@ -564,12 +592,41 @@ app.post('/', function (request, response) {
                         var activity = new shuangjiou();
                         if (tentative_activity.has(results[idx].source.userId)) {
                             linemessage.SendMessage(results[idx].source.userId, "不好意思，您還有一個活動還未結束，請結束後在建立新的活動", "linehack2018", results[idx].replyToken, function (result) {
+=======
+            } else if (results[idx].type == 'postback') {
+                var action = results[idx].postback.data.split('=')[1];
+                logger.info('回傳使用者執行動作: ' + action);
+                if (action == 'createactivity') {
+                    var activity = new shuangjiou();
+                    linedb.get_shuangjioubyhost(results[idx].source.userId, function (err, step_activity) {
+                        if (step_activity) {
+                            activity.shuangjiouid = step_activity.shuangjiouid;
+                            activity.name = step_activity.name;
+                            activity.description = step_activity.description;
+                            activity.starttime = step_activity.starttime;
+                            activity.endtime = step_activity.endtime;
+                            activity.type = step_activity.type;
+                            activity.host = step_activity.userId;
+                            activity.number = step_activity.number;
+                            activity.fare = step_activity.fare;
+                            activity.latitude = step_activity.latitude;
+                            activity.longitude = step_activity.longitude;
+                            tentative_activity.set(activity.host, activity);
+                        }
+
+                        if (tentative_activity.has(this.results.source.userId)) {
+                            linemessage.SendMessage(this.results.source.userId, "不好意思，您還有一個活動還未結束，請結束後在建立新的活動", "linehack2018", this.results.replyToken, function (result) {
+>>>>>>> parent of 676c3f3... fix
                                 if (!result) logger.error(result);
                                 else logger.info(result);
                             });
                         } else {
                             activity.shuangjiouid = guid();
+<<<<<<< HEAD
                             tentative_activity.set(results[idx].source.userId, activity);
+=======
+                            tentative_activity.set(this.results.source.userId, activity);
+>>>>>>> parent of 676c3f3... fix
                             var imagemap = [
                                 {
                                     "type": "uri",
@@ -587,7 +644,37 @@ app.post('/', function (request, response) {
                                 else logger.info(result);
                             });
                         }
+<<<<<<< HEAD
                     } else if (action == 'searchactivity') {
+=======
+                    }.bind({ results: results[idx] }));
+                } else if (action == 'searchactivity') {
+
+                } else if (action == 'isactiveactivity') {
+                    var buttons = [
+                        {
+                            "type": "postback",
+                            "label": "Yes",
+                            "data": "action=setbeaconon"
+                        },
+                        {
+                            "type": "postback",
+                            "label": "No",
+                            "data": "action=setbeaconoff"
+                        }
+                    ]
+                    linemessage.SendConfirm(results[idx].source.userId, '請問您想要在經過beacon時，收到活動資訊嗎?', buttons, 'this is a confirm', 'linehack2018', results[idx].replyToken, function (result) {
+                        if (!result) logger.error(result);
+                        else logger.info(result);
+                    });
+                } else if (action == 'setbeaconon') {
+
+                    linemessage.SendMessage(results[idx].source.userId, '您已將活動通知開啟', 'linehack2018', results[idx].replyToken, function (result) {
+                        if (!result) logger.error(result);
+                        else logger.info(result);
+                    });
+                } else if (action == 'setbeaconoff') {
+>>>>>>> parent of 676c3f3... fix
 
                     } else if (action == 'isactiveactivity') {
 
