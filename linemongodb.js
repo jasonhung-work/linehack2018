@@ -381,7 +381,7 @@ var linemongodb = function () {
     this.delete_hostbyuserid = function (userid, callback) {
         console.log('delete_hostbyuserid: userid=' + userid);
 
-        this.Host.deleteOne({ 'userid': userid }, host, function (err) {
+        this.Host.deleteOne({ 'userid': userid }, function (err) {
             if (err) {
                 callback(err);
             }
