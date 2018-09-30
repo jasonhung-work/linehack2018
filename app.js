@@ -358,9 +358,9 @@ app.get('/member', function (request, response) {
 });
 
 app.get('/map/:location', function (request, response) {
-    var loction = request.params.loction;
-    var lat = loction.split(',')[0];
-    var lng = loction.split(',')[1];
+    var location = request.params.location;
+    var lat = location.split(',')[0];
+    var lng = location.split(',')[1];
     console.log('GET /member');
     var fs = require('fs');
     request.header("Content-Type", 'text/html');
