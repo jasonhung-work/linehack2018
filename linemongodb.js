@@ -73,7 +73,7 @@ var linemongodb = function () {
     //根據主辦人取得爽揪資訊
     this.get_shuangjioubyhost = function (host, callback) {
         console.log('get_shuangjioubybeacon: host=' + host);
-
+        
         this.ShuangJiou.findOne({ 'host': host }, function (err, shuangjiou) {
             if (err) {
                 callback(err);
