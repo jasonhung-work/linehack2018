@@ -147,6 +147,8 @@
 				if(wid>=760){
 					$('#classbox').css('width', '750px');
 				}
+				$('tr').remove();
+				$('td').remove();
 				getprofile();
 				
 			};
@@ -166,8 +168,6 @@
                     		data: { userId:  userId },
 		                    success: function (ret) {
 								for(var idx =0; idx<ret.length; idx++){
-									$('tr').remove();
-									$('td').remove();
 									$('#membersdata')
 					 				.append(
 						 				$('<tr>')
@@ -205,7 +205,7 @@
 						var data = {
 							"userId" : userId
 						}
-                    	$.post('/api/guest', data, function () {
+                    	$.post('/api/finish', data, function () {
 							liff.closeWindow();
                     	});
                 	}).catch(function (error) {
