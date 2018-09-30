@@ -117,6 +117,28 @@ var lineflex = function (logger) {
                                         "flex": 4
                                     }
                                 ]
+                            },
+                            {
+                                "type": "box",
+                                "layout": "baseline",
+                                "spacing": "sm",
+                                "contents": [
+                                    {
+                                        "type": "text",
+                                        "text": "活動費用:",
+                                        "color": "#aaaaaa",
+                                        "size": "sm",
+                                        "flex": 2
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": activity.fare,
+                                        "wrap": true,
+                                        "color": "#666666",
+                                        "size": "sm",
+                                        "flex": 4
+                                    }
+                                ]
                             }
                         ]
                     }
@@ -259,6 +281,28 @@ var lineflex = function (logger) {
                                         {
                                             "type": "text",
                                             "text": Date(activity.endtime),
+                                            "wrap": true,
+                                            "color": "#666666",
+                                            "size": "sm",
+                                            "flex": 4
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "box",
+                                    "layout": "baseline",
+                                    "spacing": "sm",
+                                    "contents": [
+                                        {
+                                            "type": "text",
+                                            "text": "活動費用:",
+                                            "color": "#aaaaaa",
+                                            "size": "sm",
+                                            "flex": 2
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": activity.fare,
                                             "wrap": true,
                                             "color": "#666666",
                                             "size": "sm",

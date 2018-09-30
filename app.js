@@ -93,125 +93,125 @@ function host() {
     this.location = '';
 }
 
-app.all('*', function(req, res, next) {
+app.all('*', function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type');
     next();
 });
 
-app.get('/api', function(request, response) {
+app.get('/api', function (request, response) {
     response.send('API is running');
 });
 
-app.get('/api/richmenulist', function(request, response) {
-    linerichmenu.GetAllRichMenu(function(result) {
+app.get('/api/richmenulist', function (request, response) {
+    linerichmenu.GetAllRichMenu(function (result) {
         if (result) response.send(result);
         else response.send(false);
     });
 });
 
-app.get('/api/richmenu/:richmenuid', function(request, response) {
+app.get('/api/richmenu/:richmenuid', function (request, response) {
     var richmenuid = request.params.richmenuid;
-    linerichmenu.GetRichMenu(richmenuid, function(result) {
+    linerichmenu.GetRichMenu(richmenuid, function (result) {
         if (result) response.send(result);
         else response.send(false);
     });
 });
 
-app.post('/api/richmenu', function(request, response) {
+app.post('/api/richmenu', function (request, response) {
     var richmenu = request.body.richmenu;
-    linerichmenu.CreateRichMenu(richmenu, function(result) {
+    linerichmenu.CreateRichMenu(richmenu, function (result) {
         if (result) response.send(result);
         else response.send(false);
     });
 });
 
-app.get('/api/richmenulist', function(request, response) {
-    linerichmenu.GetAllRichMenu(function(result) {
+app.get('/api/richmenulist', function (request, response) {
+    linerichmenu.GetAllRichMenu(function (result) {
         if (result) response.send(result);
         else response.send(false);
     });
 });
 
-app.get('/api/richmenu/:richmenuid', function(request, response) {
+app.get('/api/richmenu/:richmenuid', function (request, response) {
     var richmenuid = request.params.richmenuid;
-    linerichmenu.GetRichMenu(richmenuid, function(result) {
+    linerichmenu.GetRichMenu(richmenuid, function (result) {
         if (result) response.send(result);
         else response.send(false);
     });
 });
 
-app.post('/api/richmenu', function(request, response) {
+app.post('/api/richmenu', function (request, response) {
     var richmenu = request.body.richmenu;
-    linerichmenu.CreateRichMenu(richmenu, function(result) {
+    linerichmenu.CreateRichMenu(richmenu, function (result) {
         if (result) response.send(result);
         else response.send(false);
     });
 });
 
-app.delete('/api/richmenu/:richmenu', function(request, response) {
+app.delete('/api/richmenu/:richmenu', function (request, response) {
     var richmuneId = request.params.richmenuid;
-    linerichmenu.DeleteRichMenu(richmuneId, function(result) {
+    linerichmenu.DeleteRichMenu(richmuneId, function (result) {
         if (result) response.send(true);
         else response.send(false);
     });
 });
 
-app.put('/api/richmenu/defaultrichmenu', function(request, response) {
+app.put('/api/richmenu/defaultrichmenu', function (request, response) {
     var richmenuId = request.body.richmenuid;
-    linerichmenu.SetDefaultRichMenu(richmenuId, function(result) {
+    linerichmenu.SetDefaultRichMenu(richmenuId, function (result) {
         if (result) response.send(true);
         else response.send(false);
     });
 });
 
-app.put('/api/richmenu/link', function(request, response) {
+app.put('/api/richmenu/link', function (request, response) {
     var userId = request.body.userid;
     var richmenuId = request.body.richmenuid;
-    linerichmenu.LinkRichMenuToUser(userId, richmenuId, function(result) {
+    linerichmenu.LinkRichMenuToUser(userId, richmenuId, function (result) {
         if (result) response.send(true);
         else response.send(false);
     });
 });
 
-app.get('/api/liff', function(request, response) {
-    lineliff.GetAllLIFF(function(result) {
+app.get('/api/liff', function (request, response) {
+    lineliff.GetAllLIFF(function (result) {
         if (result) response.send(result);
         else response.send(false);
     });
 });
 
-app.post('/api/liff', function(request, response) {
+app.post('/api/liff', function (request, response) {
     var url = request.body.url;
-    lineliff.AddLIFF(url, function(result) {
+    lineliff.AddLIFF(url, function (result) {
         if (result) response.send(result);
         else response.send(false);
     });
 });
 
-app.put('/api/liff', function(request, response) {
+app.put('/api/liff', function (request, response) {
     var LIFF_ID = request.body.liff;
     var url = request.body.url;
-    lineliff.UpdateLIFF(LIFF_ID, url, function(result) {
+    lineliff.UpdateLIFF(LIFF_ID, url, function (result) {
         if (result) response.send(true);
         else response.send(false);
     });
 });
 
-app.delete('/api/liff/:liff', function(request, response) {
+app.delete('/api/liff/:liff', function (request, response) {
     var LIFF_ID = request.params.liff;
-    lineliff.DeleteLIFF(LIFF_ID, function(result) {
+    lineliff.DeleteLIFF(LIFF_ID, function (result) {
         if (result) response.send(true);
         else response.send(false);
     });
 });
 
-app.post('/api/beacon', function(request, response) {
+app.post('/api/beacon', function (request, response) {
     var beacon = new location();
     beacon.name = request.body.name;
     beacon.locationid = request.body.beacon_id;
-    linedb.create_location(beacon, function(err, hosts) {
+    linedb.create_location(beacon, function (err, hosts) {
         if (err) {
             logger.info('create beacon fail: ' + err);
             response.send('create beacon fail: ' + err);
@@ -221,7 +221,7 @@ app.post('/api/beacon', function(request, response) {
     });
 });
 
-app.post('/api/shungjiou', function(request, response) {
+app.post('/api/shungjiou', function (request, response) {
     logger.info('POST /api/shungjiou');
     logger.info(JSON.stringify(request.body));
     var data = request.body;
@@ -235,7 +235,8 @@ app.post('/api/shungjiou', function(request, response) {
         activity.type = data.shuangjiou.type;
         activity.host = data.host.userId;
         activity.number = data.shuangjiou.number;
-        linedb.create_shuangjiou(activity, function(err) {
+        activity.fare = data.shuangjiou.fare;
+        linedb.create_shuangjiou(activity, function (err) {
             if (err)
                 logger.error('fail: ' + err);
             else
@@ -250,7 +251,7 @@ app.post('/api/shungjiou', function(request, response) {
         organiser.clothes = data.host.clothes;
         organiser.hat = data.host.hat;
         organiser.shuangjiouid = activity.shuangjiouid;
-        linedb.create_host(organiser, function(err) {
+        linedb.create_host(organiser, function (err) {
             if (err)
                 logger.error('fail: ' + err);
             else
@@ -263,7 +264,7 @@ app.post('/api/shungjiou', function(request, response) {
                 "uri": "line://app/1610735667-3E0z5w6a"
             }
         ]
-        linemessage.SendButtons(data.host.userId, "您的活動已建立，可以點選以下按鈕查看參加者", buttons, "This is a button", "linehack2018", "", function(result) {
+        linemessage.SendButtons(data.host.userId, "您的活動已建立，可以點選以下按鈕查看參加者", buttons, "This is a button", "linehack2018", "", function (result) {
             if (!result) logger.error(result);
             else logger.info(result);
         });
@@ -271,9 +272,9 @@ app.post('/api/shungjiou', function(request, response) {
     }
 });
 
-app.post('/api/guest', function(request, response) {
+app.post('/api/guest', function (request, response) {
     var userId = request.body.userId;
-    linedb.get_shuangjioubyhost(userId, function(err, host) {
+    linedb.get_shuangjioubyhost(userId, function (err, host) {
         var data = [];
         if (err) {
             logger.info('fail: ' + err);
@@ -300,11 +301,11 @@ app.post('/api/guest', function(request, response) {
     }.bind({ res: response }));
 });
 
-app.post('/api/finish', function(request, response) {
+app.post('/api/finish', function (request, response) {
     var userId = request.body.userId;
-    if(tentative_activity.has(userId)); 
-        tentative_activity.delete(data.host.userId);
-    linedb.delete_hostbyuserid(userId, function(err, host) {
+    if (tentative_activity.has(userId));
+    tentative_activity.delete(data.host.userId);
+    linedb.delete_hostbyuserid(userId, function (err, host) {
         if (err) {
             logger.info('fail: ' + err);
         }
@@ -312,7 +313,7 @@ app.post('/api/finish', function(request, response) {
             logger.info('success');
         }
     });
-    linedb.delete_shuangjioubyhost(userId, function(err, shuangjiou) {
+    linedb.delete_shuangjioubyhost(userId, function (err, shuangjiou) {
         if (err) {
             logger.info('fail: ' + err);
         }
@@ -320,7 +321,7 @@ app.post('/api/finish', function(request, response) {
             logger.info('success');
         }
     });
-    linemessage.SendMessage(userId, "活動已完成，感謝您的使用!", "linehack2018", '', function(result) {
+    linemessage.SendMessage(userId, "活動已完成，感謝您的使用!", "linehack2018", '', function (result) {
         if (!result) logger.error(result);
         else {
             logger.info(result);
@@ -330,11 +331,11 @@ app.post('/api/finish', function(request, response) {
 });
 
 app.use(express.static('pages'));
-app.get('/index', function(request, response) {
+app.get('/index', function (request, response) {
     console.log('GET /index');
     var fs = require('fs');
     request.header("Content-Type", 'text/html');
-    fs.readFile(__dirname + '/pages/index.html', 'utf8', function(err, data) {
+    fs.readFile(__dirname + '/pages/index.html', 'utf8', function (err, data) {
         if (err) {
             this.res.send(err);
         }
@@ -342,11 +343,11 @@ app.get('/index', function(request, response) {
     }.bind({ req: request, res: response }));
 });
 
-app.get('/member', function(request, response) {
+app.get('/member', function (request, response) {
     console.log('GET /member');
     var fs = require('fs');
     request.header("Content-Type", 'text/html');
-    fs.readFile(__dirname + '/pages/member.html', 'utf8', function(err, data) {
+    fs.readFile(__dirname + '/pages/member.html', 'utf8', function (err, data) {
         if (err) {
             this.res.send(err);
         }
@@ -354,16 +355,16 @@ app.get('/member', function(request, response) {
     }.bind({ req: request, res: response }));
 });
 
-app.post("/index", function(req, res, next) {
+app.post("/index", function (req, res, next) {
     res.render("registOK");
 });
 
 app.use(express.static('resource'));
 
-app.get('/image/:picture', function(request, response) {
+app.get('/image/:picture', function (request, response) {
     var picture = request.params.picture;
     request.header("Content-Type", 'image/jpeg');
-    fs.readFile(__dirname + '/resource/' + picture, function(err, data) {
+    fs.readFile(__dirname + '/resource/' + picture, function (err, data) {
         if (err) {
             this.res.send(err);
         }
@@ -371,10 +372,10 @@ app.get('/image/:picture', function(request, response) {
     }.bind({ req: request, res: response }));
 });
 
-app.get('/image/location.jpg/1040', function(request, response) {
+app.get('/image/location.jpg/1040', function (request, response) {
     var picture = request.params.picture;
     request.header("Content-Type", 'image/jpeg');
-    fs.readFile(__dirname + '/resource/location.jpg', function(err, data) {
+    fs.readFile(__dirname + '/resource/location.jpg', function (err, data) {
         if (err) {
             this.res.send(err);
         }
@@ -384,7 +385,7 @@ app.get('/image/location.jpg/1040', function(request, response) {
 
 var send_location = false;
 // 接收來自 LINE 傳送的訊息
-app.post('/', function(request, response) {
+app.post('/', function (request, response) {
     logger.info("POST /");
     try {
         var results = request.body.events;
@@ -422,7 +423,7 @@ app.post('/', function(request, response) {
                                 "uri": "line://app/1610735667-PqWkJG9O"
                             }
                         ]
-                        linemessage.SendButtons(results[idx].source.userId, "請點選以下按鈕，輸入活動細節", buttons, "This is a button", "linehack2018", results[idx].replyToken, function(result) {
+                        linemessage.SendButtons(results[idx].source.userId, "請點選以下按鈕，輸入活動細節", buttons, "This is a button", "linehack2018", results[idx].replyToken, function (result) {
                             if (!result) logger.error(result);
                             else logger.info(result);
                         });
@@ -433,8 +434,22 @@ app.post('/', function(request, response) {
                 logger.info('回傳使用者執行動作: ' + action);
                 if (action == 'createactivity') {
                     var activity = new shuangjiou();
+                    linedb.get_shuangjioubyhost(results[idx].source.userId, function (err, step_activity) {
+                        activity.shuangjiouid = step_activity.shuangjiouid;
+                        activity.name = step_activity.name;
+                        activity.description = step_activityu.description;
+                        activity.starttime = step_activity.starttime;
+                        activity.endtime = step_activity.endtime;
+                        activity.type = step_activity.type;
+                        activity.host = step_activity.userId;
+                        activity.number = step_activity.number;
+                        activity.fare = step_activity.fare;
+                        activity.latitude = step_activity.latitude;
+                        activity.longitude = step_activity.longitude;
+                        
+                    });
                     if (tentative_activity.has(results[idx].source.userId)) {
-                        linemessage.SendMessage(results[idx].source.userId, "不好意思，您還有一個活動還未結束，請結束後在建立新的活動", "linehack2018", results[idx].replyToken, function(result) {
+                        linemessage.SendMessage(results[idx].source.userId, "不好意思，您還有一個活動還未結束，請結束後在建立新的活動", "linehack2018", results[idx].replyToken, function (result) {
                             if (!result) logger.error(result);
                             else logger.info(result);
                         });
@@ -453,7 +468,7 @@ app.post('/', function(request, response) {
                                 }
                             }
                         ]
-                        linemessage.SendImagemap(results[idx].source.userId, "https://linehack2018.azurewebsites.net/image/location.jpg", "This is an imagemap", imagemap, 'linehack2018', results[idx].replyToken, function(result) {
+                        linemessage.SendImagemap(results[idx].source.userId, "https://linehack2018.azurewebsites.net/image/location.jpg", "This is an imagemap", imagemap, 'linehack2018', results[idx].replyToken, function (result) {
                             if (!result) logger.error(result);
                             else logger.info(result);
                         });
@@ -473,19 +488,19 @@ app.post('/', function(request, response) {
                             "data": "action=setbeaconoff"
                         }
                     ]
-                    linemessage.SendConfirm(results[idx].source.userId, '請問您想要在經過beacon時，收到活動資訊嗎?', buttons, 'this is a confirm', 'linehack2018', results[idx].replyToken, function(result) {
+                    linemessage.SendConfirm(results[idx].source.userId, '請問您想要在經過beacon時，收到活動資訊嗎?', buttons, 'this is a confirm', 'linehack2018', results[idx].replyToken, function (result) {
                         if (!result) logger.error(result);
                         else logger.info(result);
                     });
                 } else if (action == 'setbeaconon') {
-                    
-                    linemessage.SendMessage(results[idx].source.userId, '您已將活動通知開啟', 'linehack2018', results[idx].replyToken, function(result) {
+
+                    linemessage.SendMessage(results[idx].source.userId, '您已將活動通知開啟', 'linehack2018', results[idx].replyToken, function (result) {
                         if (!result) logger.error(result);
                         else logger.info(result);
                     });
                 } else if (action == 'setbeaconoff') {
-                    
-                    linemessage.SendMessage(results[idx].source.userId, '您已將活動通知關閉', 'linehack2018', results[idx].replyToken, function(result) {
+
+                    linemessage.SendMessage(results[idx].source.userId, '您已將活動通知關閉', 'linehack2018', results[idx].replyToken, function (result) {
                         if (!result) logger.error(result);
                         else logger.info(result);
                     });
@@ -548,7 +563,7 @@ function manual_seearch(lat, lng, callback) {
     //this.get_shuangjious = function (callback) {
     logger.info("manual_seearch: ......................................")
     var location_compare = [];
-    linedb.get_shuangjious(function(shuangjious) {
+    linedb.get_shuangjious(function (shuangjious) {
         logger.info("shuangjious: " + JSON.stringify(shuangjious, null, 2))
         for (var idx = 0; idx < shuangjious.length; idx++) {
             logger.info("idx距離: " + linedb.getdistance(shuangjious[idx].latitude, shuangjious[idx].longitude, lat, lng))
@@ -576,11 +591,11 @@ function manual_seearch(lat, lng, callback) {
 function FollowEvent(acct) {
     logger.info('----------[Follow]---------');
     var new_user = new user();
-    linemessage.GetProfile(acct, function(user) {
+    linemessage.GetProfile(acct, function (user) {
         this.new_user.name = user.displayName;
         this.new_user.userid = user.userId;
         this.new_user.image = user.pictureUrl;
-        linedb.create_user(this.new_user, function(err) {
+        linedb.create_user(this.new_user, function (err) {
             if (err) logger.error('fail' + err);
             else logger.info('success');
         });
@@ -595,33 +610,33 @@ function BeanconEvent(event) {
     switch (event.beacon.type) {
         case "enter":
             var update_user = new user();
-            linemessage.GetProfile(event.source.userId, function(user) {
+            linemessage.GetProfile(event.source.userId, function (user) {
                 this.update_user.name = user.displayName;
                 this.update_user.userid = user.userId;
                 this.update_user.image = user.pictureUrl;
                 this.update_user.location.push(event.beacon.hwid);
-                linedb.set_userbyuserid(this.update_user.userid, this.update_user, function(err) {
+                linedb.set_userbyuserid(this.update_user.userid, this.update_user, function (err) {
                     if (err) logger.error('fail' + err);
                     else logger.info('success');
                 });
             }.bind({ update_user: update_user }));
-            linedb.enter_usertolocation(event.source.userId, event.beacon.hwid, function(err) {
+            linedb.enter_usertolocation(event.source.userId, event.beacon.hwid, function (err) {
                 if (err) logger.error(err);
             });
 
             //取得此user是否要推揪團訊息
-            linedb.get_userbyuserid(event.source.userId, function(err, user) {
+            linedb.get_userbyuserid(event.source.userId, function (err, user) {
                 if (err) logger.error('fail' + err);
                 else
                     if (user.pushenable) {
                         //取得此Beacon位置訊息
-                        linedb.get_locationbyid(this.hwid, function(err, location) {
+                        linedb.get_locationbyid(this.hwid, function (err, location) {
                             if (err) logger.error('fail' + err);
                             else {
                                 let lat = location.latitude;
                                 let lon = location.longitude;
                                 //取得所有揪團資訊
-                                linedb.get_shuangjious(function(err, shuangjious) {
+                                linedb.get_shuangjious(function (err, shuangjious) {
                                     if (err) logger.error('fail' + err);
                                     else {
                                         for (let i = 0; i < shuangjious.length; i++) {
@@ -629,7 +644,7 @@ function BeanconEvent(event) {
                                             if (linedb.getdistance(shuangjious[i].latitude, shuangjious[i].longitude, this.lat, this.lon) < 500) {
                                                 let flex = lineflex.CreateActivityFlex(shuangjious[i]);
                                                 //傳送揪團訊息
-                                                linemessage.SendFlex(this.userid, flex, 'linehack2018', '', function(result) {
+                                                linemessage.SendFlex(this.userid, flex, 'linehack2018', '', function (result) {
                                                     if (!result) {
                                                         logger.error('fail: ' + result);
                                                     }
