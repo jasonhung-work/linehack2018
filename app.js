@@ -452,7 +452,7 @@ app.post('/', function (request, response) {
                         }
 
                         if (tentative_activity.has(this.results.source.userId)) {
-                            linemessage.SendMessage(this.results.source.userId, "不好意思，您還有一個活動還未結束，請結束後在建立新的活動", "linehack2018", this.result.replyToken, function (result) {
+                            linemessage.SendMessage(this.results.source.userId, "不好意思，您還有一個活動還未結束，請結束後在建立新的活動", "linehack2018", this.results.replyToken, function (result) {
                                 if (!result) logger.error(result);
                                 else logger.info(result);
                             });
