@@ -235,7 +235,6 @@ app.post('/api/shungjiou', function(request, response) {
         activity.type = data.shuangjiou.type;
         activity.host = data.host.userId;
         activity.number = data.shuangjiou.number;
-        tentative_activity.delete(data.host.userId);
         linedb.create_shuangjiou(activity, function(err) {
             if (err)
                 logger.error('fail: ' + err);
@@ -303,6 +302,8 @@ app.post('/api/guest', function(request, response) {
 
 app.post('/api/finish', function(request, response) {
     var userId = request.body.userId;
+    if(tentative_activity.has(userId)); 
+        tentative_activity.delete(data.host.userId);
     linedb.delete_hostbyuserid(userId, function(err, host) {
         if (err) {
             logger.info('fail: ' + err);
