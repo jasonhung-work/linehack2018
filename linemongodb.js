@@ -577,6 +577,21 @@ var linemongodb = function () {
         });
     }
 
+    //根據UserId更新使用者pushenable
+    this.set_pushenablebyuserid = function (userid, pushenable, callback) {
+        console.log('set_pushenablebyuserid: userid=' + userid + ' pushenable=' + JSON.stringify(pushenable));
+
+        this.User.updateOne({ 'userid': userid }, {$set: { "pushenable" : pushenable }}, function (err) {
+            if (err) {
+                callback(err);
+            }
+            else {
+                console.log('User update successfully');
+                callback(null);
+            }
+        });
+    }
+    
 
     //Location
     //建立Beacon資訊
