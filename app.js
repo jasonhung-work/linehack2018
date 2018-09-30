@@ -127,6 +127,20 @@ app.post('/api/richmenu', function(request, response) {
     });
 });
 
+<<<<<<< HEAD
+app.put('/api/richmenuimage', function (request, response) {
+    var richmenuId = request.body.richmenuid;
+    var image = request.body.image;
+    fs.readFile(__dirname + '/resource/' + image, function (err, data) {
+        if (err) {
+            this.res.send(err);
+        }
+        linerichmenu.UpdateRichMenuImage(richmenuId, data, function (result) {
+            if (result) this.res.send(true);
+            else this.res.send(false);
+        }.bind({ res: this.res }));
+    }.bind({ req: request, res: response }));
+=======
 app.get('/api/richmenulist', function(request, response) {
     linerichmenu.GetAllRichMenu(function(result) {
         if (result) response.send(result);
@@ -148,6 +162,7 @@ app.post('/api/richmenu', function(request, response) {
         if (result) response.send(result);
         else response.send(false);
     });
+>>>>>>> master
 });
 
 app.delete('/api/richmenu/:richmenu', function(request, response) {
@@ -402,6 +417,22 @@ app.post('/', function(request, response) {
             }
             else if (results[idx].type == 'beacon') {    // 接收到使用者的 Beacon 事件
                 BeanconEvent(results[idx]);
+<<<<<<< HEAD
+            } else if (results[idx].type == 'message') {
+                if (results[idx].type == 'location') {
+                    logger.info('緯度: ' + results[idx].message.latitude);
+                    logger.info('經度: ' + results[idx].message.longitude);
+                    logger.info(JSON.stringify(results[idx].type));
+                    if (results[idx].postback.data == '') {
+    
+                    }
+                }
+                linemessage.SendMessage(results[idx].source.userId, 'test', 'linehack2018', results[idx].replyToken, function (result) {
+                    if (!result) logger.error(result);
+                    else logger.info(result);
+                });
+            } 
+=======
             }
             else if (results[idx].type == 'message') {
                 if (results[idx].message.type == 'location') {
@@ -493,6 +524,7 @@ app.post('/', function(request, response) {
 
                 }
             }
+>>>>>>> master
         }
     } catch (e) {
     }
