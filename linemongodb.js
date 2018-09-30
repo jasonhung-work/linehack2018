@@ -68,8 +68,6 @@ var linemongodb = function () {
         });
     }
 
-<<<<<<< HEAD
-=======
     //根據主辦人取得爽揪資訊
     this.get_shuangjioubyhost = function (host, callback) {
         console.log('get_shuangjioubybeacon: host=' + host);
@@ -88,7 +86,6 @@ var linemongodb = function () {
         });
     }
 
->>>>>>> Bug
     //根據Id取得爽揪資訊
     this.get_shuangjioubyshuangjiouid = function (shuangjiouid, callback) {
         console.log('get_shuangjioubyid: shuangjiouid=' + shuangjiouid);
@@ -329,10 +326,6 @@ var linemongodb = function () {
             }
         });
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> Bug
 
     //根據爽主UserId刪除爽主資訊
     this.delete_hostbyuserid = function (userid, callback) {
