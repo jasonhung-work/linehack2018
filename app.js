@@ -658,9 +658,12 @@ function BeanconEvent(event) {
                                 linedb.get_shuangjious(function (err, shuangjious) {
                                     if (err) logger.error('fail' + err);
                                     else {
+                                        let data = [];
                                         for (let i = 0; i < shuangjious.length; i++) {
                                             //判斷揪團距離
                                             if (linedb.getdistance(shuangjious[i].latitude, shuangjious[i].longitude, this.lat, this.lon) < 500) {
+                                                data.push(shuangjious[i]);
+                                                /*
                                                 let flex = lineflex.CreateActivityFlex(shuangjious[i]);
                                                 //傳送揪團訊息
                                                 linemessage.SendFlex(this.userid, flex, 'linehack2018', '', function (result) {
@@ -671,8 +674,18 @@ function BeanconEvent(event) {
                                                         logger.info('success');
                                                     }
                                                 });
+                                                */
                                             }
                                         }
+                                        let flex = lineflex.CreateActivityFlexCarousel(data);
+                                        linemessage.SendFlex(this.userid, flex, 'linehack2018', '', function (result) {
+                                            if (!result) {
+                                                logger.error('fail: ' + result);
+                                            }
+                                            else {
+                                                logger.info('success');
+                                            }
+                                        });
                                     }
                                 }.bind({ lat: lat, lon: lon, userid: this.userid }));
                             }
