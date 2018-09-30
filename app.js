@@ -239,8 +239,60 @@ app.post('/api/shungjiou', function (request, response) {
     logger.info(JSON.stringify(request.body));
     var data = request.body;
     data.host.userId = data.host.userId.replace('\"', '').replace('\"', '');
-    linedb.get_locationidbyuser(data.host.userId, function (err, locationid) {
-        if (err) this.response.send(err);
+    if (tentative_activity.has(data.host.userId)) {
+        var activity = tentative_activity.get(data.host.userId);
+        activity.name = data.shuangjiou.name;
+        activity.description = data.shuangjiou.description;
+        activity.starttime = Date.now();
+        activity.endtime = new Date(data.shuangjiou.endtime);
+        activity.type = data.shuangjiou.type;
+        activity.host = data.host.userId;
+        activity.number = data.shuangjiou.number;
+        tentative_activity.delete(data.host.userId);
+        linedb.create_shuangjiou(activity, function(err) {
+            if (err)
+                logger.error('fail: ' + err);
+            else
+                logger.info('success');
+        });
+
+        var organiser = new host();
+
+        organiser.name = data.host.name;
+        organiser.userid = data.host.userId;
+        organiser.gender = data.host.gender;
+        organiser.clothes = data.host.clothes;
+        organiser.hat = data.host.hat;
+        organiser.shuangjiouid = activity.shuangjiouid;
+        linedb.create_host(organiser, function(err) {
+            if (err)
+                logger.error('fail: ' + err);
+            else
+                logger.info('success');
+        });
+        var buttons = [
+            {
+                "type": "uri",
+                "label": "查看成員",
+                "uri": "line://app/1610735667-3E0z5w6a"
+            }
+        ]
+        linemessage.SendButtons(data.host.userId, "您的活動已建立，可以點選以下按鈕查看參加者", buttons, "This is a button", "linehack2018", "", function(result) {
+            if (!result) logger.error(result);
+            else logger.info(result);
+        });
+        response.send('200');
+    }
+});
+
+app.post('/api/guest', function(request, response) {
+    var userId = request.body.userId;
+    linedb.get_shuangjioubyhost('"' + userId + '"', function(err, host) {
+        var data = [];
+        if (err) {
+            logger.info('fail: ' + err);
+            this.res.send(err);
+        }
         else {
             var activity = new shuangjiou();
             activity.name = data.shuangjiou.name;
@@ -258,7 +310,32 @@ app.post('/api/shungjiou', function (request, response) {
                     logger.info('success');
             });
 
-            var organiser = new host();
+app.post('/api/finish', function(request, response) {
+    var userId = request.body.userId;
+    linedb.delete_hostbyuserid('"' + userId + '"', function(err, host) {
+        if (err) {
+            logger.info('fail: ' + err);
+        }
+        else {
+            logger.info('success');
+        }
+    });
+    linedb.delete_shuangjioubyhost('"' + userId + '"', function(err, shuangjiou) {
+        if (err) {
+            logger.info('fail: ' + err);
+        }
+        else {
+            logger.info('success');
+        }
+    });
+    linemessage.SendMessage(userId, "活動已完成，感謝您的使用!", "linehack2018", '', function(result) {
+        if (!result) logger.error(result);
+        else {
+            logger.info(result);
+            this.response.send('200');
+        }
+    }.bind({ response: response }));
+});
 
             organiser.name = data.host.name;
             organiser.userid = data.host.userId;

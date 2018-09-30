@@ -152,6 +152,19 @@
             <script src="assets/js/placeholder.js"></script>
         <![endif]-->
 		<script>
+<<<<<<< HEAD
+=======
+		$.ajax({
+                    url: '/api/guest',
+                    type: 'POST',
+                    data: { userId:  userId },
+                    success: function (ret) {
+                        Loaded();
+                        $('#VariableModal').modal('toggle');
+                        RefreshVariable();
+                    }
+                });
+>>>>>>> ca1e5961797f6abee33fc6370d9833e797e3c4e3
 			$(document).ready(function(){
 				//
 			});
@@ -160,6 +173,62 @@
 				if(wid>=760){
 					//
 				}
+<<<<<<< HEAD
+=======
+				getprofile();
+				for(var idx =0; idx<2; idx++){
+					$('#membersdata')
+					 .append(
+						 $('<tr>')
+						  .append(
+							  $('<td>').append(
+								  $('<img>').attr('src','https://lh5.ggpht.com/0VYAvZLR9YhosF-thqm8xl8EWsCfrEY_uk2og2f59K8IOx5TfPsXjFVwxaHVnUbuEjc=w170')
+								  .dblclick(function () {
+									  alert('已完成點名');
+									  $(this).attr('src','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHPPEcQg7pgHlUIvgp5EliVbwZsd3eFA5ru5t6gaCvrX06v0PPrg') //圖片變黑URL
+								  })
+							  )
+						  )
+					)
+					.append(
+						$('<tr>').append(
+							$('<td>').append(
+								$('<p style="font-size:27px;">name</p>')
+							)
+						)
+					)
+				}
+			};
+			function getprofile(){
+				liff.init(function () {
+                	liff.getProfile().then(function (profile) {
+                    	var userId = JSON.stringify(profile.userId);
+						var data = {
+							"userId" : userId
+						}
+                    	$.post('/api/guest', data, function () {
+							//
+                    	});
+                	}).catch(function (error) {
+                    	window.alert("Error getting profile: " + error);
+                	});
+            	}, function (err) { console.log("error: " + err); })
+			};
+			function finishact(){
+				liff.init(function () {
+                	liff.getProfile().then(function (profile) {
+                    	var userId = JSON.stringify(profile.userId);
+						var data = {
+							"userId" : userId
+						}
+                    	$.post('/api/guest', data, function () {
+							liff.closeWindow();
+                    	});
+                	}).catch(function (error) {
+                    	window.alert("Error getting profile: " + error);
+                	});
+            	}, function (err) { console.log("error: " + err); })
+>>>>>>> ca1e5961797f6abee33fc6370d9833e797e3c4e3
 			};
 		</script>
     </body>
