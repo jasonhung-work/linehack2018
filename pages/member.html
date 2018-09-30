@@ -138,16 +138,7 @@
             <script src="assets/js/placeholder.js"></script>
         <![endif]-->
 		<script>
-		$.ajax({
-                    url: '/api/guest',
-                    type: 'POST',
-                    data: { userId:  userId },
-                    success: function (ret) {
-                        Loaded();
-                        $('#VariableModal').modal('toggle');
-                        RefreshVariable();
-                    }
-                });
+		
 			$(document).ready(function(){
 				
 			});
@@ -157,39 +148,51 @@
 					$('#classbox').css('width', '750px');
 				}
 				getprofile();
-				for(var idx =0; idx<2; idx++){
-					$('#membersdata')
-					 .append(
-						 $('<tr>')
-						  .append(
-							  $('<td>').append(
-								  $('<img>').attr('src','https://lh5.ggpht.com/0VYAvZLR9YhosF-thqm8xl8EWsCfrEY_uk2og2f59K8IOx5TfPsXjFVwxaHVnUbuEjc=w170')
-								  .dblclick(function () {
-									  alert('已完成點名');
-									  $(this).attr('src','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHPPEcQg7pgHlUIvgp5EliVbwZsd3eFA5ru5t6gaCvrX06v0PPrg') //圖片變黑URL
-								  })
-							  )
-						  )
-					)
-					.append(
-						$('<tr>').append(
-							$('<td>').append(
-								$('<p style="font-size:27px;">name</p>')
-							)
-						)
-					)
-				}
+				
 			};
 			function getprofile(){
 				liff.init(function () {
                 	liff.getProfile().then(function (profile) {
                     	var userId = JSON.stringify(profile.userId);
-						var data = {
+						/*var data = {
 							"userId" : userId
 						}
                     	$.post('/api/guest', data, function () {
 							//
-                    	});
+                    	});*/
+						$.ajax({
+                    		url: '/api/guest',
+                    		type: 'POST',
+                    		data: { userId:  userId },
+		                    success: function (ret) {
+								for(var idx =0; idx<ret.length; idx++){
+									$('tr').remove();
+									$('td').remove();
+									$('#membersdata')
+					 				.append(
+						 				$('<tr>')
+						  					.append(
+							  					$('<td>').append(
+								  					$('<img>').attr('src',ret[idx].image)
+								  					.dblclick(function () {
+									  					alert('已完成點名');
+									  					$(this).attr('src','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHPPEcQg7pgHlUIvgp5EliVbwZsd3eFA5ru5t6gaCvrX06v0PPrg') //圖片變黑URL
+
+								  					})
+							  					)
+						  					)
+										)
+									.append(
+										$('<tr>').append(
+											$('<td>').append(
+												$('<p style="font-size:27px;">'+ret[idx].name+'</p>')
+										)
+									)
+								)
+							} //end for
+                    		}
+                		});
+					setTimeout('fixw()',5000);
                 	}).catch(function (error) {
                     	window.alert("Error getting profile: " + error);
                 	});
