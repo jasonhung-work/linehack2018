@@ -450,14 +450,14 @@ app.post('/', function (request, response) {
                             tentative_activity.set(activity.host, activity);
                         }
 
-                        if (tentative_activity.has(results[idx].source.userId)) {
-                            linemessage.SendMessage(results[idx].source.userId, "不好意思，您還有一個活動還未結束，請結束後在建立新的活動", "linehack2018", results[idx].replyToken, function (result) {
+                        if (tentative_activity.has(this.results.source.userId)) {
+                            linemessage.SendMessage(this.results.source.userId, "不好意思，您還有一個活動還未結束，請結束後在建立新的活動", "linehack2018", results[idx].replyToken, function (result) {
                                 if (!result) logger.error(result);
                                 else logger.info(result);
                             });
                         } else {
                             activity.shuangjiouid = guid();
-                            tentative_activity.set(results[idx].source.userId, activity);
+                            tentative_activity.set(this.results.source.userId, activity);
                             var imagemap = [
                                 {
                                     "type": "uri",
@@ -470,12 +470,12 @@ app.post('/', function (request, response) {
                                     }
                                 }
                             ]
-                            linemessage.SendImagemap(results[idx].source.userId, "https://linehack2018.azurewebsites.net/image/location.jpg", "This is an imagemap", imagemap, 'linehack2018', results[idx].replyToken, function (result) {
+                            linemessage.SendImagemap(this.results.source.userId, "https://linehack2018.azurewebsites.net/image/location.jpg", "This is an imagemap", imagemap, 'linehack2018', results[idx].replyToken, function (result) {
                                 if (!result) logger.error(result);
                                 else logger.info(result);
                             });
                         }
-                    });
+                    }.bind({ results: results[idx] }));
                 } else if (action == 'searchactivity') {
 
                 } else if (action == 'isactiveactivity') {
