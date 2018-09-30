@@ -499,13 +499,19 @@ app.post('/', function (request, response) {
                         else logger.info(result);
                     });
                 } else if (action == 'setbeaconon') {
-
+                    linedb.set_pushenablebyuserid(results[idx].source.userId, true, function (err){
+                        if (!err) logger.error(err);
+                        else err.info(err);
+                    });
                     linemessage.SendMessage(results[idx].source.userId, '您已將活動通知開啟', 'linehack2018', results[idx].replyToken, function (result) {
                         if (!result) logger.error(result);
                         else logger.info(result);
                     });
                 } else if (action == 'setbeaconoff') {
-
+                    linedb.set_pushenablebyuserid(results[idx].source.userId, false, function (err){
+                        if (!err) logger.error(err);
+                        else err.info(err);
+                    });
                     linemessage.SendMessage(results[idx].source.userId, '您已將活動通知關閉', 'linehack2018', results[idx].replyToken, function (result) {
                         if (!result) logger.error(result);
                         else logger.info(result);
