@@ -74,14 +74,14 @@ var linemongodb = function () {
     this.get_shuangjioubyhost = function (host, callback) {
         console.log('get_shuangjioubybeacon: host=' + host);
 
-        this.ShuangJiou.find({ 'host': host }, function (err, shuangjious) {
+        this.ShuangJiou.findOne({ 'host': host }, function (err, shuangjiou) {
             if (err) {
                 callback(err);
             }
             else {
                 console.log('ShuangJiou get successfully');
-                if (shuangjious)
-                    callback(null, shuangjious);
+                if (shuangjiou)
+                    callback(null, shuangjiou);
                 else
                     callback(null, null);
             }
