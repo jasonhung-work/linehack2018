@@ -291,7 +291,6 @@ app.post('/api/guest', function (request, response) {
     userId = userId.split('"')[1];
     logger.info(userId);
     linedb.get_shuangjioubyhost(userId, function (err, host) {
-        var data = [];
         if (err) {
             logger.info('fail: ' + err);
             this.res.send(err);
@@ -300,22 +299,19 @@ app.post('/api/guest', function (request, response) {
             logger.info('success');
             logger.info(host);
             if (host != null && host.participant) {
-                for (var index = 0; index < host.participant.length; index++) { //有問題
-                    linedb.get_userbyuserid(host.participant[index], function (err, user) {
-                        if (err) {
-                            logger.info('fail: ' + err);
-                        }
-                        else {
-                            logger.info('success');
-                            this.data.push(user);
-                        }
-                    }.bind({ data: data }));
-                }
-                logger.info(data);
-                this.res.send(data);
+                linedb.get_usersbyuserids(host.participant, function (err, user) {
+                    if (err) {
+                        logger.info('fail: ' + err);
+                    }
+                    else {
+                        logger.info('success');
+                        logger.info(user);
+                        this.res.send(user);
+                    }
+                }.bind({ res: this.res }));
             } else {
                 this.res.send('');
-            } 
+            }
         }
     }.bind({ res: response }));
 });
@@ -600,7 +596,27 @@ app.post('/', function (request, response) {
                                 else logger.info(result);
                             });
                         }
-                    } else if (action == 'searchactivity') {
+                    }.bind({ results: results[idx], tentative_activity: tentative_activity }));
+                } else if (action == 'searchactivity') {
+
+                } else if (action == 'isactiveactivity') {
+                    var buttons = [
+                        {
+                            "type": "postback",
+                            "label": "Yes",
+                            "data": "action=setbeaconon"
+                        },
+                        {
+                            "type": "postback",
+                            "label": "No",
+                            "data": "action=setbeaconoff"
+                        }
+                    ]
+                    linemessage.SendConfirm(results[idx].source.userId, '請問您想要在經過beacon時，收到活動資訊嗎?', buttons, 'this is a confirm', 'linehack2018', results[idx].replyToken, function (result) {
+                        if (!result) logger.error(result);
+                        else logger.info(result);
+                    });
+                } else if (action == 'setbeaconon') {
 
                     } else if (action == 'isactiveactivity') {
 
