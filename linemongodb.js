@@ -450,6 +450,24 @@ var linemongodb = function () {
         });
     }
 
+    //根據UserId取得使用者資訊
+    this.get_usersbyuserids = function (userids, callback) {
+        console.log('get_usersbyuserids: userids=' + userids);
+
+        this.User.find({ 'userid': { $in: userids }}, function (err, users) {
+            if (err) {
+                callback(err);
+            }
+            else {
+                console.log('Users get successfully');
+                if (users)
+                    callback(null, users);
+                else
+                    callback(null, null);
+            }
+        });
+    }
+
     //根據關注的BeaconId取得使用者資訊
     this.get_userbylocationid = function (locationid, callback) {
         console.log('get_userbylocation: locationid=' + locationid);
