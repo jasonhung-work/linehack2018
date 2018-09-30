@@ -139,6 +139,28 @@ var lineflex = function (logger) {
                                         "flex": 4
                                     }
                                 ]
+                            },
+                            {
+                                "type": "box",
+                                "layout": "baseline",
+                                "spacing": "sm",
+                                "contents": [
+                                    {
+                                        "type": "text",
+                                        "text": "活動地點:",
+                                        "color": "#aaaaaa",
+                                        "size": "sm",
+                                        "flex": 2
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": activity.latitude + ',' + activity.longitude,
+                                        "wrap": true,
+                                        "color": "#666666",
+                                        "size": "sm",
+                                        "flex": 4
+                                    }
+                                ]
                             }
                         ]
                     }
@@ -303,6 +325,28 @@ var lineflex = function (logger) {
                                         {
                                             "type": "text",
                                             "text": activity.fare,
+                                            "wrap": true,
+                                            "color": "#666666",
+                                            "size": "sm",
+                                            "flex": 4
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "box",
+                                    "layout": "baseline",
+                                    "spacing": "sm",
+                                    "contents": [
+                                        {
+                                            "type": "text",
+                                            "text": "活動地點:",
+                                            "color": "#aaaaaa",
+                                            "size": "sm",
+                                            "flex": 2
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": activity.latitude + ',' + activity.longitude,
                                             "wrap": true,
                                             "color": "#666666",
                                             "size": "sm",
