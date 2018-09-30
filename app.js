@@ -306,7 +306,7 @@ app.post('/api/finish', function (request, response) {
     var userId = request.body.userId;
     userId = userId.split('"')[1];
     if (tentative_activity.has(userId));
-    tentative_activity.delete(data.host.userId);
+    tentative_activity.delete(userId);
     linedb.delete_hostbyuserid(userId, function (err, host) {
         if (err) {
             logger.info('fail: ' + err);
