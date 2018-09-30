@@ -147,8 +147,7 @@
 				if(wid>=760){
 					$('#classbox').css('width', '750px');
 				}
-				$('tr').remove();
-				$('td').remove();
+				
 				getprofile();
 				
 			};
@@ -167,6 +166,8 @@
                     		type: 'POST',
                     		data: { userId:  userId },
 		                    success: function (ret) {
+								$('tr').remove();
+								$('td').remove();
 								for(var idx =0; idx<ret.length; idx++){
 									$('#membersdata')
 					 				.append(
