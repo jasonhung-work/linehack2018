@@ -133,6 +133,10 @@
 			                        	<input type="text" name="form-active-description" placeholder="活動描述..." class="form-active-description form-control" id="form-active-description">
 			                        </div>
 									<div class="form-group">
+			                    		<label class="sr-only-focusable" for="form-active-cash" style="color:white">活動費用</label>
+			                        	<input type="number" name="form-active-cash" placeholder="活動費用..." class="form-active-cash form-control" id="form-active-cash">
+			                        </div>
+									<div class="form-group">
 			                        	<label class="sr-only-focusable" for="form-datetime" style="color:white">活動結束時間</label>
 			                        	<input type="datetime-local" name="form-datetime" class="form-datetime form-control" id="form-datetime"  style="height: 50px" value="2018-09-29T12:00">
 										<!--<input type="text" name="form-datetime" class="simple_date form-control" id="form-datetime" style="height: 50px" value="2018-09-29T12:00">-->
@@ -192,45 +196,57 @@
 				}
 			}
 			function submitdata(){
-				liff.init(function () {
-                liff.getProfile().then(function (profile) {
-                    var userId = JSON.stringify(profile.userId);
-					var name = $('#form-active-name').val();
-					var type = $('#form-active-type').val();
-					var number = $('#form-active-numbers').val();
-					var description = $('#form-active-description').val();
-					var endtime = $('#form-datetime').val();
-					var hostname = $('#form-guy-name').val();
-					var gender = $('#form-guy-sex').val();
-					var clothes = $('#form-guy-clothes').val();
-					var hat = $('#form-guy-hat').val();
-                    var data = {
-						"shuangjiou":{
-							"name" : name,
-							"description" : description,
-							"endtime" : endtime,
-							"type" : type,
-							"number" : number
-						},
-						"host":{
-							"userId" : userId,
-                        	"name" : hostname,
-							"gender" : gender,
-							"clothes" : clothes,
-							"hat" : hat
-						}
-                    }
-                    $.post('/api/shungjiou', data, function () {
-                        liff.closeWindow();
+				var fare = $('#form-active-cash').val();
+				var endtime = $('#form-datetime').val();
+				if(fare=='' || fare==' '){
+					alert('Oops!您忘了輸入活動費用~再試一次~');
+				}else if(endtime=='' || endtime==' '){
+					alert('Oops!您忘了輸入活動結束時間~再試一次~');
+				}else{
+					liff.init(function () {
+                	liff.getProfile().then(function (profile) {
+                    	var userId = JSON.stringify(profile.userId);
+						var name = $('#form-active-name').val();
+						var type = $('#form-active-type').val();
+						var number = $('#form-active-numbers').val();
+						var description = $('#form-active-description').val();
+						var fare = $('#form-active-cash').val();
+						var endtime = $('#form-datetime').val();
+						var hostname = $('#form-guy-name').val();
+						var gender = $('#form-guy-sex').val();
+						var clothes = $('#form-guy-clothes').val();
+						var hat = $('#form-guy-hat').val();
+                    	var data = {
+							"shuangjiou":{
+								"name" : name,
+								"description" : description,
+								"endtime" : endtime,
+								"type" : type,
+								"number" : number,
+								"fare" : fare
+							},
+								"host":{
+									"userId" : userId,
+                        			"name" : hostname,
+									"gender" : gender,
+									"clothes" : clothes,
+									"hat" : hat
+							}
+                    	}
+                    	$.post('/api/shungjiou', data, function () {
+                        	liff.closeWindow();
 						/*liff.openWindow({
   							url:'http://linehack2018.azurewebsites.net/member',
   							external:false
 						});*/
-                    });
-                }).catch(function (error) {
-                    window.alert("Error getting profile: " + error);
-                });
-            }, function (err) { console.log("error: " + err); })
+                    	});
+                	}).catch(function (error) {
+                    	window.alert("Error getting profile: " + error);
+                	});
+            		}, function (err) { console.log("error: " + err); })
+				
+			}//end else
+				
 		};
 		</script>
     </body>
