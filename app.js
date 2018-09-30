@@ -282,7 +282,8 @@ app.post('/api/guest', function (request, response) {
         }
         else {
             logger.info('success');
-            if (host.participant) {
+            logger.info(host);
+            if (host != null && host.participant) {
                 for (var index = 0; index < host.participant.length; index++) { //有問題
                     linedb.get_userbyuserid(host.participant[index], function (err, user) {
                         if (err) {
@@ -438,7 +439,7 @@ app.post('/', function (request, response) {
                         if (step_activity) {
                             activity.shuangjiouid = step_activity.shuangjiouid;
                             activity.name = step_activity.name;
-                            activity.description = step_activityu.description;
+                            activity.description = step_activity.description;
                             activity.starttime = step_activity.starttime;
                             activity.endtime = step_activity.endtime;
                             activity.type = step_activity.type;
@@ -451,7 +452,7 @@ app.post('/', function (request, response) {
                         }
 
                         if (tentative_activity.has(this.results.source.userId)) {
-                            linemessage.SendMessage(this.results.source.userId, "不好意思，您還有一個活動還未結束，請結束後在建立新的活動", "linehack2018", results[idx].replyToken, function (result) {
+                            linemessage.SendMessage(this.results.source.userId, "不好意思，您還有一個活動還未結束，請結束後在建立新的活動", "linehack2018", this.result.replyToken, function (result) {
                                 if (!result) logger.error(result);
                                 else logger.info(result);
                             });
@@ -470,7 +471,7 @@ app.post('/', function (request, response) {
                                     }
                                 }
                             ]
-                            linemessage.SendImagemap(this.results.source.userId, "https://linehack2018.azurewebsites.net/image/location.jpg", "This is an imagemap", imagemap, 'linehack2018', results[idx].replyToken, function (result) {
+                            linemessage.SendImagemap(this.results.source.userId, "https://linehack2018.azurewebsites.net/image/location.jpg", "This is an imagemap", imagemap, 'linehack2018', this.results.replyToken, function (result) {
                                 if (!result) logger.error(result);
                                 else logger.info(result);
                             });
