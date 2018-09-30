@@ -109,7 +109,7 @@
                         		</div>-->
                             </div>
                             <div class="form-bottom">
-			                    <form role="form" action="" method="post" class="registration-form">
+			                    <!--<form role="form" action="" method="post" class="registration-form">-->
 			                    	<div class="form-group">
 			                    		<label class="sr-only-focusable" for="form-active-name" style="color:white">活動名稱</label>
 			                        	<input type="text" name="form-active-name" placeholder="活動名稱..." class="form-active-name form-control" id="form-active-name">
@@ -134,11 +134,12 @@
 			                        </div>
 									<div class="form-group">
 			                        	<label class="sr-only-focusable" for="form-datetime" style="color:white">活動結束時間</label>
-			                        	<input type="datetime-local" name="form-datetime" class="form-datetime form-control" id="form-datetime" style="height: 50px">
+			                        	<input type="datetime-local" name="form-datetime" class="form-datetime form-control" id="form-datetime"  style="height: 50px" value="2018-09-29T12:00">
+										<!--<input type="text" name="form-datetime" class="simple_date form-control" id="form-datetime" style="height: 50px" value="2018-09-29T12:00">-->
 			                        </div>
 									<div class="form-group">
 			                        	<label class="sr-only-focusable" for="form-guy-name" style="color:white">主辦人姓名</label>
-			                        	<input type="text" name="form-guy-name" placeholder="主辦人姓名..." class="form-guy-name form-control" id="form-guy-name" style="height: 50px">
+			                        	<input type="text" name="form-guy-name" placeholder="主辦人姓名..." class="form-guy-name form-control" id="form-guy-name">
 			                        </div>
 									<div class="form-group">
 										<label class="sr-only-focusable" for="form-guy-sex" style="color:white">主辦人性別</label>
@@ -159,7 +160,8 @@
 										</select>
 			                        </div>
 			                        <button type="submit" class="btn" onclick="submitdata()">確認送出開始揪團</button>
-			                    </form>
+									<!--<input type="submit" class="btn" onclick="submitdata()">確認送出開始揪團</button>-->
+			                    <!--</form>-->
 		                    </div>
                         </div>
                     </div>
@@ -188,7 +190,7 @@
 				if(wid>=760){
 					$('#classbox').css('width', '750px');
 				}
-			};
+			}
 			function submitdata(){
 				liff.init(function () {
                 liff.getProfile().then(function (profile) {
@@ -197,7 +199,7 @@
 					var type = $('#form-active-type').val();
 					var number = $('#form-active-numbers').val();
 					var description = $('#form-active-description').val();
-					var end_time = $('#form-datetime').val();
+					var endtime = $('#form-datetime').val();
 					var hostname = $('#form-guy-name').val();
 					var gender = $('#form-guy-sex').val();
 					var clothes = $('#form-guy-clothes').val();
@@ -206,7 +208,7 @@
 						"shuangjiou":{
 							"name" : name,
 							"description" : description,
-							"end_time" : end_time,
+							"endtime" : endtime,
 							"type" : type,
 							"number" : number
 						},
@@ -220,6 +222,10 @@
                     }
                     $.post('/api/shungjiou', data, function () {
                         liff.closeWindow();
+						/*liff.openWindow({
+  							url:'http://linehack2018.azurewebsites.net/member',
+  							external:false
+						});*/
                     });
                 }).catch(function (error) {
                     window.alert("Error getting profile: " + error);

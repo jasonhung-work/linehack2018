@@ -38,42 +38,9 @@ var linerichmenu = function (logger) {
                 logger.info('Add RichMenu status code: ' + res.statusCode);
                 if (res.statusCode == 200) {
                     logger.info('Add RichMenu success');
-                    this.callback(LIFF_ID);
+                    this.callback(RichMenuId);
                 } else {
                     logger.info('Add RichMenu failure');
-                    this.callback(false);
-                }
-            }.bind({ callback: this.callback }));
-        }.bind({ callback: callback }));
-        req.write(JSON.stringify(data));
-        req.end();
-    }
-
-    this.UpdateRichMenuImage = function (richmenuId, image, callback) {
-        var options = {
-            host: 'api.line.me',
-            port: '443',
-            path: '/v2/bot/richmenu/' + richmenuId + '/content',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'image/jpeg; charset=UTF-8',
-                'Content-Length': Buffer.byteLength(image),
-                'Authorization': 'Bearer <' + config.channel_access_token + '>'
-            }
-        };
-        var https = require('https');
-        var req = https.request(options, function (res) {
-            res.setEncoding('utf8');
-            res.on('data', function (chunk) {
-                logger.info('Response: ' + chunk);
-            });
-            res.on('end', function () {
-                logger.info('Update RichMenu Image status code: ' + res.statusCode);
-                if (res.statusCode == 200) {
-                    logger.info('Update RichMenu Image success');
-                    this.callback(true);
-                } else {
-                    logger.info('Update RichMenu Image failure');
                     this.callback(false);
                 }
             }.bind({ callback: this.callback }));
@@ -111,7 +78,6 @@ var linerichmenu = function (logger) {
                 }
             }.bind({ callback: this.callback }));
         }.bind({ callback: callback }));
-        req.write(JSON.stringify(data));
         req.end();
     }
 
@@ -144,7 +110,6 @@ var linerichmenu = function (logger) {
                 }
             }.bind({ callback: this.callback }));
         }.bind({ callback: callback }));
-        req.write(JSON.stringify(data));
         req.end();
     }
 
@@ -177,7 +142,6 @@ var linerichmenu = function (logger) {
                 }
             }.bind({ callback: this.callback }));
         }.bind({ callback: callback }));
-        req.write(JSON.stringify(data));
         req.end();
     }
 
@@ -208,7 +172,6 @@ var linerichmenu = function (logger) {
                 }
             }.bind({ callback: this.callback }));
         }.bind({ callback: callback }));
-        req.write(JSON.stringify(data));
         req.end();
     }
 
@@ -239,7 +202,6 @@ var linerichmenu = function (logger) {
                 }
             }.bind({ callback: this.callback }));
         }.bind({ callback: callback }));
-        req.write(JSON.stringify(data));
         req.end();
     }
 
@@ -270,7 +232,6 @@ var linerichmenu = function (logger) {
                 }
             }.bind({ callback: this.callback }));
         }.bind({ callback: callback }));
-        req.write(JSON.stringify(data));
         req.end();
     }
 }

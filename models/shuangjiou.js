@@ -3,7 +3,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 module.exports = mongoose.model('shuangjiou', new Schema({
-    shuangjiouid: String,
     name: String,
     description: String,
     starttime: Date,
@@ -14,5 +13,6 @@ module.exports = mongoose.model('shuangjiou', new Schema({
     longitude: String,
     host: String,
     number: Number,
+    shuangjiouid: String,
     participant: [String]
 }), 'shuangjiou');

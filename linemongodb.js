@@ -28,7 +28,7 @@ var linemongodb = function () {
         shuangjiou.member = '';
         */
 
-        this.ShuangJiou.findOneAndUpdate({ 'name': shuangjiou.name }, shuangjiou, { upsert: true, new: true, setDefaultsOnInsert: true }, function (err) {
+        this.ShuangJiou.findOneAndUpdate({ 'shuangjiouid': shuangjiou.shuangjiouid }, shuangjiou, { upsert: true, new: true, setDefaultsOnInsert: true }, function (err) {
             if (err) {
                 callback(err);
             }
@@ -57,6 +57,24 @@ var linemongodb = function () {
         console.log('get_shuangjioubyname: name=' + name);
 
         this.ShuangJiou.find({ 'name': name }, function (err, shuangjious) {
+            if (err) {
+                callback(err);
+            }
+            else {
+                console.log('ShuangJiou get successfully');
+                if (shuangjious)
+                    callback(null, shuangjious);
+                else
+                    callback(null, null);
+            }
+        });
+    }
+
+    //根據主辦人取得爽揪資訊
+    this.get_shuangjioubyhost = function (host, callback) {
+        console.log('get_shuangjioubybeacon: host=' + host);
+
+        this.ShuangJiou.find({ 'host': host }, function (err, shuangjious) {
             if (err) {
                 callback(err);
             }
@@ -136,6 +154,38 @@ var linemongodb = function () {
         });
     }
 
+    //根據揪團團主刪除爽揪資訊
+    this.delete_shuangjioubyhost = function (host, callback) {
+        console.log('delete_shuangjioubyhost: host=' + host);
+
+        this.ShuangJiou.deleteOne({ 'host': host }, shuangjiou, function (err) {
+            if (err) {
+                callback(err);
+            }
+            else {
+                console.log('ShuangJiou delete successfully');
+                callback(null);
+            }
+        });
+    }
+
+    //取得所有揪團資訊
+    this.get_shuangjious = function (callback) {
+        console.log('get_shuangjious');
+
+        this.ShuangJiou.find(function (err, shuangjious) {
+            if (err) {
+                callback(err);
+            }
+            else {
+                console.log('ShuangJiou get successfully');
+                if (shuangjious)
+                    callback(null, shuangjious);
+                else
+                    callback(null, null);
+            }
+        });
+    }
 
     //Host
     //建立爽主資訊
@@ -153,7 +203,7 @@ var linemongodb = function () {
         host.shuangjiouid = 'Idxxxx1';
         */
 
-        this.Host.findOneAndUpdate({ 'shuangjiouname': host.shuangjiouname }, host, { upsert: true, new: true, setDefaultsOnInsert: true }, function (err) {
+        this.Host.findOneAndUpdate({ 'shuangjiouid': host.shuangjiouid }, host, { upsert: true, new: true, setDefaultsOnInsert: true }, function (err) {
             if (err) {
                 callback(err);
             }
@@ -214,6 +264,7 @@ var linemongodb = function () {
     }
 
     //根據揪團名稱取得爽主資訊
+    /*
     this.get_hostbyshuangjiouname = function (shuangjiouname, callback) {
         console.log('get_hostbyshuangjiouname: shuangjiouname=' + shuangjiouname);
 
@@ -230,6 +281,7 @@ var linemongodb = function () {
             }
         });
     }
+    */
 
     //根據BeaconId取得爽主資訊
     this.get_hostbylocation = function (location, callback) {
@@ -293,6 +345,7 @@ var linemongodb = function () {
             }
         });
     }
+    
 
     //根據爽主UserId刪除爽主資訊
     this.delete_hostbyuserid = function (userid, callback) {
@@ -321,7 +374,7 @@ var linemongodb = function () {
         user.userid = 'Uxxxxxxxx2';
         user.image = 'http:xxxxx.xxx.xx';
         user.location = '[Bxxxxxxxx1]';
-        user.pushenable = 'true';        
+        user.pushenable = true;        
         */
 
         this.User.findOneAndUpdate({ 'userid': user.userid }, user, { upsert: true, new: true, setDefaultsOnInsert: true }, function (err) {
@@ -579,6 +632,37 @@ var linemongodb = function () {
                     callback(null, null);
             }
         });
+    }
+
+    //根據BeaconId取得location訊息
+    this.get_locationbyid = function (locationid, callback) {
+        console.log('get_locationbyid: locationid=' + locationid);
+
+        this.Location.findOne({ 'locationid': locationid }, function (err, location) {
+            if (err) {
+                callback(err);
+            }
+            else {
+                console.log('Location getlocation successfully');
+                if (location)
+                    callback(null, location);
+                else
+                    callback(null, null);
+            }
+        });
+    }
+
+    //計算距離(公尺)
+    this.getdistance = function (lat1, lng1, lat2, lng2) {
+        var radLat1 = lat1 * Math.PI / 180.0;
+        var radLat2 = lat2 * Math.PI / 180.0;
+        var a = radLat1 - radLat2;
+        var b = lng1 * Math.PI / 180.0 - lng2 * Math.PI / 180.0;
+        var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) +
+            Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
+        s = s * 6378.137;// EARTH_RADIUS;
+        s = Math.round(s * 10000) / 10000;
+        return s * 1000;
     }
 }
 
