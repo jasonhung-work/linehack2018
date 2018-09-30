@@ -359,8 +359,8 @@ app.get('/member', function (request, response) {
 
 app.get('/map/:location', function (request, response) {
     var loction = request.params.loction;
-    var lat = loction.splice(',')[0];
-    var lng = loction.splice(',')[1];
+    var lat = loction.split(',')[0];
+    var lng = loction.split(',')[1];
     console.log('GET /member');
     var fs = require('fs');
     request.header("Content-Type", 'text/html');
@@ -703,7 +703,7 @@ app.post('/', function (request, response) {
                                         }
                                     ]
                                 }
-                                linemessage.SendMessageAndQuickReply(user_id, "加入活動成功，爽主資料: " + description, "linehack2018", this.replyToken, quickreply, function (result) {
+                                linemessage.SendMessageAndQuickReply(user_id, "加入活動成功，爽主資料: " + this.description, "linehack2018", this.replyToken, quickreply, function (result) {
                                     if (!result) logger.error(result);
                                     else logger.info(result);
                                 });
