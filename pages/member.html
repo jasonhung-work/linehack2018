@@ -139,8 +139,8 @@
         <![endif]-->
 		<script>
 		$.ajax({
-                    url: '../../variables/' + FlowID,
-                    type: 'PUT',
+                    url: '/api/guest',
+                    type: 'POST',
                     data: { variables: _Variables },
                     success: function (ret) {
                         Loaded();
