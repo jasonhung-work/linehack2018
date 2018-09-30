@@ -14,5 +14,6 @@ module.exports = mongoose.model('shuangjiou', new Schema({
     host: String,
     number: Number,
     shuangjiouid: String,
-    participant: [String]
+    participant: [String],
+    fare : String
 }), 'shuangjiou');
