@@ -1,4 +1,3 @@
-var users = new Map();  // 紀錄進入 Beacon 範圍的使用者
 var tentative_activity = new Map();
 
 // Application Log
@@ -402,7 +401,6 @@ app.get('/image/location.jpg/1040', function (request, response) {
     }.bind({ req: request, res: response }));
 });
 
-var send_location = false;
 var user_flag = new Map();
 var userActivityType = new Map();
 // 接收來自 LINE 傳送的訊息
@@ -823,6 +821,7 @@ function BeanconEvent(event) {
                 this.update_user.userid = user.userId;
                 this.update_user.image = user.pictureUrl;
                 this.update_user.location.push(event.beacon.hwid);
+                this.update_user.pushenable = user.pushenable;
                 linedb.set_userbyuserid(this.update_user.userid, this.update_user, function (err) {
                     if (err) logger.error('fail' + err);
                     else logger.info('success');
@@ -852,18 +851,6 @@ function BeanconEvent(event) {
                                             //判斷揪團距離
                                             if (linedb.getdistance(shuangjious[i].latitude, shuangjious[i].longitude, this.lat, this.lon) < 500) {
                                                 data.push(shuangjious[i]);
-                                                /*
-                                                let flex = lineflex.CreateActivityFlex(shuangjious[i]);
-                                                //傳送揪團訊息
-                                                linemessage.SendFlex(this.userid, flex, 'linehack2018', '', function (result) {
-                                                    if (!result) {
-                                                        logger.error('fail: ' + result);
-                                                    }
-                                                    else {
-                                                        logger.info('success');
-                                                    }
-                                                });
-                                                */
                                             }
                                         }
                                         let flex = lineflex.CreateActivityFlexCarousel(data);
